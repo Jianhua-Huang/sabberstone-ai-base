@@ -499,8 +499,16 @@ namespace SabberStoneCore.Actions
 							p.ChooseOnePlayables = new IPlayable[2];
 
 
-						p.ChooseOnePlayables[0] = Entity.FromCard(c, Cards.FromId(newCard.Id + "a"), tags, c.SetasideZone);
-						p.ChooseOnePlayables[1] = Entity.FromCard(c, Cards.FromId(newCard.Id + "b"), tags, c.SetasideZone);
+						if (newCard.Id == "YOD_001" || newCard.Id == "YOD_001ts")
+						{
+							p.ChooseOnePlayables[0] = Entity.FromCard(c, Cards.FromId("YOD_001b"), tags, c.SetasideZone);
+							p.ChooseOnePlayables[1] = Entity.FromCard(c, Cards.FromId("YOD_001c"), tags, c.SetasideZone);
+						}
+						else
+						{
+							p.ChooseOnePlayables[0] = Entity.FromCard(c, Cards.FromId(newCard.Id + "a"), tags, c.SetasideZone);
+							p.ChooseOnePlayables[1] = Entity.FromCard(c, Cards.FromId(newCard.Id + "b"), tags, c.SetasideZone);
+						}
 					}
 				}
 

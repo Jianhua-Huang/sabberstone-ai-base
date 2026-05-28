@@ -46,7 +46,8 @@ namespace SabberStoneCore.Model
 
 			CardSet.DALARAN, // 2019 Rise of Shadows
 			CardSet.ULDUM, // 2019 Saviors of Uldum
-			CardSet.DRAGONS // 2019 Descent of Dragons
+			CardSet.DRAGONS, // 2019 Descent of Dragons
+			CardSet.GALAKRONDS_AWAKENING // 2020 Galakrond's Awakening
 		};
 
 		/// <summary>
@@ -64,6 +65,7 @@ namespace SabberStoneCore.Model
 			CardSet.DALARAN,
 			CardSet.ULDUM,
 			CardSet.DRAGONS,
+			CardSet.GALAKRONDS_AWAKENING,
 
 			// wild
 			CardSet.BRM,
@@ -304,6 +306,8 @@ namespace SabberStoneCore.Model
 					return FromId("GIL_504h");
 				case 48145:
 					return FromId("BOT_238p");
+				case 56075:
+					return FromId("YOD_009h");
 				default:
 					throw new NotImplementedException();
 			}

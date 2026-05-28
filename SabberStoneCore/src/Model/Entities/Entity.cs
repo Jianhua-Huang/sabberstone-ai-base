@@ -372,28 +372,35 @@ namespace SabberStoneCore.Model.Entities
 				else
 				{
 
+					string option1 = result.Card.Id == "YOD_001" || result.Card.Id == "YOD_001ts"
+						? "YOD_001b"
+						: result.Card.Id + "a";
+					string option2 = result.Card.Id == "YOD_001" || result.Card.Id == "YOD_001ts"
+						? "YOD_001c"
+						: result.Card.Id + "b";
+
 					result.ChooseOnePlayables = new IPlayable[2];
 					result.ChooseOnePlayables[0] =
 						id < 0 ? FromCard(controller,
-								Cards.FromId(result.Card.Id + "a"),
+								Cards.FromId(option1),
 								new EntityData
 								{
 									[GameTag.CREATOR] = result.Id,
 									[GameTag.PARENT_CARD] = result.Id
 								},
 								controller.SetasideZone) :
-							controller.SetasideZone.ToList().Find(p => p[GameTag.CREATOR] == result.Id && p.Card.Id == result.Card.Id + "a");
+							controller.SetasideZone.ToList().Find(p => p[GameTag.CREATOR] == result.Id && p.Card.Id == option1);
 
 					result.ChooseOnePlayables[1] =
 						id < 0 ? FromCard(controller,
-								Cards.FromId(result.Card.Id + "b"),
+								Cards.FromId(option2),
 								new EntityData
 								{
 									[GameTag.CREATOR] = result.Id,
 									[GameTag.PARENT_CARD] = result.Id
 								},
 								controller.SetasideZone) :
-							controller.SetasideZone.ToList().Find(p => p[GameTag.CREATOR] == result.Id && p.Card.Id == result.Card.Id + "b");
+							controller.SetasideZone.ToList().Find(p => p[GameTag.CREATOR] == result.Id && p.Card.Id == option2);
 				}
 			}
 

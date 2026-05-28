@@ -28,7 +28,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				Card card = Cards.FromId(cardId);
 
 				Assert.True(card.Collectible);
-				Assert.Equal((CardSet)1403, card.Set);
+				Assert.Equal(CardSet.GALAKRONDS_AWAKENING, card.Set);
 			}
 		}
 
