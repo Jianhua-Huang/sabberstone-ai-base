@@ -2592,7 +2592,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		// ----------------------------------------- MINION - ROGUE
-		// [DRG_031] Necrium Apothecary - COST:4 [ATK:2/HP:5] 
+		// [DRG_031] Necrium Apothecary - COST:5 [ATK:2/HP:5] 
 		// - Set: dragons, Rarity: epic
 		// --------------------------------------------------------
 		// Text: <b>Combo:</b> Draw a <b>Deathrattle</b> minion from your deck and gain its <b>Deathrattle</b>.
@@ -3158,7 +3158,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		// [DRG_217] Dragon's Pack - COST:5 
 		// - Set: dragons, Rarity: epic
 		// --------------------------------------------------------
-		// Text: Summon two 2/3 Spirit Wolves with <b>Taunt</b>. If you've <b>Invoked</b> twice, give them +3/+3.
+		// Text: Summon two 2/3 Spirit Wolves with <b>Taunt</b>. If you've <b>Invoked</b> twice, give them +2/+2.
 		// --------------------------------------------------------
 		// GameTag:
 		// - 676 = 1
@@ -3225,7 +3225,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		// ----------------------------------------- SPELL - SHAMAN
-		// [DRG_248] Invocation of Frost - COST:1 
+		// [DRG_248] Invocation of Frost - COST:2 
 		// - Set: dragons, Rarity: common
 		// --------------------------------------------------------
 		// Text: <b>Freeze</b> an enemy. 
@@ -3579,7 +3579,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		// ---------------------------------------- SPELL - WARLOCK
-		// [DRG_250] Fiendish Rites - COST:3 
+		// [DRG_250] Fiendish Rites - COST:4 
 		// - Set: dragons, Rarity: common
 		// --------------------------------------------------------
 		// Text: <b>Invoke</b> Galakrond.
@@ -3618,7 +3618,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 	public class WarriorDragonsTest
 	{
 		// --------------------------------------- MINION - WARRIOR
-		// [DRG_019] Scion of Ruin - COST:3 [ATK:3/HP:2] 
+		// [DRG_019] Scion of Ruin - COST:4 [ATK:3/HP:2] 
 		// - Race: dragon, Set: dragons, Rarity: epic
 		// --------------------------------------------------------
 		// Text: <b>Rush</b>. <b>Battlecry:</b> If you've <b>Invoked</b> twice, summon 2_copies of this.

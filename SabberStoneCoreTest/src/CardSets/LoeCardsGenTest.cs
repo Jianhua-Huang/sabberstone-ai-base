@@ -1139,17 +1139,19 @@ namespace SabberStoneCoreTest.CardSets
 				StartPlayer = 1,
 				Player1HeroClass = CardClass.MAGE,
 				Player2HeroClass = CardClass.MAGE,
-				FillDecks = true,
-				FillDecksPredictably = true
+				FillDecks = false
 			});
 			game.StartGame();
 			game.Player1.BaseMana = 10;
 			game.Player2.BaseMana = 10;
 			IPlayable testCard = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Naga Sea Witch"));
+			IPlayable spell1 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Blizzard"));
+			IPlayable spell2 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Flamestrike"));
+			IPlayable spell3 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Pyroblast"));
 			game.Process(PlayCardTask.Minion(game.CurrentPlayer, testCard));
-			Assert.Equal(5, game.CurrentPlayer.HandZone[0].Cost);
-			Assert.Equal(5, game.CurrentPlayer.HandZone[1].Cost);
-			Assert.Equal(5, game.CurrentPlayer.HandZone[2].Cost);
+			Assert.Equal(5, spell1.Cost);
+			Assert.Equal(5, spell2.Cost);
+			Assert.Equal(5, spell3.Cost);
 		}
 
 		// --------------------------------------- MINION - NEUTRAL

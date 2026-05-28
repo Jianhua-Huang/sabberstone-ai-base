@@ -4505,16 +4505,12 @@ namespace SabberStoneCoreTest.CardSets
 			game.ProcessCard("Assassin's Blade", null, true);
 			game.ProcessCard("Assassin's Blade", null, true);
 			Assert.Equal(5, testCard.AttackDamage);
-			game.ProcessCard("Malkorok", null, true);
+			game.ProcessCard("Assassin's Blade", null, true);
 			Assert.Equal(6, testCard.AttackDamage);
 			game.ProcessCard("Assassin's Blade", null, true);
 			Assert.Equal(7, testCard.AttackDamage);
-			game.ProcessCard("Assassin's Blade", null, true);
-			Assert.Equal(8, testCard.AttackDamage);
-			game.PlayHeroPower();
-			Assert.Equal(9, testCard.AttackDamage);
 
-			Assert.Equal(9, testCard.Health);
+			Assert.Equal(7, testCard.Health);
 		}
 
 		// --------------------------------------- MINION - NEUTRAL

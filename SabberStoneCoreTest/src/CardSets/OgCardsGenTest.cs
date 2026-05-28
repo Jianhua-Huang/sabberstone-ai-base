@@ -2262,6 +2262,7 @@ namespace SabberStoneCoreTest.CardSets
 			IPlayable testCard = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Renounce Darkness"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, testCard));
 
+			int sourceId = testCard.Id;
 			CardClass result = game.CurrentPlayer.Hero.HeroPower.Card.Class;
 
 			Assert.NotEqual(CardClass.WARLOCK, result);
@@ -2269,10 +2270,13 @@ namespace SabberStoneCoreTest.CardSets
 			int count = 0;
 			foreach (IPlayable entity in game.CurrentPlayer.HandZone)
 			{
-				if (entity.Card.Class != result) continue;
+				if (!entity.NativeTags.TryGetValue(GameTag.DISPLAYED_CREATOR, out int creator) || creator != sourceId)
+					continue;
+
 				int c = entity.Card.Cost;
 				if (c > 0)
 					Assert.Equal(c - 1, entity.Cost);
+				Assert.NotEqual(CardClass.WARLOCK, entity.Card.Class);
 				++count;
 			}
 
@@ -2281,10 +2285,13 @@ namespace SabberStoneCoreTest.CardSets
 			count = 0;
 			foreach (IPlayable entity in game.CurrentPlayer.DeckZone)
 			{
-				if (entity.Card.Class != result) continue;
+				if (!entity.NativeTags.TryGetValue(GameTag.DISPLAYED_CREATOR, out int creator) || creator != sourceId)
+					continue;
+
 				int c = entity.Card.Cost;
 				if (c > 0)
 					Assert.Equal(c - 1, entity.Cost);
+				Assert.NotEqual(CardClass.WARLOCK, entity.Card.Class);
 				++count;
 			}
 

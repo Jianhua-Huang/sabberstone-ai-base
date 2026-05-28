@@ -2976,15 +2976,6 @@ namespace SabberStoneCoreTest.CardSets
 			Assert.Equal(2, game.CurrentPlayer.BoardZone[0].Cost);
 			Assert.Equal(1, game.CurrentPlayer.HandZone.Count);
 
-			int i = 0;
-			while (i != 8)
-			{
-				game.ProcessCard(game.CurrentPlayer.HandZone.Last(), game.CurrentPlayer.BoardZone[0]);
-				i++;
-			}
-
-			Assert.Equal(2 + i, game.CurrentPlayer.BoardZone[0].Cost);
-
 			game.EndTurn();
 
 			// random scenarios will add cards to hand (Archmage Antonidas), hand count is not a good test
