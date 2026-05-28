@@ -4022,10 +4022,8 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.Player2.BaseMana = 10;
 			Minion testCard = game.ProcessCard<Minion>("EVIL Cable Rat");
 
-			List<string> lackeyList = new List<string>() {
-				"Ethereal Lackey", "Faceless Lackey", "Goblin Lackey","Kobold Lackey","Witchy Lackey",};
 			Assert.Single(game.Player1.HandZone);
-			Assert.Contains(game.Player1.HandZone[0].Card.Name, lackeyList);
+			Assert.Equal(1, game.Player1.HandZone[0].Card[GameTag.MARK_OF_EVIL]);
 		}
 
 		// --------------------------------------- MINION - NEUTRAL

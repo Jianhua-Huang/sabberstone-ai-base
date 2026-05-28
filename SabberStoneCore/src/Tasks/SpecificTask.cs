@@ -604,7 +604,7 @@ namespace SabberStoneCore.Tasks
 				IList<Card> playedCards = c.PlayHistory
 					.Select(e => e.SourceCard)
 					.Where(card => card.Class != CardClass.NEUTRAL && card.Class != c.Hero.Card.Class)
-					.ToArray()
+					.ToList()
 					.Shuffle(g.Random);
 
 				foreach (Card card in playedCards)
@@ -667,7 +667,7 @@ namespace SabberStoneCore.Tasks
 				IList<Card> playedCards = c.PlayHistory
 					.Select(e => e.SourceCard)
 					.Where(card => card[GameTag.BATTLECRY] == 1 && card.AssetId != 48111)
-					.ToArray()
+					.ToList()
 					.Shuffle(game.Random);
 
 				int count = 0;
