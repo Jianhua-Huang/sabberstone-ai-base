@@ -53,6 +53,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void NagrandSlam_BT_163_ShouldSummonClefthoofsAndAttackEnemies()
 		{
@@ -132,6 +140,20 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard((Minion)primeCard, asZeroCost: true);
 
 			Assert.Equal(4, game.CurrentPlayer.BoardZone.Count(p => p.Card.Id == "BT_210t"));
+		}
+
+		[Fact]
+		public void ImprisonedFelmaw_BT_211_ShouldAwakenAndAttackRandomEnemy()
+		{
+			Game game = CreateGame();
+
+			Minion felmaw = game.ProcessCard<Minion>("Imprisoned Felmaw", asZeroCost: true);
+
+			Assert.True(felmaw.Untouchable);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(felmaw.Untouchable);
+			Assert.Equal(5, game.CurrentOpponent.Hero.Damage);
 		}
 
 		[Fact]

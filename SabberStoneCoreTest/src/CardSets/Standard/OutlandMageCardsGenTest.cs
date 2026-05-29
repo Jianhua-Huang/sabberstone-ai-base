@@ -48,6 +48,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void IncantersFlow_BT_002_ShouldReduceSpellsInDeck()
 		{
@@ -70,6 +78,42 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Moonfire", starscryer, asZeroCost: true);
 
 			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Fireball");
+		}
+
+		[Fact]
+		public void ImprisonedObserver_BT_004_ShouldAwakenAndDamageEnemyMinions()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+
+			Minion observer = game.ProcessCard<Minion>("Imprisoned Observer", asZeroCost: true);
+
+			Assert.True(observer.Untouchable);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(observer.Untouchable);
+			Assert.Equal(2, enemy.Damage);
+		}
+
+		[Fact]
+		public void Evocation_BT_006_ShouldFillHandWithTemporaryMageSpells()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Evocation", asZeroCost: true);
+
+			Assert.Equal(10, game.CurrentPlayer.HandZone.Count);
+			Assert.All(game.CurrentPlayer.HandZone, card =>
+			{
+				Assert.Equal(CardType.SPELL, card.Card.Type);
+				Assert.Equal(CardClass.MAGE, card.Card.Class);
+			});
+
+			game.EndTurn();
+
+			Assert.Empty(game.CurrentOpponent.HandZone);
 		}
 
 		[Fact]

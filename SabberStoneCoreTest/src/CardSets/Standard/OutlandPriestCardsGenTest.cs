@@ -46,6 +46,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			return Generic.DrawCard(game.CurrentPlayer, Cards.FromName(cardName));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void PsychicConjurer_EX1_193_ShouldCopyCardFromOpponentDeck()
 		{
@@ -134,6 +142,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			int handCount = game.CurrentPlayer.HandZone.Count;
 			game.Process(ChooseTask.Pick(game.CurrentPlayer, game.CurrentPlayer.Choice.Choices[0]));
 			Assert.Equal(handCount + 1, game.CurrentPlayer.HandZone.Count);
+		}
+
+		[Fact]
+		public void ImprisonedHomunculus_BT_258_ShouldAwakenIntoVisibleTauntMinion()
+		{
+			Game game = CreateGame();
+
+			Minion homunculus = game.ProcessCard<Minion>("Imprisoned Homunculus", asZeroCost: true);
+
+			Assert.True(homunculus.Untouchable);
+			Assert.Equal(0, game.CurrentPlayer.BoardZone.CountExceptUntouchables);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(homunculus.Untouchable);
+			Assert.Equal(1, game.CurrentPlayer.BoardZone.CountExceptUntouchables);
+			Assert.Equal(1, homunculus[GameTag.TAUNT]);
 		}
 
 		[Fact]

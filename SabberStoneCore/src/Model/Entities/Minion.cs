@@ -363,7 +363,7 @@ namespace SabberStoneCore.Model.Entities
 			}
 			set => base.HasLifeSteal = value; }
 
-		public bool Untouchable => Card.Untouchable;
+		public bool Untouchable => Card.Untouchable || this[GameTag.UNTOUCHABLE] > 0 || this[GameTag.DORMANT] > 0;
 
 		public bool IsRush
 		{

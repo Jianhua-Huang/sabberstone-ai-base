@@ -41,6 +41,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				Generic.RemoveFromZone(card.Controller, card);
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void RustswornInitiate_BT_008_ShouldSummonSpellDamageImpcasterOnDeathrattle()
 		{
@@ -187,6 +195,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(7, token.AttackDamage);
 			Assert.Equal(7, token.Health);
 			Assert.Equal(1, token[GameTag.TAUNT]);
+		}
+
+		[Fact]
+		public void ImprisonedVilefiend_BT_156_ShouldAwakenIntoVisibleRushMinion()
+		{
+			Game game = CreateGame();
+
+			Minion vilefiend = game.ProcessCard<Minion>("Imprisoned Vilefiend", asZeroCost: true);
+
+			Assert.True(vilefiend.Untouchable);
+			Assert.Equal(0, game.CurrentPlayer.BoardZone.CountExceptUntouchables);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(vilefiend.Untouchable);
+			Assert.Equal(1, game.CurrentPlayer.BoardZone.CountExceptUntouchables);
+			Assert.Equal(1, vilefiend[GameTag.RUSH]);
 		}
 
 		[Fact]
@@ -339,6 +363,40 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Moonfire", target, asZeroCost: true);
 
 			Assert.True(target.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void Alar_BT_735_ShouldSummonAshesThatTransformBackNextTurn()
+		{
+			Game game = CreateGame();
+			Minion alar = game.ProcessCard<Minion>("Al'ar", asZeroCost: true);
+
+			game.ProcessCard("Fireball", alar, asZeroCost: true);
+			game.ProcessCard("Moonfire", alar, asZeroCost: true);
+
+			Minion ashes = Assert.Single(game.CurrentPlayer.BoardZone.Where(p => p.Card.Id == "BT_735t"));
+			Assert.Equal(0, ashes.AttackDamage);
+			Assert.Equal(3, ashes.Health);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Contains(game.CurrentPlayer.BoardZone, p => p.Card.Id == "BT_735");
+			Assert.DoesNotContain(game.CurrentPlayer.BoardZone, p => p.Card.Id == "BT_735t");
+		}
+
+		[Fact]
+		public void ImprisonedAntaen_BT_934_ShouldAwakenAndDealTenRandomDamageToEnemies()
+		{
+			Game game = CreateGame();
+
+			Minion antaen = game.ProcessCard<Minion>("Imprisoned Antaen", asZeroCost: true);
+
+			Assert.True(antaen.Untouchable);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(antaen.Untouchable);
+			Assert.Equal(10, game.CurrentOpponent.Hero.Damage);
 		}
 
 		[Fact]

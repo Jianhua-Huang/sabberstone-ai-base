@@ -53,6 +53,34 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
+		[Fact]
+		public void ImprisonedSungill_BT_009_ShouldAwakenAndSummonTwoMurlocs()
+		{
+			Game game = CreateGame();
+
+			Minion sungill = game.ProcessCard<Minion>("Imprisoned Sungill", asZeroCost: true);
+
+			Assert.True(sungill.Untouchable);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(sungill.Untouchable);
+			Assert.Equal(2, game.CurrentPlayer.BoardZone.Count(p => p.Card.Id == "BT_009t"));
+			Assert.All(game.CurrentPlayer.BoardZone.Where(p => p.Card.Id == "BT_009t"), token =>
+			{
+				Assert.Equal(1, token.AttackDamage);
+				Assert.Equal(1, token.Health);
+				Assert.True(token.Card.IsRace(Race.MURLOC));
+			});
+		}
+
 		[Fact]
 		public void LibramOfJustice_BT_011_ShouldEquipWeaponAndSetEnemyMinionsHealthToOne()
 		{
@@ -160,6 +188,20 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(3, target.AttackDamage);
 			Assert.Equal(3, target.Health);
 			Assert.Equal(handCount + 1, game.CurrentPlayer.HandZone.Count);
+		}
+
+		[Fact]
+		public void LadyLiadrin_BT_334_ShouldAddFriendlyTargetedSpellsCastThisGame()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Hand of A'dal", target, asZeroCost: true);
+			EmptyZone(game.CurrentPlayer.HandZone.GetAll());
+			game.ProcessCard("Lady Liadrin", asZeroCost: true);
+
+			IPlayable returned = Assert.Single(game.CurrentPlayer.HandZone);
+			Assert.Equal("Hand of A'dal", returned.Card.Name);
 		}
 	}
 }

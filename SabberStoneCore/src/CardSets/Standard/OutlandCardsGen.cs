@@ -247,6 +247,17 @@ namespace SabberStoneCore.CardSets.Standard
 				DeathrattleTask = new SummonTask("BT_304t", SummonSide.DEATHRATTLE)
 			}));
 
+			// [BT_305] Imprisoned Scrap Imp - Dormant for 2 turns. When this awakens, give all minions in your hand +2/+2.
+			cards.Add("BT_305", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (IPlayable minion in c.HandZone.GetAll().Where(p => p.Card.Type == CardType.MINION))
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_305e"), (IPlayable)s, minion, 0, 0, 0);
+				}))
+			}));
+
 			// [BT_306] Shadow Council - Replace your hand with random Demons. Give them +2/+2.
 			cards.Add("BT_306", new CardDef(new Power
 			{
@@ -396,6 +407,13 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Paladin(IDictionary<string, CardDef> cards)
 		{
+			// [BT_009] Imprisoned Sungill - Dormant for 2 turns. When this awakens, summon two 1/1 Murlocs.
+			cards.Add("BT_009", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(new SummonTask("BT_009t", 2))
+			}));
+
 			// [BT_011] Libram of Justice - Equip a 1/4 weapon. Change the Health of all enemy minions to 1.
 			cards.Add("BT_011", new CardDef(new Power
 			{
@@ -497,6 +515,25 @@ namespace SabberStoneCore.CardSets.Standard
 						new AddEnchantmentTask("BT_292e", EntityType.TARGET),
 						new DrawTask())
 				}));
+
+			// [BT_334] Lady Liadrin - Battlecry: Add a copy of each spell you cast on friendly characters this game to your hand.
+			cards.Add("BT_334", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (PlayHistoryEntry entry in c.PlayHistory.Where(h =>
+						h.SourceCard.Type == CardType.SPELL &&
+						h.TargetController == c.PlayerId &&
+						h.TargetCard != null))
+					{
+						if (c.HandZone.IsFull)
+							break;
+						IPlayable copy = Entity.FromCard(c, entry.SourceCard);
+						copy[GameTag.DISPLAYED_CREATOR] = s.Id;
+						Generic.AddHandPhase.Invoke(c, copy);
+					}
+				})
+			}));
 		}
 
 		private static void Mage(IDictionary<string, CardDef> cards)
@@ -518,6 +555,29 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					SingleTask = ComplexTask.Secret(SummonRandomCostMinion(4))
 				}
+			}));
+
+			// [BT_004] Imprisoned Observer - Dormant for 2 turns. When this awakens, deal 2 damage to all enemy minions.
+			cards.Add("BT_004", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(new DamageTask(2, EntityType.OP_MINIONS, false))
+			}));
+
+			// [BT_006] Evocation - Fill your hand with random Mage spells. At the end of your turn, discard them.
+			cards.Add("BT_006", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var spells = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.SPELL && card.Class == CardClass.MAGE).ToList();
+					while (!c.HandZone.IsFull && spells.Count > 0)
+					{
+						IPlayable spell = Entity.FromCard(c, spells.Choose(g.Random));
+						if (Generic.AddHandPhase.Invoke(c, spell))
+							g.GhostlyCards.Add(spell.Id);
+						g.OnRandomHappened(true);
+					}
+				})
 			}));
 
 			// [BT_014] Starscryer - Deathrattle: Draw a spell.
@@ -677,6 +737,22 @@ namespace SabberStoneCore.CardSets.Standard
 				DeathrattleTask = new AddCardTo("BT_210t", EntityType.DECK)
 			}));
 
+			// [BT_211] Imprisoned Felmaw - Dormant for 2 turns. When this awakens, attack a random enemy.
+			cards.Add("BT_211", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion felmaw))
+						return;
+					var enemies = c.Opponent.BoardZone.GetAll().Cast<ICharacter>().Concat(new[] { c.Opponent.Hero }).Where(p => !p.ToBeDestroyed).ToList();
+					if (enemies.Count == 0)
+						return;
+					Generic.AttackBlock.Invoke(c, felmaw, enemies.Choose(g.Random), true, false);
+					g.OnRandomHappened(true);
+				}))
+			}));
+
 			// [BT_210t] Zixor Prime - Rush. Battlecry: Summon 3 copies of this minion.
 			cards.Add("BT_210t", new CardDef(new Power
 			{
@@ -756,6 +832,21 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_130", new CardDef(new Power
 			{
 				PowerTask = new ManaCrystalEmptyTask(2)
+			}));
+
+			// [BT_127] Imprisoned Satyr - Dormant for 2 turns. When this awakens, reduce a random minion in your hand by (5).
+			cards.Add("BT_127", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(new CustomTask((g, c, s, t, stack) =>
+				{
+					var minions = c.HandZone.GetAll().Where(p => p.Card.Type == CardType.MINION).ToList();
+					if (minions.Count == 0)
+						return;
+					Generic.AddEnchantmentBlock(g, Cards.FromId("BT_127e"), (IPlayable)s, minions.Choose(g.Random), 0, 0, 0);
+					if (minions.Count > 1)
+						g.OnRandomHappened(true);
+				}))
 			}));
 
 			// [BT_131] Ysiel Windsinger - Your spells cost (1).
@@ -875,6 +966,13 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_123", new CardDef(new Power
 			{
 				DeathrattleTask = new AddCardTo("BT_123t", EntityType.DECK)
+			}));
+
+			// [BT_121] Imprisoned Gan'arg - Dormant for 2 turns. When this awakens, equip a 3/2 Axe.
+			cards.Add("BT_121", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(new WeaponTask("CS2_106"))
 			}));
 
 			// [BT_124] Corsair Cache - Draw a weapon. Give it +1/+1.
@@ -1372,6 +1470,13 @@ namespace SabberStoneCore.CardSets.Standard
 						new DiscoverTask(DiscoverType.SPELL))
 				}));
 
+			// [BT_258] Imprisoned Homunculus - Dormant for 2 turns. Taunt.
+			cards.Add("BT_258", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(null)
+			}));
+
 			// [BT_198] Soul Mirror - Summon copies of enemy minions. They attack their copies.
 			cards.Add("BT_198", new CardDef(new Power
 			{
@@ -1571,6 +1676,13 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_155", new CardDef(new Power
 			{
 				DeathrattleTask = new SummonTask("BT_155t", SummonSide.DEATHRATTLE)
+			}));
+
+			// [BT_156] Imprisoned Vilefiend - Dormant for 2 turns. Rush.
+			cards.Add("BT_156", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(null)
 			}));
 
 			// [BT_159] Terrorguard Escapee - Battlecry: Summon three 1/1 Huntresses for your opponent.
@@ -1838,6 +1950,28 @@ namespace SabberStoneCore.CardSets.Standard
 			// [BT_733] Mo'arg Artificer - All minions take double damage from spells.
 			cards.Add("BT_733", new CardDef(new Power()));
 
+			// [BT_735] Al'ar - Deathrattle: Summon 0/3 Ashes of Al'ar that resurrects this minion on your next turn.
+			cards.Add("BT_735", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_735t", SummonSide.DEATHRATTLE)
+			}));
+
+			// [BT_735t] Ashes of Al'ar - At the start of your turn, transform this into Al'ar.
+			cards.Add("BT_735t", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = new ChangeEntityTask("BT_735")
+				}
+			}));
+
+			// [BT_934] Imprisoned Antaen - Dormant for 2 turns. When this awakens, deal 10 damage randomly split among all enemies.
+			cards.Add("BT_934", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = DormantAwakenTrigger(ComplexTask.Repeat(ComplexTask.DamageRandomTargets(1, EntityType.ENEMIES, 1), 10))
+			}));
+
 			// [BT_734] Supreme Abyssal - Can't attack heroes.
 			cards.Add("BT_734", new CardDef(new Power
 			{
@@ -1973,6 +2107,16 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 
 			cards.Add("BT_306e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_127e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(5))
+			}));
+
+			cards.Add("BT_305e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
 			}));
@@ -2180,6 +2324,42 @@ namespace SabberStoneCore.CardSets.Standard
 				foreach (IPlayable card in c.HandZone.GetAll().Concat(c.DeckZone.GetAll()).Where(p => IsLibram(p.Card)))
 					Generic.AddEnchantmentBlock(g, Cards.FromId(enchantmentId), (IPlayable)s, card, 0, 0, 0);
 			});
+		}
+
+		private static ISimpleTask StartDormant(int turns)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				if (!(s is Minion minion))
+					return;
+				minion[GameTag.DORMANT] = turns;
+				minion[GameTag.UNTOUCHABLE] = 1;
+				minion.IsExhausted = true;
+			});
+		}
+
+		private static Trigger DormantAwakenTrigger(ISimpleTask awakenTask)
+		{
+			return new Trigger(TriggerType.TURN_START)
+			{
+				SingleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion minion) || minion[GameTag.DORMANT] <= 0)
+						return;
+
+					int turnsLeft = minion[GameTag.DORMANT] - 1;
+					if (turnsLeft > 0)
+					{
+						minion[GameTag.DORMANT] = turnsLeft;
+						return;
+					}
+
+					minion[GameTag.DORMANT] = 0;
+					minion[GameTag.UNTOUCHABLE] = 0;
+					minion.IsExhausted = false;
+					awakenTask?.Process(g, minion.Controller, s, t, stack);
+				})
+			};
 		}
 
 		private static bool IsLibram(Card card)

@@ -5,9 +5,9 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ## Current status
 
 - New collectible cards in scope: 172
-- Implemented collectible ids from this diff in code: 150
-- Effect-focused Outland tests added so far: 176
-- Remaining collectible cards: 22
+- Implemented collectible ids from this diff in code: 162
+- Effect-focused Outland tests added so far: 188
+- Remaining collectible cards: 10
 
 ## Completed so far
 
@@ -59,6 +59,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 
 - `BT_117` Bladestorm
 - `BT_120` Warmaul Challenger
+- `BT_121` Imprisoned Gan'arg
 - `BT_123` Kargath Bladefist
 - `BT_124` Corsair Cache
 - `BT_138` Bloodboil Brute
@@ -71,6 +72,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_128` Fungal Fortunes
 - `BT_129` Germination
 - `BT_130` Overgrowth
+- `BT_127` Imprisoned Satyr
 - `BT_131` Ysiel Windsinger
 - `BT_132` Ironbark
 - `BT_133` Marsh Hydra
@@ -86,6 +88,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_203` Pack Tactics
 - `BT_205` Scrap Shot
 - `BT_210` Zixor, Apex Predator / `BT_210t` Zixor Prime
+- `BT_211` Imprisoned Felmaw
 - `BT_213` Scavenger's Ingenuity
 - `BT_214` Beastmaster Leoroxx
 
@@ -93,6 +96,8 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 
 - `BT_002` Incanter's Flow
 - `BT_003` Netherwind Portal
+- `BT_004` Imprisoned Observer
+- `BT_006` Evocation
 - `BT_014` Starscryer
 - `BT_021` Font of Power
 - `BT_022` Apexis Smuggler
@@ -103,6 +108,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ### Paladin
 
 - `BT_011` Libram of Justice
+- `BT_009` Imprisoned Sungill
 - `BT_018` Underlight Angling Rod
 - `BT_019` Murgur Murgurgle / `BT_019t` Murgurgle Prime
 - `BT_020` Aldor Attendant
@@ -110,12 +116,14 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_025` Libram of Wisdom
 - `BT_026` Aldor Truthseeker
 - `BT_292` Hand of A'dal
+- `BT_334` Lady Liadrin
 
 ### Priest
 
 - `BT_197` Reliquary of Souls / `BT_197t` Reliquary Prime
 - `BT_198` Soul Mirror
 - `BT_252` Renew
+- `BT_258` Imprisoned Homunculus
 - `BT_253` Psyche Split
 - `BT_254` Sethekk Veilweaver
 - `BT_256` Dragonmaw Overseer
@@ -163,6 +171,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_301` Nightshade Matron
 - `BT_302` Dark Portal
 - `BT_304` Enhanced Dreadlord
+- `BT_305` Imprisoned Scrap Imp
 - `BT_306` Shadow Council
 - `BT_307` Darkglare
 - `BT_309` Kanrethad Ebonlocke
@@ -172,6 +181,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_008` Rustsworn Initiate
 - `BT_010` Felfin Navigator
 - `BT_155` Scrapyard Colossus
+- `BT_156` Imprisoned Vilefiend
 - `BT_159` Terrorguard Escapee
 - `BT_160` Rustsworn Cultist
 - `BT_190` Replicat-o-tron
@@ -193,20 +203,22 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_732` Scavenging Shivarra
 - `BT_733` Mo'arg Artificer
 - `BT_734` Supreme Abyssal
+- `BT_735` Al'ar / `BT_735t` Ashes of Al'ar
+- `BT_934` Imprisoned Antaen
 
 ## Verification
 
 - Targeted first batch passed: 100 passed.
 - Targeted second batch passed: 35 passed.
-- Outland filter passed after this pass: 176 passed, 0 failed.
+- Outland filter passed after this pass: 188 passed, 0 failed.
 - Full suite no-build run currently has a pre-existing order/random-sensitive failure outside Outland:
   `VentureCoMercenary_CS2_227` failed in the full run but passed immediately when isolated.
 
 ## Remaining high-priority mechanics
 
-- Dormant minions and delayed wake-up effects.
+- Remaining complex individual cards: `BT_781`, `BT_126`, `BT_737`, `BT_850`, `BT_323`, `BT_429`, `BT_481`, `BT_212`, plus `HERO_10` integration review.
 - Strict previous-turn spell tracking; current implementation supports these cards but still needs to be tightened from "recent/game spell" compatibility to exact previous-turn semantics.
 - Discover and choice flows for cards that require custom pools.
 - Hero and hero power replacement with limited-use counters.
 - Global replacement/prevention effects such as `Bulwark of Azzinoth`.
-- Remaining complex 44222 cards: 22 collectible ids.
+- Remaining complex 44222 cards: 10 collectible ids.

@@ -52,6 +52,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void KelidanTheBreaker_BT_196_ShouldDestroyTargetAndAllOtherMinionsIfDrawnThisTurn()
 		{
@@ -135,6 +143,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(5, token.AttackDamage);
 			Assert.Equal(5, token.Health);
 			Assert.Equal(1, token[GameTag.LIFESTEAL]);
+		}
+
+		[Fact]
+		public void ImprisonedScrapImp_BT_305_ShouldAwakenAndBuffMinionsInHand()
+		{
+			Game game = CreateGame();
+			Minion handMinion = (Minion)AddHandCard(game, "Wisp");
+
+			Minion scrapImp = game.ProcessCard<Minion>("Imprisoned Scrap Imp", asZeroCost: true);
+
+			Assert.True(scrapImp.Untouchable);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(scrapImp.Untouchable);
+			Assert.Equal(3, handMinion.AttackDamage);
+			Assert.Equal(3, handMinion.Health);
 		}
 
 		[Fact]

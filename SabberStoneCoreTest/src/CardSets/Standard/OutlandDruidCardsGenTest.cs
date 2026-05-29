@@ -53,6 +53,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void FungalFortunes_BT_128_ShouldDrawThreeAndDiscardDrawnMinions()
 		{
@@ -89,6 +97,21 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Overgrowth", asZeroCost: true);
 
 			Assert.Equal(7, game.CurrentPlayer.BaseMana);
+		}
+
+		[Fact]
+		public void ImprisonedSatyr_BT_127_ShouldReduceRandomMinionInHandWhenAwakening()
+		{
+			Game game = CreateGame();
+			IPlayable minion = AddHandCard(game, "Boulderfist Ogre");
+
+			Minion satyr = game.ProcessCard<Minion>("Imprisoned Satyr", asZeroCost: true);
+
+			Assert.True(satyr.Untouchable);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(satyr.Untouchable);
+			Assert.Equal(1, minion.Cost);
 		}
 
 		[Fact]

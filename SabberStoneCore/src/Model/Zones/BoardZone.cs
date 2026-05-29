@@ -13,6 +13,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SabberStoneCore.Auras;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model.Entities;
@@ -32,8 +33,8 @@ namespace SabberStoneCore.Model.Zones
 			Controller = controller;
 		}
 
-		public int CountExceptUntouchables => _count - _untouchableCount;
-		public bool HasUntouchables => _hasUntouchables;
+		public int CountExceptUntouchables => _entities.Take(_count).Count(p => !p.Untouchable);
+		public bool HasUntouchables => _entities.Take(_count).Any(p => p.Untouchable);
 
 		public override bool IsFull => _count == Game.MAX_MINIONS_ON_BOARD;
 
@@ -64,7 +65,7 @@ namespace SabberStoneCore.Model.Zones
 
 			Game.TriggerManager.OnZoneTrigger(entity);
 
-			if (entity.Card.Untouchable)
+			if (entity.Untouchable)
 			{
 				++_untouchableCount;
 				_hasUntouchables = true;
@@ -89,7 +90,7 @@ namespace SabberStoneCore.Model.Zones
 			RemoveAura(entity);
 			for (int i = 0; i < AdjacentAuras.Count; i++)
 				AdjacentAuras[i].BoardChanged = true;
-			if (entity.Card.Untouchable && --_untouchableCount == 0)
+			if (entity.Untouchable && --_untouchableCount == 0)
 				_hasUntouchables = false;
 			return base.Remove(entity);
 		}
@@ -119,7 +120,7 @@ namespace SabberStoneCore.Model.Zones
 			for (int i = 0; i < Auras.Count; i++)
 				Auras[i].EntityRemoved(oldEntity);
 			oldEntity.ActivatedTrigger?.Remove();
-			if (oldEntity.Card.Untouchable && --_untouchableCount == 0)
+			if (oldEntity.Untouchable && --_untouchableCount == 0)
 				_hasUntouchables = false;
 			oldEntity.ZonePosition = 0;
 			oldEntity.Controller.SetasideZone.Add(oldEntity);
@@ -132,7 +133,7 @@ namespace SabberStoneCore.Model.Zones
 			newEntity.Zone = this;
 			newEntity.ZonePosition = pos;
 			ActivateAura(newEntity);
-			if (newEntity.Card.Untouchable)
+			if (newEntity.Untouchable)
 			{
 				++_untouchableCount;
 				_hasUntouchables = true;
@@ -183,14 +184,14 @@ namespace SabberStoneCore.Model.Zones
 		/// <returns></returns>
 		public override Minion[] GetAll(Func<Minion, bool> predicate)
 		{
-			if (_hasUntouchables)
+			if (HasUntouchables)
 			{
 				if (predicate == null)
-					predicate = p => !p.Card.Untouchable;
+					predicate = p => !p.Untouchable;
 				else
 				{
 					Func<Minion, bool> predicate1 = predicate;
-					predicate = p => predicate1(p) && !p.Card.Untouchable;
+					predicate = p => predicate1(p) && !p.Untouchable;
 				}
 			}
 			return base.GetAll(predicate);
@@ -198,7 +199,7 @@ namespace SabberStoneCore.Model.Zones
 
 		internal override void CopyTo(Array destination, int index)
 		{
-			if (_hasUntouchables)
+			if (HasUntouchables)
 			{
 				Array.Copy(GetAll(null), 0, destination, index, CountExceptUntouchables);
 				return;

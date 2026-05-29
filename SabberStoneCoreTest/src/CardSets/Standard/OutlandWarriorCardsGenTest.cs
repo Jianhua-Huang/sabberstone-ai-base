@@ -52,6 +52,14 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
 		}
 
+		private static void AdvanceTwoOwnerTurns(Game game)
+		{
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+		}
+
 		[Fact]
 		public void Bladestorm_BT_117_ShouldRepeatUntilAMinionDies()
 		{
@@ -77,6 +85,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.True(target.ToBeDestroyed || !game.CurrentOpponent.BoardZone.Contains(target));
 			Assert.Equal(6, challenger.Damage);
+		}
+
+		[Fact]
+		public void ImprisonedGanarg_BT_121_ShouldAwakenAndEquipFieryWarAxe()
+		{
+			Game game = CreateGame();
+
+			Minion ganarg = game.ProcessCard<Minion>("Imprisoned Gan'arg", asZeroCost: true);
+
+			Assert.True(ganarg.Untouchable);
+			Assert.Equal(0, game.CurrentPlayer.BoardZone.CountExceptUntouchables);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(ganarg.Untouchable);
+			Assert.Equal(1, game.CurrentPlayer.BoardZone.CountExceptUntouchables);
+			Assert.NotNull(game.CurrentPlayer.Hero.Weapon);
+			Assert.Equal(3, game.CurrentPlayer.Hero.Weapon.AttackDamage);
+			Assert.Equal(2, game.CurrentPlayer.Hero.Weapon.Durability);
 		}
 
 		[Fact]
