@@ -2634,7 +2634,7 @@ namespace SabberStoneCore.CardSets
 			// --------------------------------------------------------
 			cards.Add("CFM_020e", new CardDef(new Power
 			{
-				Aura = new Aura(AuraType.HEROPOWER, Effects.SetCost(1))
+				Aura = new Aura(AuraType.HEROPOWER, Effects.SetCost(0))
 			}));
 
 			// ---------------------------------- ENCHANTMENT - NEUTRAL

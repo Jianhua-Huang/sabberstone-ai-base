@@ -47,7 +47,8 @@ namespace SabberStoneCore.Model
 			CardSet.DALARAN, // 2019 Rise of Shadows
 			CardSet.ULDUM, // 2019 Saviors of Uldum
 			CardSet.DRAGONS, // 2019 Descent of Dragons
-			CardSet.GALAKRONDS_AWAKENING // 2020 Galakrond's Awakening
+			CardSet.GALAKRONDS_AWAKENING, // 2020 Galakrond's Awakening
+			CardSet.BLACK_TEMPLE // 2020 Ashes of Outland
 		};
 
 		/// <summary>
@@ -66,6 +67,7 @@ namespace SabberStoneCore.Model
 			CardSet.ULDUM,
 			CardSet.DRAGONS,
 			CardSet.GALAKRONDS_AWAKENING,
+			CardSet.BLACK_TEMPLE,
 
 			// wild
 			CardSet.BRM,

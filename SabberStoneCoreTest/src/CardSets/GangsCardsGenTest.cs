@@ -1478,7 +1478,7 @@ namespace SabberStoneCoreTest.CardSets
 		// --------------------------------------------------------
 		// Text: [x]  <b>Battlecry:</b> If your deck has  
 		//       no duplicates, your Hero
-		//        Power costs (1) this game.
+		//        Power costs (0) this game.
 		// --------------------------------------------------------
 		// GameTag:
 		// - ELITE = 1
@@ -1500,7 +1500,7 @@ namespace SabberStoneCoreTest.CardSets
 			var testCard = (ICharacter) Generic.DrawCard(game.CurrentPlayer,Cards.FromName("Raza the Chained"));
 			game.Process(PlayCardTask.Minion(game.CurrentPlayer, testCard));
 			game.Process(HeroPowerTask.Any(game.CurrentPlayer, game.CurrentPlayer.Hero));
-			Assert.Equal(4, game.CurrentPlayer.RemainingMana);
+			Assert.Equal(5, game.CurrentPlayer.RemainingMana);
 			game.Process(EndTurnTask.Any(game.CurrentPlayer));
 			IPlayable death = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Shadow Word: Death"));
 			IPlayable mindControl = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Mind Control"));
@@ -1509,18 +1509,18 @@ namespace SabberStoneCoreTest.CardSets
 			game.Process(PlayCardTask.SpellTarget(game.CurrentPlayer, death, testCard));
 			game.Process(EndTurnTask.Any(game.CurrentPlayer));
 			game.Process(HeroPowerTask.Any(game.CurrentPlayer, game.CurrentPlayer.Hero));
-			Assert.Equal(9, game.CurrentPlayer.RemainingMana);
+			Assert.Equal(10, game.CurrentPlayer.RemainingMana);
 			IPlayable shadowreaperAnduin = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Shadowreaper Anduin"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, shadowreaperAnduin));
-			Assert.Equal(1, game.CurrentPlayer.RemainingMana);
+			Assert.Equal(2, game.CurrentPlayer.RemainingMana);
 			game.Process(HeroPowerTask.Any(game.CurrentPlayer, game.CurrentOpponent.Hero));
-			Assert.Equal(0, game.CurrentPlayer.RemainingMana);
+			Assert.Equal(2, game.CurrentPlayer.RemainingMana);
 			game.CurrentPlayer.UsedMana = 0;
 			IPlayable shadowform = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Shadowform"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, shadowform));
 			Assert.Equal(7, game.CurrentPlayer.RemainingMana);
 			game.Process(HeroPowerTask.Any(game.CurrentPlayer, game.CurrentOpponent.Hero));
-			Assert.Equal(6, game.CurrentPlayer.RemainingMana);
+			Assert.Equal(7, game.CurrentPlayer.RemainingMana);
 		}
 
 		// ---------------------------------------- MINION - PRIEST
