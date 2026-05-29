@@ -1,0 +1,202 @@
+{
+  "oldBuild": 44222,
+  "newBuild": 44582,
+  "oldCount": 9057,
+  "newCount": 9057,
+  "addedRelevant": 0,
+  "removedRelevant": 0,
+  "changedRelevantFields": 21,
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "id": "AT_037",
+      "name": "Living Roots",
+      "field": "RARITY",
+      "old": "4",
+      "new": "1",
+      "collectible": true,
+      "set": "15"
+    },
+    {
+      "id": "DRG_019",
+      "name": "Scion of Ruin",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_021",
+      "name": "Ritual Chopper",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_027",
+      "name": "Umbral Skulker",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_030",
+      "name": "Praise Galakrond!",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_050",
+      "name": "Devoted Maniac",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_202",
+      "name": "Dragonblight Cultist",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_203",
+      "name": "Veiled Worshipper",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_217",
+      "name": "Dragon's Pack",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_218",
+      "name": "Corrupt Elementalist",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_242",
+      "name": "Shield of Galakrond",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_246",
+      "name": "Time Rip",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_247",
+      "name": "Seal Fate",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_248",
+      "name": "Invocation of Frost",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_249",
+      "name": "Awaken!",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_250",
+      "name": "Fiendish Rites",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_300",
+      "name": "Fate Weaver",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_303",
+      "name": "Disciple of Galakrond",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "EX1_193",
+      "name": "Psychic Conjurer",
+      "field": "RARITY",
+      "old": "1",
+      "new": "2",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "EX1_194",
+      "name": "Power Infusion",
+      "field": "RARITY",
+      "old": "1",
+      "new": "2",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "LOOT_526e",
+      "name": "Darkness Awaits",
+      "field": "COLLECTIBLE",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1004"
+    }
+  ]
+}
