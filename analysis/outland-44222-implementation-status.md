@@ -5,9 +5,9 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ## Current status
 
 - New collectible cards in scope: 172
-- Implemented card ids in code: 40
-- Effect-focused tests added so far: 38
-- Remaining collectible cards: 132
+- Implemented collectible ids from this diff in code: 84
+- Effect-focused tests added so far: 85
+- Remaining collectible cards: 88
 
 ## Completed in this pass
 
@@ -44,6 +44,54 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_814` Illidari Felblade
 - `BT_922` Umberwing
 - `BT_937` Altruis the Outcast
+- `BT_187` Kayn Sunfury
+- `BT_271` Flamereaper
+- `BT_423` Ashtongue Battlelord
+- `BT_430` Warglaives of Azzinoth
+- `BT_487` Hulking Overfiend
+- `BT_510` Wrathspike Brute
+- `BT_753` Mana Burn
+- `BT_921` Aldrachi Warblades
+
+### Warrior
+
+- `BT_117` Bladestorm
+- `BT_120` Warmaul Challenger
+- `BT_123` Kargath Bladefist
+- `BT_124` Corsair Cache
+- `BT_138` Bloodboil Brute
+- `BT_140` Bonechewer Raider
+- `BT_233` Sword and Board
+- `BT_249` Scrap Golem
+
+### Druid
+
+- `BT_128` Fungal Fortunes
+- `BT_129` Germination
+- `BT_130` Overgrowth
+- `BT_132` Ironbark
+- `BT_133` Marsh Hydra
+- `BT_134` Bogbeam
+- `BT_135` Glowfly Swarm
+- `BT_136` Archspore Msshi'fn
+
+### Hunter
+
+- `BT_163` Nagrand Slam
+- `BT_201` Augmented Porcupine
+- `BT_202` Helboar
+- `BT_205` Scrap Shot
+- `BT_210` Zixor, Apex Predator / `BT_210t` Zixor Prime
+- `BT_213` Scavenger's Ingenuity
+- `BT_214` Beastmaster Leoroxx
+
+### Mage
+
+- `BT_002` Incanter's Flow
+- `BT_014` Starscryer
+- `BT_028` Astromancer Solarian
+- `BT_072` Deep Freeze
+- `BT_291` Apexis Blast
 
 ### Priest
 
@@ -54,17 +102,31 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `EX1_197` Shadow Word: Ruin
 - `EX1_198` Natalie Seline
 
+### Neutral
+
+- `BT_008` Rustsworn Initiate
+- `BT_010` Felfin Navigator
+- `BT_714` Frozen Shadoweaver
+- `BT_715` Bonechewer Brawler
+- `BT_716` Bonechewer Vanguard
+- `BT_720` Ruststeed Raider
+- `BT_722` Guardian Augmerchant
+- `BT_723` Rocket Augmerchant
+- `BT_724` Ethereal Augmerchant
+- `BT_727` Soulbound Ashtongue
+- `BT_730` Overconfident Orc
+
 ## Verification
 
-- Targeted tests: `OutlandDemonHunterCardsGenTest` passed: 32 passed.
-- Clone consistency: `CloneSameSame` passed.
-- Full test suite passed: 1226 passed, 1934 skipped, 0 failed.
+- Targeted Outland filter passed: 111 passed.
+- Full test suite passed on second run: 1273 passed, 1934 skipped, 0 failed.
+- Note: one first full run failed `GrimyGadgeteer_CFM_754`; the test passed when isolated and the immediate no-build full rerun passed. Treat as pre-existing order/random sensitivity unless it repeats.
 
 ## Remaining high-priority mechanics
 
-- Remaining Outcast cards not yet implemented outside the seven covered here.
 - Dormant minions and delayed wake-up effects.
-- Prime deathrattle shuffle and Prime token behavior.
 - Discover and choice flows for cards that require user choice.
+- Secrets introduced in this patch.
 - Hero power replacement with limited use counters.
-- Attack rule extensions such as ignoring Taunt and repeat attacks.
+- Global replacement/prevention effects such as `Bulwark of Azzinoth`.
+- Remaining class sets: Paladin, Rogue, Shaman, Warlock, newer Priest cards, and remaining neutral cards.

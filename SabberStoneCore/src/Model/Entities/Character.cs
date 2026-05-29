@@ -231,6 +231,7 @@ namespace SabberStoneCore.Model.Entities
 		{
 			get
 			{
+				bool ignoreTaunt = Controller.BoardZone.Any(p => p.Card.Id == "BT_187");
 				bool tauntFlag = false;
 				var allTargets = new List<ICharacter>(4);
 				var allTargetsTaunt = new List<ICharacter>(2);
@@ -238,17 +239,17 @@ namespace SabberStoneCore.Model.Entities
 				{
 					if (!minion.HasStealth)
 					{
-						if (minion.HasTaunt)
+						if (minion.HasTaunt && !ignoreTaunt)
 						{
 							allTargetsTaunt.Add(minion);
 							tauntFlag = true;
 							continue;
 						}
-						if (!tauntFlag)
+						if (!tauntFlag || ignoreTaunt)
 							allTargets.Add(minion);
 					}
 				}
-				if (tauntFlag)
+				if (tauntFlag && !ignoreTaunt)
 					return allTargetsTaunt;
 
 				Hero opHero = Controller.Opponent.Hero;

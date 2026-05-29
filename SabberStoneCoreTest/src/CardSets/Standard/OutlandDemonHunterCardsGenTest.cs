@@ -196,6 +196,68 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void KaynSunfury_BT_187_ShouldLetFriendlyAttacksIgnoreTaunt()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			game.ProcessCard("Goldshire Footman", asZeroCost: true);
+			game.EndTurn();
+
+			Minion kayn = game.ProcessCard<Minion>("Kayn Sunfury", asZeroCost: true);
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, kayn, game.CurrentOpponent.Hero));
+
+			Assert.Equal(3, game.CurrentOpponent.Hero.Damage);
+		}
+
+		[Fact]
+		public void Flamereaper_BT_271_ShouldDamageAdjacentMinions()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion left = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			Minion middle = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			Minion right = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Flamereaper", asZeroCost: true);
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, middle));
+
+			Assert.Equal(4, left.Damage);
+			Assert.Equal(4, middle.Damage);
+			Assert.Equal(4, right.Damage);
+		}
+
+		[Fact]
+		public void AshtongueBattlelord_BT_423_ShouldHaveTauntAndLifesteal()
+		{
+			Game game = CreateGame();
+			game.CurrentPlayer.Hero.Damage = 5;
+			Minion battlelord = game.ProcessCard<Minion>("Ashtongue Battlelord", asZeroCost: true);
+			battlelord.IsExhausted = false;
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, battlelord, game.CurrentOpponent.Hero));
+
+			Assert.Equal(1, battlelord[GameTag.TAUNT]);
+			Assert.Equal(1, battlelord[GameTag.LIFESTEAL]);
+			Assert.Equal(2, game.CurrentPlayer.Hero.Damage);
+		}
+
+		[Fact]
+		public void WarglaivesOfAzzinoth_BT_430_ShouldReadyHeroAfterAttackingMinion()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Warglaives of Azzinoth", asZeroCost: true);
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, target));
+
+			Assert.Equal(3, target.Damage);
+			Assert.False(game.CurrentPlayer.Hero.IsExhausted);
+		}
+
+		[Fact]
 		public void GlaiveboundAdept_BT_495_ShouldDealFourIfHeroAttacked()
 		{
 			Game game = CreateGame();
@@ -317,6 +379,38 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.Contains(game.CurrentPlayer.BoardZone, p => p.Card.Name == "Shadowhoof Slayer");
 			Assert.DoesNotContain(game.CurrentPlayer.HandZone, p => p.Card.Name == "Shadowhoof Slayer");
+		}
+
+		[Fact]
+		public void HulkingOverfiend_BT_487_ShouldReadyAfterKillingMinion()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion first = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion second = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+			Minion overfiend = game.ProcessCard<Minion>("Hulking Overfiend", asZeroCost: true);
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, overfiend, first));
+
+			Assert.True(first.ToBeDestroyed);
+			Assert.False(overfiend.IsExhausted);
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, overfiend, second));
+			Assert.True(second.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void WrathspikeBrute_BT_510_ShouldDamageEnemiesAfterBeingAttacked()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Wrathspike Brute", asZeroCost: true);
+			game.EndTurn();
+			Minion attacker = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			attacker.IsExhausted = false;
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, attacker, game.CurrentOpponent.BoardZone[0]));
+
+			Assert.Equal(1, game.CurrentPlayer.Hero.Damage);
 		}
 
 		[Fact]
@@ -499,6 +593,32 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			felblade = game.ProcessCard((Minion)felbladeCard, asZeroCost: true);
 
 			Assert.Equal(0, felblade[GameTag.IMMUNE]);
+		}
+
+		[Fact]
+		public void ManaBurn_BT_753_ShouldReduceOpponentManaNextTurn()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Mana Burn", asZeroCost: true);
+			game.EndTurn();
+
+			Assert.Equal(2, game.CurrentPlayer.OverloadLocked);
+			Assert.Equal(8, game.CurrentPlayer.RemainingMana);
+		}
+
+		[Fact]
+		public void AldrachiWarblades_BT_921_ShouldHaveWeaponLifesteal()
+		{
+			Game game = CreateGame();
+			game.CurrentPlayer.Hero.Damage = 5;
+
+			game.ProcessCard("Aldrachi Warblades", asZeroCost: true);
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, game.CurrentOpponent.Hero));
+
+			Assert.Equal(1, game.CurrentPlayer.Hero.Weapon[GameTag.LIFESTEAL]);
+			Assert.Equal(2, game.CurrentOpponent.Hero.Damage);
+			Assert.Equal(3, game.CurrentPlayer.Hero.Damage);
 		}
 
 		[Fact]
