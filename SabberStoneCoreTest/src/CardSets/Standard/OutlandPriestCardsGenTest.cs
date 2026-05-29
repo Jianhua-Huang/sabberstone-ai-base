@@ -5,6 +5,7 @@ using SabberStoneCore.Config;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
 using SabberStoneCore.Model.Entities;
+using SabberStoneCore.Tasks.PlayerTasks;
 using Xunit;
 
 namespace SabberStoneCoreTest.CardSets.Standard
@@ -115,6 +116,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.True(friendlyLarge.ToBeDestroyed);
 			Assert.True(enemyLarge.ToBeDestroyed);
 			Assert.False(enemySmall.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void Renew_BT_252_ShouldHealAndDiscoverSpell()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.ProcessCard("Fireball", target, asZeroCost: true);
+
+			game.ProcessCard("Renew", target, asZeroCost: true);
+
+			Assert.Equal(3, target.Damage);
+			Assert.NotNull(game.CurrentPlayer.Choice);
+			Assert.All(game.CurrentPlayer.Choice.Choices, choice =>
+				Assert.Equal(CardType.SPELL, game.IdEntityDic[choice].Card.Type));
+			int handCount = game.CurrentPlayer.HandZone.Count;
+			game.Process(ChooseTask.Pick(game.CurrentPlayer, game.CurrentPlayer.Choice.Choices[0]));
+			Assert.Equal(handCount + 1, game.CurrentPlayer.HandZone.Count);
 		}
 
 		[Fact]

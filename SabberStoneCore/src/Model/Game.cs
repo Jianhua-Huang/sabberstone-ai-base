@@ -784,7 +784,6 @@ namespace SabberStoneCore.Model
 
 			CurrentPlayer.NumElementalsPlayedLastTurn = CurrentPlayer.NumElementalsPlayedThisTurn;
 			CurrentPlayer.NumElementalsPlayedThisTurn = 0;
-
 			MainRessources();
 
 			if (History)
@@ -901,6 +900,8 @@ namespace SabberStoneCore.Model
 			if (History)
 				PowerHistoryBuilder.BlockEnd();
 
+			CurrentPlayer.NumSpellsPlayedLastTurn = CurrentPlayer.CardsPlayedThisTurn.Count(p => p.Type == CardType.SPELL);
+			CurrentPlayer.NumSpellsPlayedThisTurn = 0;
 			CurrentPlayer.CardsPlayedThisTurn.Clear();
 
 			CurrentPlayer.Hero.DamageTakenThisTurn = 0;

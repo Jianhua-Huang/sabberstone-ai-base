@@ -13,6 +13,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SabberStoneCore.Auras;
 using SabberStoneCore.Enchants;
 using SabberStoneCore.Model;
@@ -41,6 +42,13 @@ namespace SabberStoneCore.Actions
 						: source.Controller.CurrentSpellPower;
 					if (source.Controller.ControllerAuraEffects[GameTag.SPELLPOWER_DOUBLE] > 0)
 						amount *= (int)Math.Pow(2, source.Controller.ControllerAuraEffects[GameTag.SPELLPOWER_DOUBLE]);
+					if (target is Minion)
+					{
+						int artificers = source.Controller.BoardZone.Count(p => p.Card.Id == "BT_733") +
+							source.Controller.Opponent.BoardZone.Count(p => p.Card.Id == "BT_733");
+						if (artificers > 0)
+							amount *= (int)Math.Pow(2, artificers);
+					}
 				}
 				else if (source is HeroPower)
 				{

@@ -5,9 +5,9 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ## Current status
 
 - New collectible cards in scope: 172
-- Implemented collectible ids from this diff in code: 131
-- Effect-focused Outland tests added so far: 156
-- Remaining collectible cards: 41
+- Implemented collectible ids from this diff in code: 150
+- Effect-focused Outland tests added so far: 176
+- Remaining collectible cards: 22
 
 ## Completed so far
 
@@ -21,11 +21,13 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_187` Kayn Sunfury
 - `BT_235` Chaos Nova
 - `BT_271` Flamereaper
+- `BT_321` Netherwalker
 - `BT_351` Battlefiend
 - `BT_352` Satyr Overseer
 - `BT_354` Blade Dance
 - `BT_355` Wrathscale Naga
 - `BT_407` Ur'zul Horror
+- `BT_416` Raging Felscreamer
 - `BT_423` Ashtongue Battlelord
 - `BT_427` Feast of Souls
 - `BT_430` Warglaives of Azzinoth
@@ -69,6 +71,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_128` Fungal Fortunes
 - `BT_129` Germination
 - `BT_130` Overgrowth
+- `BT_131` Ysiel Windsinger
 - `BT_132` Ironbark
 - `BT_133` Marsh Hydra
 - `BT_134` Bogbeam
@@ -80,6 +83,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_163` Nagrand Slam
 - `BT_201` Augmented Porcupine
 - `BT_202` Helboar
+- `BT_203` Pack Tactics
 - `BT_205` Scrap Shot
 - `BT_210` Zixor, Apex Predator / `BT_210t` Zixor Prime
 - `BT_213` Scavenger's Ingenuity
@@ -88,7 +92,10 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ### Mage
 
 - `BT_002` Incanter's Flow
+- `BT_003` Netherwind Portal
 - `BT_014` Starscryer
+- `BT_021` Font of Power
+- `BT_022` Apexis Smuggler
 - `BT_028` Astromancer Solarian
 - `BT_072` Deep Freeze
 - `BT_291` Apexis Blast
@@ -108,6 +115,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 
 - `BT_197` Reliquary of Souls / `BT_197t` Reliquary Prime
 - `BT_198` Soul Mirror
+- `BT_252` Renew
 - `BT_253` Psyche Split
 - `BT_254` Sethekk Veilweaver
 - `BT_256` Dragonmaw Overseer
@@ -123,6 +131,11 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 
 ### Rogue
 
+- `BT_042` Bamboozle
+- `BT_188` Shadowjeweler Hanar
+- `BT_707` Ambush
+- `BT_709` Dirty Tricks
+- `BT_711` Blackjack Stunner
 - `BT_701` Spymistress
 - `BT_702` Ashtongue Slayer
 - `BT_703` Cursed Vagrant
@@ -136,11 +149,15 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_102` Boggspine Knuckles
 - `BT_106` Bogstrok Clacker
 - `BT_109` Lady Vashj
+- `BT_110` Torrent
 - `BT_113` Totemic Reflection
+- `BT_114` Shattered Rumbler
+- `BT_115` Marshspawn
 - `BT_230` The Lurker Below
 
 ### Warlock
 
+- `BT_196` Keli'dan the Breaker
 - `BT_199` Unstable Felbolt
 - `BT_300` Hand of Gul'dan
 - `BT_301` Nightshade Matron
@@ -157,6 +174,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_155` Scrapyard Colossus
 - `BT_159` Terrorguard Escapee
 - `BT_160` Rustsworn Cultist
+- `BT_190` Replicat-o-tron
 - `BT_714` Frozen Shadoweaver
 - `BT_715` Bonechewer Brawler
 - `BT_716` Bonechewer Vanguard
@@ -173,25 +191,22 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_730` Overconfident Orc
 - `BT_731` Infectious Sporeling
 - `BT_732` Scavenging Shivarra
+- `BT_733` Mo'arg Artificer
 - `BT_734` Supreme Abyssal
 
 ## Verification
 
-- Targeted Paladin tests passed: 7 passed.
-- Targeted Priest tests passed: 14 passed.
-- Targeted Rogue tests passed: 5 passed.
-- Targeted Shaman tests passed: 7 passed.
-- Targeted Warlock tests passed: 7 passed.
-- Targeted Neutral tests passed: 22 passed.
-- Outland filter passed after this pass: 156 passed, 0 failed.
+- Targeted first batch passed: 100 passed.
+- Targeted second batch passed: 35 passed.
+- Outland filter passed after this pass: 176 passed, 0 failed.
 - Full suite no-build run currently has a pre-existing order/random-sensitive failure outside Outland:
   `VentureCoMercenary_CS2_227` failed in the full run but passed immediately when isolated.
 
 ## Remaining high-priority mechanics
 
 - Dormant minions and delayed wake-up effects.
-- Discover and choice flows for cards that require user choice.
-- Secrets introduced in this patch.
+- Strict previous-turn spell tracking; current implementation supports these cards but still needs to be tightened from "recent/game spell" compatibility to exact previous-turn semantics.
+- Discover and choice flows for cards that require custom pools.
 - Hero and hero power replacement with limited-use counters.
 - Global replacement/prevention effects such as `Bulwark of Azzinoth`.
-- Remaining complex 44222 cards: 41 collectible ids.
+- Remaining complex 44222 cards: 22 collectible ids.

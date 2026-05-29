@@ -129,6 +129,36 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Netherwalker_BT_321_ShouldDiscoverDemon()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Netherwalker", asZeroCost: true);
+
+			Assert.NotNull(game.CurrentPlayer.Choice);
+			Assert.All(game.CurrentPlayer.Choice.Choices, choice =>
+				Assert.True(game.IdEntityDic[choice].Card.IsRace(Race.DEMON)));
+			int handCount = game.CurrentPlayer.HandZone.Count;
+			game.Process(ChooseTask.Pick(game.CurrentPlayer, game.CurrentPlayer.Choice.Choices[0]));
+			Assert.Equal(handCount + 1, game.CurrentPlayer.HandZone.Count);
+			Assert.True(game.CurrentPlayer.HandZone.Last().Card.IsRace(Race.DEMON));
+		}
+
+		[Fact]
+		public void RagingFelscreamer_BT_416_ShouldReduceNextDemonByTwo()
+		{
+			Game game = CreateGame();
+			IPlayable demon = AddHandCard(game, "Ur'zul Horror");
+
+			game.ProcessCard("Raging Felscreamer", asZeroCost: true);
+
+			Assert.Equal(0, demon.Cost);
+			game.ProcessCard(demon, asZeroCost: false);
+			IPlayable secondDemon = AddHandCard(game, "Ur'zul Horror");
+			Assert.Equal(1, secondDemon.Cost);
+		}
+
+		[Fact]
 		public void SatyrOverseer_BT_352_ShouldSummonSatyrAfterHeroAttack()
 		{
 			Game game = CreateGame();

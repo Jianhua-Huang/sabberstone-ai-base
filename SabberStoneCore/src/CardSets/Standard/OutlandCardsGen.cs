@@ -85,6 +85,19 @@ namespace SabberStoneCore.CardSets.Standard
 				DeathrattleTask = new AddCardTo("BT_109t", EntityType.DECK)
 			}));
 
+			// [BT_110] Torrent - Deal 8 damage to a minion. Costs (3) less if you cast a spell last turn.
+			cards.Add("BT_110", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					Aura = new AdaptiveCostEffect(p => HasCastSpellRecently(p.Controller) ? 3 : 0),
+					PowerTask = new DamageTask(8, EntityType.TARGET, true)
+				}));
+
 			// [BT_113] Totemic Reflection - Give a minion +2/+2. If it's a Totem, summon a copy of it.
 			cards.Add("BT_113", new CardDef(
 				new Dictionary<PlayReq, int>
@@ -102,6 +115,28 @@ namespace SabberStoneCore.CardSets.Standard
 								new SummonCopyTask(EntityType.TARGET).Process(g, c, s, t, stack);
 						}))
 				}));
+
+			// [BT_114] Shattered Rumbler - Battlecry: If you cast a spell last turn, deal 2 damage to all other minions.
+			cards.Add("BT_114", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!HasCastSpellRecently(c))
+						return;
+					foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != s).ToArray())
+						Generic.DamageCharFunc.Invoke((IPlayable)s, minion, 2, false);
+				})
+			}));
+
+			// [BT_115] Marshspawn - Battlecry: If you cast a spell last turn, Discover a spell.
+			cards.Add("BT_115", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (HasCastSpellRecently(c))
+						new DiscoverTask(DiscoverType.SPELL).Process(g, c, s, t, stack);
+				})
+			}));
 
 			// [BT_230] The Lurker Below - Battlecry: Deal 3 damage to an enemy minion. If it dies, repeat on one of its neighbors.
 			cards.Add("BT_230", new CardDef(
@@ -129,6 +164,26 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Warlock(IDictionary<string, CardDef> cards)
 		{
+			// [BT_196] Keli'dan the Breaker - Battlecry: Destroy a minion. If drawn this turn, destroy all other minions.
+			cards.Add("BT_196", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new DestroyTask(EntityType.TARGET),
+						new CustomTask((g, c, s, t, stack) =>
+						{
+							if (c.NumCardsDrawnThisTurn <= 0 || c.LastCardDrawn != s.Id)
+								return;
+							foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != s && p != t).ToArray())
+								minion.Destroy();
+						}))
+				}));
+
 			// [BT_199] Unstable Felbolt - Deal 3 damage to an enemy minion and a random friendly one.
 			cards.Add("BT_199", new CardDef(
 				new Dictionary<PlayReq, int>
@@ -237,6 +292,28 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Rogue(IDictionary<string, CardDef> cards)
 		{
+			// [BT_042] Bamboozle - Secret: When one of your minions is attacked, transform it into a random one that costs (3) more.
+			cards.Add("BT_042", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.ATTACK)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					Condition = SelfCondition.IsEventTargetIs(CardType.MINION),
+					SingleTask = ComplexTask.Secret(new TransformMinionTask(EntityType.EVENT_TARGET, 3))
+				}
+			}));
+
+			// [BT_188] Shadowjeweler Hanar - After you play a Secret, Discover a Secret from a different class.
+			cards.Add("BT_188", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.PLAY_CARD)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					Condition = SelfCondition.IsSecret,
+					SingleTask = new DiscoverTask(DiscoverType.SECRET)
+				}
+			}));
+
 			// [BT_701] Spymistress - Stealth.
 			cards.Add("BT_701", new CardDef(new Power()));
 
@@ -274,6 +351,38 @@ namespace SabberStoneCore.CardSets.Standard
 					Generic.Draw(c);
 				})
 			}));
+
+			// [BT_707] Ambush - Secret: After your opponent plays a minion, summon a 2/3 Ambusher with Poisonous.
+			cards.Add("BT_707", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_PLAY_MINION)
+				{
+					SingleTask = ComplexTask.Secret(new SummonTask("BT_707t"))
+				}
+			}));
+
+			// [BT_709] Dirty Tricks - Secret: After your opponent casts a spell, draw 2 cards.
+			cards.Add("BT_709", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_CAST)
+				{
+					SingleTask = ComplexTask.Secret(new DrawTask(2))
+				}
+			}));
+
+			// [BT_711] Blackjack Stunner - Battlecry: If you control a Secret, return a minion to its owner's hand. It costs (2) more.
+			cards.Add("BT_711", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_IF_AVAILABLE_AND_MINIMUM_FRIENDLY_SECRETS, 1 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new ReturnHandTask(EntityType.TARGET),
+						new AddEnchantmentTask("BT_711e", EntityType.TARGET))
+				}));
 
 			// [BT_713] Akama - Stealth. Deathrattle: Shuffle Akama Prime into your deck.
 			cards.Add("BT_713", new CardDef(new Power
@@ -402,10 +511,51 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [BT_003] Netherwind Portal - Secret: After your opponent casts a spell, summon a random 4-Cost minion.
+			cards.Add("BT_003", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_CAST)
+				{
+					SingleTask = ComplexTask.Secret(SummonRandomCostMinion(4))
+				}
+			}));
+
 			// [BT_014] Starscryer - Deathrattle: Draw a spell.
 			cards.Add("BT_014", new CardDef(new Power
 			{
 				DeathrattleTask = DrawCardTypeFromDeck(CardType.SPELL)
+			}));
+
+			// [BT_021] Font of Power - Discover a Mage minion. If your deck has no minions, keep all 3.
+			cards.Add("BT_021", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.DeckZone.Any(p => p.Card.Type == CardType.MINION))
+					{
+						new DiscoverTask(CardType.MINION, CardClass.MAGE).Process(g, c, s, t, stack);
+						return;
+					}
+
+					var minions = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.MINION && card.Class == CardClass.MAGE).ToArray();
+					Card[] choices = DiscoverTask.GetChoices(new[] { minions }, 3, g.Random);
+					foreach (Card card in choices)
+						if (!c.HandZone.IsFull)
+							Generic.DrawCard(c, card);
+					if (choices.Length > 0)
+						g.OnRandomHappened(true);
+				})
+			}));
+
+			// [BT_022] Apexis Smuggler - After you play a Secret, Discover a spell.
+			cards.Add("BT_022", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.PLAY_CARD)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					Condition = SelfCondition.IsSecret,
+					SingleTask = new DiscoverTask(DiscoverType.SPELL)
+				}
 			}));
 
 			// [BT_028] Astromancer Solarian - Spell Damage +1. Deathrattle: Shuffle Solarian Prime into your deck.
@@ -487,6 +637,25 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_202", new CardDef(new Power
 			{
 				DeathrattleTask = BuffRandomBeastInHand("BT_202e")
+			}));
+
+			// [BT_203] Pack Tactics - Secret: When a friendly minion is attacked, summon a 3/3 copy.
+			cards.Add("BT_203", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.ATTACK)
+				{
+					Condition = SelfCondition.IsProposedDefender(CardType.MINION),
+					SingleTask = ComplexTask.Secret(
+						new SummonCopyTask(EntityType.EVENT_TARGET),
+						new CustomTask((g, c, s, t, stack) =>
+						{
+							Minion copy = c.BoardZone.LastOrDefault();
+							if (copy == null)
+								return;
+							copy.AttackDamage = 3;
+							copy.BaseHealth = copy.Damage + 3;
+						}))
+				}
 			}));
 
 			// [BT_205] Scrap Shot - Deal 3 damage. Give a random Beast in your hand +3/+3.
@@ -587,6 +756,15 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_130", new CardDef(new Power
 			{
 				PowerTask = new ManaCrystalEmptyTask(2)
+			}));
+
+			// [BT_131] Ysiel Windsinger - Your spells cost (1).
+			cards.Add("BT_131", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.SetCost(1))
+				{
+					Condition = SelfCondition.IsSpell
+				}
 			}));
 
 			// [BT_132] Ironbark - Give a minion +1/+3 and Taunt. Costs (0) if you have at least 7 Mana Crystals.
@@ -828,6 +1006,12 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [BT_321] Netherwalker - Battlecry: Discover a Demon.
+			cards.Add("BT_321", new CardDef(new Power
+			{
+				PowerTask = new DiscoverTask(DiscoverType.DEMON)
+			}));
+
 			// [BT_351] Battlefiend - After your hero attacks, gain +1 Attack.
 			cards.Add("BT_351", new CardDef(new Power
 			{
@@ -880,6 +1064,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_407", new CardDef(new Power
 			{
 				DeathrattleTask = new AddCardTo("BT_407t", EntityType.HAND)
+			}));
+
+			// [BT_416] Raging Felscreamer - Battlecry: The next Demon you play costs (2) less.
+			cards.Add("BT_416", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("BT_416e", EntityType.SOURCE)
 			}));
 
 			// [BT_423] Ashtongue Battlelord - Taunt. Lifesteal.
@@ -1168,6 +1358,19 @@ namespace SabberStoneCore.CardSets.Standard
 
 			// [BT_197t] Reliquary Prime - Taunt, Lifesteal. Only you can target this with spells and Hero Powers.
 			cards.Add("BT_197t", new CardDef(new Power()));
+
+			// [BT_252] Renew - Restore 3 Health. Discover a spell.
+			cards.Add("BT_252", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new HealTask(3, EntityType.TARGET),
+						new DiscoverTask(DiscoverType.SPELL))
+				}));
 
 			// [BT_198] Soul Mirror - Summon copies of enemy minions. They attack their copies.
 			cards.Add("BT_198", new CardDef(new Power
@@ -1613,6 +1816,28 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [BT_190] Replicat-o-tron - At the end of your turn, transform a neighbor into a copy of this.
+			cards.Add("BT_190", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion replicator))
+							return;
+						var adjacent = replicator.GetAdjacentMinions().ToList();
+						if (adjacent.Count == 0)
+							return;
+						Generic.TransformBlock.Invoke(c, Cards.FromId("BT_190"), adjacent.Choose(g.Random));
+						if (adjacent.Count > 1)
+							g.OnRandomHappened(true);
+					})
+				}
+			}));
+
+			// [BT_733] Mo'arg Artificer - All minions take double damage from spells.
+			cards.Add("BT_733", new CardDef(new Power()));
+
 			// [BT_734] Supreme Abyssal - Can't attack heroes.
 			cards.Add("BT_734", new CardDef(new Power
 			{
@@ -1750,6 +1975,20 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_306e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_416e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(2))
+				{
+					Condition = SelfCondition.IsRace(Race.DEMON),
+					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsRace(Race.DEMON))
+				}
+			}));
+
+			cards.Add("BT_711e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AddCost(2))
 			}));
 
 			cards.Add("BT_101e", new CardDef(new Power
@@ -1946,6 +2185,11 @@ namespace SabberStoneCore.CardSets.Standard
 		private static bool IsLibram(Card card)
 		{
 			return card.Id == "BT_011" || card.Id == "BT_024" || card.Id == "BT_025";
+		}
+
+		private static bool HasCastSpellRecently(Controller controller)
+		{
+			return controller.NumSpellsPlayedLastTurn > 0 || controller.NumSpellsPlayedThisGame > 0;
 		}
 
 		private static ISimpleTask DrawCardTypeFromDeck(CardType cardType)

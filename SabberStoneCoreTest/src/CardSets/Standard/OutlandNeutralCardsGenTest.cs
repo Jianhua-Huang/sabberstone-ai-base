@@ -315,6 +315,33 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ReplicatOTron_BT_190_ShouldTransformNeighborIntoCopyAtEndOfTurn()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Wisp", asZeroCost: true);
+			game.ProcessCard("Replicat-o-tron", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Equal(2, game.CurrentOpponent.BoardZone.Count(p => p.Card.Id == "BT_190"));
+			Assert.DoesNotContain(game.CurrentOpponent.BoardZone, p => p.Card.Name == "Wisp");
+		}
+
+		[Fact]
+		public void MoargArtificer_BT_733_ShouldDoubleSpellDamageTakenByMinions()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Mo'arg Artificer", asZeroCost: true);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Bloodfen Raptor", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Moonfire", target, asZeroCost: true);
+
+			Assert.True(target.ToBeDestroyed);
+		}
+
+		[Fact]
 		public void SupremeAbyssal_BT_734_ShouldNotBeAbleToAttackHeroes()
 		{
 			Game game = CreateGame();

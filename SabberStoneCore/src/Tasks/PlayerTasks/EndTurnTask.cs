@@ -31,6 +31,8 @@ namespace SabberStoneCore.Tasks.PlayerTasks
 
 		public override bool Process()
 		{
+			Controller.NumSpellsPlayedLastTurn = Controller.NumSpellsPlayedThisTurn;
+			Controller.NumSpellsPlayedThisTurn = 0;
 			Controller.Game.Step = Enums.Step.MAIN_END;
 			Controller.Game.MainEnd();
 			return true;

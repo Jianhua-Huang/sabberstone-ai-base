@@ -5,6 +5,7 @@ using SabberStoneCore.Config;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
 using SabberStoneCore.Model.Entities;
+using SabberStoneCore.Tasks.PlayerTasks;
 using Xunit;
 
 namespace SabberStoneCoreTest.CardSets.Standard
@@ -85,6 +86,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.Equal(3, ((Minion)beast).AttackDamage);
 			Assert.Equal(4, ((Minion)beast).Health);
+		}
+
+		[Fact]
+		public void PackTactics_BT_203_ShouldSummonThreeThreeCopyWhenFriendlyMinionIsAttacked()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Pack Tactics", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+			Minion attacker = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			attacker.IsExhausted = false;
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, attacker, target));
+
+			Assert.Empty(game.CurrentOpponent.SecretZone);
+			Minion copy = Assert.Single(game.CurrentOpponent.BoardZone.Where(p => p.Card.Name == "Chillwind Yeti" && p != target));
+			Assert.Equal(3, copy.AttackDamage);
+			Assert.Equal(3, copy.Health);
 		}
 
 		[Fact]

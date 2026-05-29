@@ -53,6 +53,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void KelidanTheBreaker_BT_196_ShouldDestroyTargetAndAllOtherMinionsIfDrawnThisTurn()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Keli'dan the Breaker");
+			Minion friendly = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			Minion otherEnemy = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+			IPlayable kelidan = Assert.Single(game.CurrentPlayer.HandZone.Where(p => p.Card.Id == "BT_196"));
+
+			game.ProcessCard(kelidan, target, asZeroCost: true);
+
+			Assert.True(target.ToBeDestroyed);
+			Assert.True(friendly.ToBeDestroyed);
+			Assert.True(otherEnemy.ToBeDestroyed);
+			Assert.Contains(game.CurrentPlayer.BoardZone, p => p.Card.Id == "BT_196");
+		}
+
+		[Fact]
 		public void UnstableFelbolt_BT_199_ShouldDamageEnemyMinionAndFriendlyMinion()
 		{
 			Game game = CreateGame();

@@ -257,6 +257,7 @@ namespace SabberStoneCore.Model.Entities
 			_playerId = controller._playerId;
 			NumTotemSummonedThisGame = controller.NumTotemSummonedThisGame;
 			TemporusFlag = controller.TemporusFlag;
+			NumSpellsPlayedLastTurn = controller.NumSpellsPlayedLastTurn;
 		}
 
 		/// <summary>
@@ -1029,6 +1030,18 @@ namespace SabberStoneCore.Model.Entities
 			}
 			set { this[GameTag.NUM_SPELLS_PLAYED_THIS_GAME] = value; }
 		}
+
+		public int NumSpellsPlayedThisTurn
+		{
+			get
+			{
+				_data.TryGetValue(GameTag.NUM_SPELLS_PLAYED_THIS_TURN, out int value);
+				return value;
+			}
+			set { this[GameTag.NUM_SPELLS_PLAYED_THIS_TURN] = value; }
+		}
+
+		public int NumSpellsPlayedLastTurn { get; set; }
 
 		public int NumWeaponsPlayedThisGame
 		{

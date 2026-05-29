@@ -92,6 +92,19 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void YsielWindsinger_BT_131_ShouldSetSpellsInHandToOneCost()
+		{
+			Game game = CreateGame();
+			IPlayable spell = AddHandCard(game, "Overflow");
+			IPlayable minion = AddHandCard(game, "Wisp");
+
+			game.ProcessCard("Ysiel Windsinger", asZeroCost: true);
+
+			Assert.Equal(1, spell.Cost);
+			Assert.Equal(0, minion.Cost);
+		}
+
+		[Fact]
 		public void Ironbark_BT_132_ShouldCostZeroAtSevenManaAndBuffTaunt()
 		{
 			Game game = CreateGame();

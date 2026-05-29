@@ -61,6 +61,8 @@ namespace SabberStoneCore.Actions
 
 				c.NumCardsPlayedThisTurn++;
 				c.LastCardPlayed = source.Id;
+				if (source is Spell)
+					c.NumSpellsPlayedThisTurn++;
 
 				// record played cards for effect of cards like Obsidian Shard and Lynessa Sunsorrow
 				// or use graveyard instead with 'played' tag(or bool)?

@@ -106,6 +106,58 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Torrent_BT_110_ShouldCostLessIfSpellWasCastLastTurnAndDamageMinion()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Serpentshrine Portal", game.CurrentOpponent.Hero, asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+			IPlayable torrent = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Torrent"));
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			Assert.Equal(2, torrent.Cost);
+			game.ProcessCard(torrent, target, asZeroCost: true);
+
+			Assert.True(target.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void ShatteredRumbler_BT_114_ShouldDamageAllOtherMinionsIfSpellWasCastLastTurn()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Serpentshrine Portal", game.CurrentOpponent.Hero, asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+			Minion friendly = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+
+			Minion rumbler = game.ProcessCard<Minion>("Shattered Rumbler", asZeroCost: true);
+
+			Assert.Equal(0, rumbler.Damage);
+			Assert.Equal(2, friendly.Damage);
+			Assert.Equal(2, enemy.Damage);
+		}
+
+		[Fact]
+		public void Marshspawn_BT_115_ShouldDiscoverSpellIfSpellWasCastLastTurn()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Serpentshrine Portal", game.CurrentOpponent.Hero, asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+
+			game.ProcessCard("Marshspawn", asZeroCost: true);
+
+			Assert.NotNull(game.CurrentPlayer.Choice);
+			Assert.All(game.CurrentPlayer.Choice.Choices, choice =>
+				Assert.Equal(CardType.SPELL, game.IdEntityDic[choice].Card.Type));
+		}
+
+		[Fact]
 		public void TotemicReflection_BT_113_ShouldBuffAndCopyTotem()
 		{
 			Game game = CreateGame();

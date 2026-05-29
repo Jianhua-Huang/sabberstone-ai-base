@@ -5,6 +5,7 @@ using SabberStoneCore.Config;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
 using SabberStoneCore.Model.Entities;
+using SabberStoneCore.Tasks.PlayerTasks;
 using Xunit;
 
 namespace SabberStoneCoreTest.CardSets.Standard
@@ -97,6 +98,82 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Greyheart Sage", asZeroCost: true);
 
 			Assert.Equal(handCount + 2, game.CurrentPlayer.HandZone.Count);
+		}
+
+		[Fact]
+		public void Bamboozle_BT_042_ShouldTransformAttackedFriendlyMinionIntoCostThreeMore()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Bamboozle", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+			Minion attacker = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			attacker.IsExhausted = false;
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, attacker, target));
+
+			Assert.Empty(game.CurrentOpponent.SecretZone);
+			Assert.Contains(game.CurrentOpponent.BoardZone, p => p.Cost == 3);
+			Assert.DoesNotContain(game.CurrentOpponent.BoardZone, p => p.Card.Name == "Wisp");
+		}
+
+		[Fact]
+		public void ShadowjewelerHanar_BT_188_ShouldOfferSecretAfterPlayingSecret()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Shadowjeweler Hanar", asZeroCost: true);
+
+			game.ProcessCard("Bamboozle", asZeroCost: true);
+
+			Assert.NotNull(game.CurrentPlayer.Choice);
+			Assert.All(game.CurrentPlayer.Choice.Choices, choice =>
+				Assert.Equal(1, game.IdEntityDic[choice].Card[GameTag.SECRET]));
+		}
+
+		[Fact]
+		public void Ambush_BT_707_ShouldSummonPoisonousAmbusherAfterOpponentPlaysMinion()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Ambush", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Wisp", asZeroCost: true);
+
+			Minion ambusher = Assert.Single(game.CurrentOpponent.BoardZone.Where(p => p.Card.Id == "BT_707t"));
+			Assert.Empty(game.CurrentOpponent.SecretZone);
+			Assert.Equal(2, ambusher.AttackDamage);
+			Assert.Equal(3, ambusher.Health);
+			Assert.Equal(1, ambusher[GameTag.POISONOUS]);
+		}
+
+		[Fact]
+		public void DirtyTricks_BT_709_ShouldDrawTwoAfterOpponentCastsSpell()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Wisp", "River Crocolisk");
+			game.ProcessCard("Dirty Tricks", asZeroCost: true);
+			int handCount = game.CurrentPlayer.HandZone.Count;
+			game.EndTurn();
+
+			game.ProcessCard("Moonfire", game.CurrentOpponent.Hero, asZeroCost: true);
+
+			Assert.Empty(game.CurrentOpponent.SecretZone);
+			Assert.Equal(handCount + 2, game.CurrentOpponent.HandZone.Count);
+		}
+
+		[Fact]
+		public void BlackjackStunner_BT_711_ShouldReturnMinionAndIncreaseCostWhenSecretIsControlled()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Bamboozle", asZeroCost: true);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Blackjack Stunner", target, asZeroCost: true);
+
+			Assert.DoesNotContain(target, game.CurrentOpponent.BoardZone);
+			Assert.Contains(game.CurrentOpponent.HandZone, p => p.Card.Name == "Wisp" && p.Cost == 2);
 		}
 
 		[Fact]
