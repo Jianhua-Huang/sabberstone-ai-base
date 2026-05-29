@@ -157,6 +157,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void MokNathalLion_BT_212_ShouldCopyFriendlyDeathrattle()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Wisp");
+			Minion lootHoarder = game.ProcessCard<Minion>("Loot Hoarder", asZeroCost: true);
+
+			Minion lion = game.ProcessCard<Minion>("Mok'Nathal Lion", lootHoarder, asZeroCost: true);
+			int handCount = game.CurrentPlayer.HandZone.Count;
+
+			game.ProcessCard("Fireball", lion, asZeroCost: true);
+
+			Assert.Equal(handCount + 1, game.CurrentPlayer.HandZone.Count);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Wisp");
+		}
+
+		[Fact]
 		public void ScavengersIngenuity_BT_213_ShouldDrawAndBuffBeast()
 		{
 			Game game = CreateGame();

@@ -145,6 +145,18 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void SightlessWatcher_BT_323_ShouldMoveOneOfTopThreeDeckCardsToTop()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Wisp", "Chillwind Yeti", "Bloodfen Raptor");
+
+			game.ProcessCard("Sightless Watcher", asZeroCost: true);
+
+			Assert.Equal("Chillwind Yeti", game.CurrentPlayer.DeckZone[0].Card.Name);
+			Assert.Equal(3, game.CurrentPlayer.DeckZone.Count);
+		}
+
+		[Fact]
 		public void RagingFelscreamer_BT_416_ShouldReduceNextDemonByTwo()
 		{
 			Game game = CreateGame();
@@ -156,6 +168,44 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard(demon, asZeroCost: false);
 			IPlayable secondDemon = AddHandCard(game, "Ur'zul Horror");
 			Assert.Equal(1, secondDemon.Cost);
+		}
+
+		[Fact]
+		public void Metamorphosis_BT_429_ShouldSwapHeroPowerForTwoFiveDamageUses()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Metamorphosis", asZeroCost: true);
+
+			Assert.Equal("BT_429p", game.CurrentPlayer.Hero.HeroPower.Card.Id);
+			game.PlayHeroPower(game.CurrentOpponent.Hero, asZeroCost: true, autoRefresh: true);
+			Assert.Equal(5, game.CurrentOpponent.Hero.Damage);
+			Assert.Equal("BT_429p2", game.CurrentPlayer.Hero.HeroPower.Card.Id);
+			game.PlayHeroPower(game.CurrentOpponent.Hero, asZeroCost: true);
+
+			Assert.Equal(10, game.CurrentOpponent.Hero.Damage);
+			Assert.Equal("HERO_10p", game.CurrentPlayer.Hero.HeroPower.Card.Id);
+		}
+
+		[Fact]
+		public void Nethrandamus_BT_481_ShouldUpgradeInHandAndSummonMatchingCostMinions()
+		{
+			Game game = CreateGame();
+			IPlayable nethrandamus = AddHandCard(game, "Nethrandamus");
+			Minion first = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion second = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", first, asZeroCost: true);
+			game.ProcessCard("Moonfire", second, asZeroCost: true);
+
+			Assert.Equal(2, nethrandamus[GameTag.TAG_SCRIPT_DATA_NUM_1]);
+
+			var boardBefore = game.CurrentPlayer.BoardZone.Select(p => p.Id).ToHashSet();
+			game.ProcessCard(nethrandamus, asZeroCost: true);
+
+			var summons = game.CurrentPlayer.BoardZone.Where(p => !boardBefore.Contains(p.Id) && p.Card.Name != "Nethrandamus").ToList();
+			Assert.True(summons.Count >= 2);
+			Assert.All(summons, minion => Assert.Equal(2, minion.Card.Cost));
 		}
 
 		[Fact]

@@ -88,6 +88,25 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TeronGorefiend_BT_126_ShouldDestroyAndResummonFriendlyMinionsBuffed()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+
+			Minion teron = game.ProcessCard<Minion>("Teron Gorefiend", asZeroCost: true);
+
+			Assert.Single(game.CurrentPlayer.BoardZone);
+			Assert.Same(teron, game.CurrentPlayer.BoardZone[0]);
+
+			game.ProcessCard("Fireball", teron, asZeroCost: true);
+
+			Assert.DoesNotContain(game.CurrentPlayer.BoardZone, p => p.Card.Id == "BT_126");
+			Assert.Contains(game.CurrentPlayer.BoardZone, p => p.Card.Name == "Wisp" && p.AttackDamage == 2 && p.Health == 2);
+			Assert.Contains(game.CurrentPlayer.BoardZone, p => p.Card.Name == "Murloc Raider" && p.AttackDamage == 3 && p.Health == 2);
+		}
+
+		[Fact]
 		public void ImprisonedGanarg_BT_121_ShouldAwakenAndEquipFieryWarAxe()
 		{
 			Game game = CreateGame();
@@ -103,6 +122,20 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.NotNull(game.CurrentPlayer.Hero.Weapon);
 			Assert.Equal(3, game.CurrentPlayer.Hero.Weapon.AttackDamage);
 			Assert.Equal(2, game.CurrentPlayer.Hero.Weapon.Durability);
+		}
+
+		[Fact]
+		public void BulwarkOfAzzinoth_BT_781_ShouldPreventHeroDamageAndLoseDurability()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Bulwark of Azzinoth", asZeroCost: true);
+			game.EndTurn();
+			int health = game.CurrentOpponent.Hero.Health;
+
+			game.ProcessCard("Fireball", game.CurrentOpponent.Hero, asZeroCost: true);
+
+			Assert.Equal(health, game.CurrentOpponent.Hero.Health);
+			Assert.Equal(3, game.CurrentOpponent.Hero.Weapon.Durability);
 		}
 
 		[Fact]

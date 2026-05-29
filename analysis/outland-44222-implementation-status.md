@@ -5,9 +5,9 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ## Current status
 
 - New collectible cards in scope: 172
-- Implemented collectible ids from this diff in code: 162
-- Effect-focused Outland tests added so far: 188
-- Remaining collectible cards: 10
+- Implemented collectible ids from this diff in code: 172
+- Effect-focused Outland tests added so far: 196
+- Remaining collectible cards: 0
 
 ## Completed so far
 
@@ -22,6 +22,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_235` Chaos Nova
 - `BT_271` Flamereaper
 - `BT_321` Netherwalker
+- `BT_323` Sightless Watcher
 - `BT_351` Battlefiend
 - `BT_352` Satyr Overseer
 - `BT_354` Blade Dance
@@ -30,8 +31,10 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_416` Raging Felscreamer
 - `BT_423` Ashtongue Battlelord
 - `BT_427` Feast of Souls
+- `BT_429` Metamorphosis / `BT_429p` / `BT_429p2`
 - `BT_430` Warglaives of Azzinoth
 - `BT_480` Crimson Sigil Runner
+- `BT_481` Nethrandamus
 - `BT_486` Pit Commander
 - `BT_487` Hulking Overfiend
 - `BT_488` Soul Split
@@ -60,12 +63,14 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_117` Bladestorm
 - `BT_120` Warmaul Challenger
 - `BT_121` Imprisoned Gan'arg
+- `BT_126` Teron Gorefiend
 - `BT_123` Kargath Bladefist
 - `BT_124` Corsair Cache
 - `BT_138` Bloodboil Brute
 - `BT_140` Bonechewer Raider
 - `BT_233` Sword and Board
 - `BT_249` Scrap Golem
+- `BT_781` Bulwark of Azzinoth
 
 ### Druid
 
@@ -89,6 +94,7 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_205` Scrap Shot
 - `BT_210` Zixor, Apex Predator / `BT_210t` Zixor Prime
 - `BT_211` Imprisoned Felmaw
+- `BT_212` Mok'Nathal Lion
 - `BT_213` Scavenger's Ingenuity
 - `BT_214` Beastmaster Leoroxx
 
@@ -204,21 +210,20 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_733` Mo'arg Artificer
 - `BT_734` Supreme Abyssal
 - `BT_735` Al'ar / `BT_735t` Ashes of Al'ar
+- `BT_737` Maiev Shadowsong
+- `BT_850` Magtheridon / `BT_850t` Hellfire Warder
 - `BT_934` Imprisoned Antaen
 
 ## Verification
 
 - Targeted first batch passed: 100 passed.
 - Targeted second batch passed: 35 passed.
-- Outland filter passed after this pass: 188 passed, 0 failed.
-- Full suite no-build run currently has a pre-existing order/random-sensitive failure outside Outland:
-  `VentureCoMercenary_CS2_227` failed in the full run but passed immediately when isolated.
+- Outland filter passed after this pass: 196 passed, 0 failed.
+- Full suite after completing the 44222 card effects: 1358 passed, 1934 skipped, 0 failed.
 
 ## Remaining high-priority mechanics
 
-- Remaining complex individual cards: `BT_781`, `BT_126`, `BT_737`, `BT_850`, `BT_323`, `BT_429`, `BT_481`, `BT_212`, plus `HERO_10` integration review.
+- Remaining complex individual cards: none for the 44222 traditional 1v1 scope.
 - Strict previous-turn spell tracking; current implementation supports these cards but still needs to be tightened from "recent/game spell" compatibility to exact previous-turn semantics.
 - Discover and choice flows for cards that require custom pools.
-- Hero and hero power replacement with limited-use counters.
-- Global replacement/prevention effects such as `Bulwark of Azzinoth`.
-- Remaining complex 44222 cards: 10 collectible ids.
+- Remaining complex 44222 cards: 0 collectible ids.

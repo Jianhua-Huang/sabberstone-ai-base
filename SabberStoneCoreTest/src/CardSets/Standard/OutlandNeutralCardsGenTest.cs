@@ -386,6 +386,42 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void MaievShadowsong_BT_737_ShouldMakeTargetDormantForTwoTurns()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+
+			game.ProcessCard("Maiev Shadowsong", target, asZeroCost: true);
+
+			Assert.True(target.Untouchable);
+			Assert.Equal(2, target[GameTag.DORMANT]);
+			AdvanceTwoOwnerTurns(game);
+
+			Assert.False(target.Untouchable);
+			Assert.Equal(0, target[GameTag.DORMANT]);
+		}
+
+		[Fact]
+		public void Magtheridon_BT_850_ShouldAwakenAfterThreeWardersDie()
+		{
+			Game game = CreateGame();
+			Minion magtheridon = game.ProcessCard<Minion>("Magtheridon", asZeroCost: true);
+
+			Assert.True(magtheridon.Untouchable);
+			Assert.Equal(3, game.CurrentOpponent.BoardZone.Count(p => p.Card.Id == "BT_850t"));
+
+			foreach (Minion warder in game.CurrentOpponent.BoardZone.Where(p => p.Card.Id == "BT_850t").ToArray())
+				game.ProcessCard("Fireball", warder, asZeroCost: true);
+			game.DeathProcessingAndAuraUpdate();
+
+			Assert.False(magtheridon.Untouchable);
+			Assert.Equal(0, magtheridon[GameTag.DORMANT]);
+			Assert.Empty(game.CurrentOpponent.BoardZone);
+			Assert.Single(game.CurrentPlayer.BoardZone);
+			Assert.Same(magtheridon, game.CurrentPlayer.BoardZone[0]);
+		}
+
+		[Fact]
 		public void ImprisonedAntaen_BT_934_ShouldAwakenAndDealTenRandomDamageToEnemies()
 		{
 			Game game = CreateGame();

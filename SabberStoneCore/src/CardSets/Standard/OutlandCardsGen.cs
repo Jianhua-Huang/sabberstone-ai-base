@@ -763,6 +763,25 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [BT_212] Mok'Nathal Lion - Rush. Battlecry: Choose a friendly minion. Gain a copy of its Deathrattle.
+			cards.Add("BT_212", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_IF_AVAILABLE, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 },
+					{ PlayReq.REQ_FRIENDLY_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion lion) || !(t is Minion target) || !target.HasDeathrattle)
+							return;
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_212e"), lion, lion, 0, 0, target.Id);
+						lion.HasDeathrattle = true;
+					})
+				}));
+
 			// [BT_213] Scavenger's Ingenuity - Draw a Beast. Give it +3/+3.
 			cards.Add("BT_213", new CardDef(new Power
 			{
@@ -962,6 +981,22 @@ namespace SabberStoneCore.CardSets.Standard
 					})
 				}));
 
+			// [BT_126] Teron Gorefiend - Battlecry: Destroy all other friendly minions. Deathrattle: Resummon them with +1/+1.
+			cards.Add("BT_126", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion teron))
+						return;
+					foreach (Minion minion in c.BoardZone.GetAll().Where(p => p != teron).ToArray())
+					{
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_126e"), teron, teron, 0, 0, minion.Id);
+						minion.Destroy();
+					}
+					teron.HasDeathrattle = true;
+				})
+			}));
+
 			// [BT_123] Kargath Bladefist - Rush. Deathrattle: Shuffle Kargath Prime into your deck.
 			cards.Add("BT_123", new CardDef(new Power
 			{
@@ -1039,6 +1074,25 @@ namespace SabberStoneCore.CardSets.Standard
 						c.Hero.GainArmor(golem, golem.AttackDamage);
 				})
 			}));
+
+			// [BT_781] Bulwark of Azzinoth - Whenever your hero would take damage, this loses 1 Durability instead.
+			cards.Add("BT_781", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.PREDAMAGE)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						Weapon weapon = c.Hero.Weapon;
+						if (weapon == null || weapon.Card.Id != "BT_781")
+							return;
+						weapon.Damage += 1;
+						g.CurrentEventData.EventNumber = 0;
+						if (weapon.ToBeDestroyed)
+							c.Hero.RemoveWeapon();
+					})
+				}
+			}));
 		}
 
 		private static void DemonHunter(IDictionary<string, CardDef> cards)
@@ -1110,6 +1164,20 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new DiscoverTask(DiscoverType.DEMON)
 			}));
 
+			// [BT_323] Sightless Watcher - Battlecry: Look at 3 cards in your deck. Choose one to put on top.
+			cards.Add("BT_323", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var choices = c.DeckZone.GetAll().Take(3).ToList();
+					if (choices.Count <= 1)
+						return;
+					IPlayable choice = choices.OrderByDescending(p => p.Cost).First();
+					Generic.RemoveFromZone.Invoke(c, choice);
+					c.DeckZone.Add(choice, 0);
+				})
+			}));
+
 			// [BT_351] Battlefiend - After your hero attacks, gain +1 Attack.
 			cards.Add("BT_351", new CardDef(new Power
 			{
@@ -1170,6 +1238,38 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new AddEnchantmentTask("BT_416e", EntityType.SOURCE)
 			}));
 
+			// [BT_429] Metamorphosis - Swap your Hero Power to "Deal 5 damage." After 2 uses, swap it back.
+			cards.Add("BT_429", new CardDef(new Power
+			{
+				PowerTask = new ReplaceHeroPower(Cards.FromId("BT_429p"))
+			}));
+
+			// [BT_429p] Demonic Blast - Deal 5 damage. Two uses left.
+			cards.Add("BT_429p", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new DamageTask(5, EntityType.TARGET, false),
+						new ReplaceHeroPower(Cards.FromId("BT_429p2")))
+				}));
+
+			// [BT_429p2] Demonic Blast - Deal 5 damage. Last use.
+			cards.Add("BT_429p2", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new DamageTask(5, EntityType.TARGET, false),
+						new ReplaceHeroPower(Cards.FromId("HERO_10p")))
+				}));
+
 			// [BT_423] Ashtongue Battlelord - Taunt. Lifesteal.
 			cards.Add("BT_423", new CardDef(new Power()));
 
@@ -1224,6 +1324,34 @@ namespace SabberStoneCore.CardSets.Standard
 					if (WasPlayedFromOutcastPosition(s))
 						Generic.Draw(c);
 				})
+			}));
+
+			// [BT_481] Nethrandamus - Battlecry: Summon two random upgraded-cost minions. Upgrades when friendly minions die.
+			cards.Add("BT_481", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (s[GameTag.TAG_SCRIPT_DATA_NUM_2] > 0)
+						return;
+					s[GameTag.TAG_SCRIPT_DATA_NUM_2] = 1;
+					int cost = System.Math.Min(10, s[GameTag.TAG_SCRIPT_DATA_NUM_1]);
+					var minions = Cards.AllStandard.Where(card => card.Type == CardType.MINION && card.Cost == cost).ToList();
+					for (int i = 0; i < 2 && !c.BoardZone.IsFull && minions.Count > 0; i++)
+					{
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, minions.Choose(g.Random)), -1, s);
+						g.OnRandomHappened(true);
+					}
+				}),
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerActivation = TriggerActivation.HAND,
+					TriggerSource = TriggerSource.FRIENDLY,
+					Condition = SelfCondition.IsMinion,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						s[GameTag.TAG_SCRIPT_DATA_NUM_1] = System.Math.Min(10, s[GameTag.TAG_SCRIPT_DATA_NUM_1] + 1);
+					})
+				}
 			}));
 
 			// [BT_488] Soul Split - Choose a friendly Demon. Summon a copy of it.
@@ -1977,6 +2105,80 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new SetGameTagTask(GameTag.CANNOT_ATTACK_HEROES, 1, EntityType.SOURCE)
 			}));
+
+			// [BT_737] Maiev Shadowsong - Battlecry: Choose a minion. It goes Dormant for 2 turns.
+			cards.Add("BT_737", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_IF_AVAILABLE, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(t is Minion target))
+							return;
+						target[GameTag.DORMANT] = 2;
+						target[GameTag.UNTOUCHABLE] = 1;
+						target.IsExhausted = true;
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_737e"), (IPlayable)s, target, 2, 0, 0);
+					})
+				}));
+
+			// [BT_850] Magtheridon - Dormant. Battlecry: Summon three enemy Warders. When they die, destroy all minions and awaken.
+			cards.Add("BT_850", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion magtheridon))
+						return;
+					magtheridon[GameTag.DORMANT] = 3;
+					magtheridon[GameTag.UNTOUCHABLE] = 1;
+					magtheridon.IsExhausted = true;
+					for (int i = 0; i < 3 && !c.Opponent.BoardZone.IsFull; i++)
+					{
+						var warder = (Minion)Entity.FromCard(c.Opponent, Cards.FromId("BT_850t"));
+						warder.HasDeathrattle = true;
+						Generic.SummonBlock.Invoke(g, warder, -1, s);
+					}
+				}),
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerSource = TriggerSource.OP_MINIONS,
+					Condition = new SelfCondition(p => p.Card.Id == "BT_850t"),
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion magtheridon) || magtheridon[GameTag.DORMANT] <= 0)
+							return;
+						magtheridon[GameTag.DORMANT] -= 1;
+						if (magtheridon[GameTag.DORMANT] > 0)
+							return;
+						foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != magtheridon).ToArray())
+							minion.Destroy();
+						magtheridon[GameTag.UNTOUCHABLE] = 0;
+						magtheridon.IsExhausted = false;
+					})
+				}
+			}));
+
+			// [BT_850t] Hellfire Warder - Counts toward Magtheridon's awakening.
+			cards.Add("BT_850t", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					Minion magtheridon = c.Opponent.BoardZone.GetAll().FirstOrDefault(p => p.Card.Id == "BT_850" && p[GameTag.DORMANT] > 0);
+					if (magtheridon == null)
+						return;
+					magtheridon[GameTag.DORMANT] -= 1;
+					if (magtheridon[GameTag.DORMANT] > 0)
+						return;
+					foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != magtheridon).ToArray())
+						minion.Destroy();
+					magtheridon[GameTag.UNTOUCHABLE] = 0;
+					magtheridon.IsExhausted = false;
+				})
+			}));
 		}
 
 		private static void NonCollect(IDictionary<string, CardDef> cards)
@@ -2040,6 +2242,34 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_213e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(3), Effects.Health_N(3))
+			}));
+
+			cards.Add("BT_126e", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Enchantment enchantment) || enchantment.CapturedCard == null || c.BoardZone.IsFull)
+						return;
+					Minion minion = (Minion)Entity.FromCard(c, enchantment.CapturedCard);
+					Generic.SummonBlock.Invoke(g, minion, -1, s);
+					Generic.AddEnchantmentBlock(g, Cards.FromId("BT_126e2"), (IPlayable)s, minion, 0, 0, 0);
+				})
+			}));
+
+			cards.Add("BT_126e2", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1), Effects.Health_N(1))
+			}));
+
+			cards.Add("BT_212e", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Enchantment enchantment))
+						return;
+					ISimpleTask copiedDeathrattle = enchantment.CapturedCard?.Power?.DeathrattleTask;
+					copiedDeathrattle?.Process(g, c, s, null, stack);
+				})
 			}));
 
 			cards.Add("BT_002e", new CardDef(new Power
@@ -2133,6 +2363,28 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_711e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AddCost(2))
+			}));
+
+			cards.Add("BT_737e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Enchantment enchantment) || !(enchantment.Target is Minion minion))
+							return;
+						int turnsLeft = minion[GameTag.DORMANT] - 1;
+						if (turnsLeft > 0)
+						{
+							minion[GameTag.DORMANT] = turnsLeft;
+							return;
+						}
+						minion[GameTag.DORMANT] = 0;
+						minion[GameTag.UNTOUCHABLE] = 0;
+						minion.IsExhausted = false;
+						enchantment.Remove();
+					})
+				}
 			}));
 
 			cards.Add("BT_101e", new CardDef(new Power
