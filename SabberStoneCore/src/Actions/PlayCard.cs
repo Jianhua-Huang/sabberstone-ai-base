@@ -38,6 +38,10 @@ namespace SabberStoneCore.Actions
 
 				Game game = c.Game;
 				bool history = game.History;
+				bool playedFromHand = source.Zone?.Type == Zone.HAND;
+				if (source is Playable playable)
+					playable.WasPlayedFromOutcastPosition = playedFromHand &&
+						(source.ZonePosition == 0 || source.ZonePosition == c.HandZone.Count - 1);
 
 				// Start play block
 				if (history)

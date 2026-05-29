@@ -272,6 +272,7 @@ namespace SabberStoneCore.Model.Entities
 
 			_exhausted = playable._exhausted;
 			_zonePosition = playable._zonePosition;
+			WasPlayedFromOutcastPosition = playable.WasPlayedFromOutcastPosition;
 
 			_modifiedCost = playable._modifiedCost;
 			_costManager = playable._costManager?.Clone();
@@ -645,6 +646,8 @@ namespace SabberStoneCore.Model.Entities
 		public bool Combo => Card.Combo;
 
 		public bool ChooseOne => Card.ChooseOne;
+
+		public bool WasPlayedFromOutcastPosition { get; set; }
 
 		//public bool JustPlayed
 		//{

@@ -41,6 +41,18 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				Generic.RemoveFromZone(card.Controller, card);
 		}
 
+		private static IPlayable AddHandCard(Game game, string cardName)
+		{
+			return Generic.DrawCard(game.CurrentPlayer, Cards.FromName(cardName));
+		}
+
+		private static void SetDeck(Game game, params string[] cardNames)
+		{
+			EmptyZone(game.CurrentPlayer.DeckZone.GetAll());
+			foreach (string cardName in cardNames)
+				game.CurrentPlayer.DeckZone.Add(Entity.FromCard(game.CurrentPlayer, Cards.FromName(cardName)));
+		}
+
 		[Fact]
 		public void ChaosStrike_BT_035_ShouldBuffHeroAndDraw()
 		{
@@ -224,6 +236,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CrimsonSigilRunner_BT_480_ShouldDrawOnlyWhenPlayedFromOutcastPosition()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Chillwind Yeti");
+			AddHandCard(game, "Wisp");
+			IPlayable runner = AddHandCard(game, "Crimson Sigil Runner");
+			AddHandCard(game, "Wisp");
+
+			game.ProcessCard(runner, asZeroCost: true);
+
+			Assert.DoesNotContain(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti");
+
+			game = CreateGame();
+			SetDeck(game, "Chillwind Yeti");
+			runner = AddHandCard(game, "Crimson Sigil Runner");
+
+			game.ProcessCard(runner, asZeroCost: true);
+
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti");
+		}
+
+		[Fact]
 		public void SoulSplit_BT_488_ShouldCopyFriendlyDemon()
 		{
 			Game game = CreateGame();
@@ -315,17 +349,72 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
-		public void ConsumeMagic_BT_490_ShouldSilenceEnemyMinion()
+		public void ConsumeMagic_BT_490_ShouldSilenceEnemyMinionAndDrawWhenOutcast()
 		{
 			Game game = CreateGame();
+			SetDeck(game, "Chillwind Yeti");
 			game.EndTurn();
 			Minion target = game.ProcessCard<Minion>("Goldshire Footman", asZeroCost: true);
 			Assert.Equal(1, target[GameTag.TAUNT]);
 			game.EndTurn();
+			IPlayable consumeMagic = AddHandCard(game, "Consume Magic");
 
-			game.ProcessCard("Consume Magic", target, asZeroCost: true);
+			game.ProcessCard(consumeMagic, target, asZeroCost: true);
 
 			Assert.Equal(0, target[GameTag.TAUNT]);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti");
+		}
+
+		[Fact]
+		public void SpectralSight_BT_491_ShouldDrawOneCardOrTwoWhenOutcast()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Wisp", "Chillwind Yeti");
+			AddHandCard(game, "Wisp");
+			IPlayable spectralSight = AddHandCard(game, "Spectral Sight");
+			AddHandCard(game, "Wisp");
+
+			game.ProcessCard(spectralSight, asZeroCost: true);
+
+			Assert.Single(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti");
+			Assert.Equal(1, game.CurrentPlayer.DeckZone.Count);
+
+			game = CreateGame();
+			SetDeck(game, "Wisp", "Chillwind Yeti");
+			spectralSight = AddHandCard(game, "Spectral Sight");
+
+			game.ProcessCard(spectralSight, asZeroCost: true);
+
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti");
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Equal(0, game.CurrentPlayer.DeckZone.Count);
+		}
+
+		[Fact]
+		public void SkullOfGuldan_BT_601_ShouldReduceDrawnCardsOnlyWhenOutcast()
+		{
+			Game game = CreateGame();
+			SetDeck(game, "Boulderfist Ogre", "Chillwind Yeti", "River Crocolisk");
+			IPlayable skull = AddHandCard(game, "Skull of Gul'dan");
+
+			game.ProcessCard(skull, asZeroCost: true);
+
+			Assert.Equal(0, game.CurrentPlayer.DeckZone.Count);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "River Crocolisk" && p.Cost == 0);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti" && p.Cost == 1);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Boulderfist Ogre" && p.Cost == 3);
+
+			game = CreateGame();
+			SetDeck(game, "Boulderfist Ogre", "Chillwind Yeti", "River Crocolisk");
+			AddHandCard(game, "Wisp");
+			skull = AddHandCard(game, "Skull of Gul'dan");
+			AddHandCard(game, "Wisp");
+
+			game.ProcessCard(skull, asZeroCost: true);
+
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "River Crocolisk" && p.Cost == 2);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Chillwind Yeti" && p.Cost == 4);
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Name == "Boulderfist Ogre" && p.Cost == 6);
 		}
 
 		[Fact]
@@ -369,6 +458,67 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.Equal(3, target.Damage);
 			Assert.Equal(3, game.CurrentPlayer.Hero.Damage);
+		}
+
+		[Fact]
+		public void EyeBeam_BT_801_ShouldCostZeroOnlyAtOutcastPosition()
+		{
+			Game game = CreateGame();
+			AddHandCard(game, "Wisp");
+			IPlayable eyeBeam = AddHandCard(game, "Eye Beam");
+			AddHandCard(game, "Wisp");
+
+			Assert.Equal(3, eyeBeam.Cost);
+
+			EmptyZone(game.CurrentPlayer.HandZone.GetAll());
+			eyeBeam = AddHandCard(game, "Eye Beam");
+
+			Assert.Equal(0, eyeBeam.Cost);
+		}
+
+		[Fact]
+		public void IllidariFelblade_BT_814_ShouldGainImmuneThisTurnOnlyWhenOutcast()
+		{
+			Game game = CreateGame();
+			IPlayable felbladeCard = AddHandCard(game, "Illidari Felblade");
+
+			Minion felblade = game.ProcessCard((Minion)felbladeCard, asZeroCost: true);
+
+			Assert.Equal(1, felblade[GameTag.RUSH]);
+			Assert.Equal(1, felblade[GameTag.IMMUNE]);
+			game.ProcessCard("Fireball", felblade, asZeroCost: true);
+			Assert.Equal(0, felblade.Damage);
+			game.EndTurn();
+			Assert.Equal(0, game.CurrentOpponent.BoardZone[0][GameTag.IMMUNE]);
+
+			game = CreateGame();
+			AddHandCard(game, "Wisp");
+			felbladeCard = AddHandCard(game, "Illidari Felblade");
+			AddHandCard(game, "Wisp");
+
+			felblade = game.ProcessCard((Minion)felbladeCard, asZeroCost: true);
+
+			Assert.Equal(0, felblade[GameTag.IMMUNE]);
+		}
+
+		[Fact]
+		public void AltruisTheOutcast_BT_937_ShouldDamageEnemiesAfterOutcastPositionCard()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+			EmptyZone(game.CurrentPlayer.HandZone.GetAll());
+			Minion altruis = game.ProcessCard<Minion>("Altruis the Outcast", asZeroCost: true);
+			Assert.NotNull(altruis.ActivatedTrigger);
+			IPlayable wisp = AddHandCard(game, "Wisp");
+			AddHandCard(game, "River Crocolisk");
+			Assert.Equal(0, wisp.ZonePosition);
+
+			game.ProcessCard(wisp, asZeroCost: true);
+
+			Assert.Equal(1, enemy.Damage);
+			Assert.Equal(1, game.CurrentOpponent.Hero.Damage);
 		}
 
 		[Fact]

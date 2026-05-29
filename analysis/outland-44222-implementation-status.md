@@ -5,9 +5,9 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ## Current status
 
 - New collectible cards in scope: 172
-- Implemented card ids in code: 33
-- Effect-focused tests added in this pass: 32
-- Remaining collectible cards: 139
+- Implemented card ids in code: 40
+- Effect-focused tests added so far: 38
+- Remaining collectible cards: 132
 
 ## Completed in this pass
 
@@ -25,20 +25,25 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_355` Wrathscale Naga
 - `BT_407` Ur'zul Horror
 - `BT_427` Feast of Souls
+- `BT_480` Crimson Sigil Runner
 - `BT_486` Pit Commander
 - `BT_488` Soul Split
-- `BT_490` Consume Magic, base silence effect only; Outcast draw is pending the Outcast mechanism
+- `BT_490` Consume Magic
+- `BT_491` Spectral Sight
 - `BT_493` Priestess of Fury
 - `BT_495` Glaivebound Adept
 - `BT_496` Furious Felfin
 - `BT_509` Fel Summoner
 - `BT_512` Inner Demon
 - `BT_514` Immolation Aura
+- `BT_601` Skull of Gul'dan
 - `BT_740` Soul Cleave
 - `BT_752` Blur
 - `BT_761` Coilfang Warlord
-- `BT_801` Eye Beam, base lifesteal damage only; Outcast cost is pending the Outcast mechanism
+- `BT_801` Eye Beam
+- `BT_814` Illidari Felblade
 - `BT_922` Umberwing
+- `BT_937` Altruis the Outcast
 
 ### Priest
 
@@ -51,12 +56,13 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 
 ## Verification
 
-- Targeted tests: `OutlandDemonHunterCardsGenTest`, `OutlandPriestCardsGenTest`, and `CloneSameSame` passed: 33 passed.
-- Full test suite passed: 1220 passed, 1934 skipped, 0 failed.
+- Targeted tests: `OutlandDemonHunterCardsGenTest` passed: 32 passed.
+- Clone consistency: `CloneSameSame` passed.
+- Full test suite passed: 1226 passed, 1934 skipped, 0 failed.
 
 ## Remaining high-priority mechanics
 
-- Outcast hand-edge detection and Outcast-specific cost/draw/battlecry behavior.
+- Remaining Outcast cards not yet implemented outside the seven covered here.
 - Dormant minions and delayed wake-up effects.
 - Prime deathrattle shuffle and Prime token behavior.
 - Discover and choice flows for cards that require user choice.

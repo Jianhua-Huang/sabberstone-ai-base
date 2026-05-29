@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SabberStoneCore.Actions;
+using SabberStoneCore.Auras;
 using SabberStoneCore.Conditions;
 using SabberStoneCore.Enchants;
 using SabberStoneCore.Enums;
@@ -151,6 +152,16 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [BT_480] Crimson Sigil Runner - Outcast: Draw a card.
+			cards.Add("BT_480", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (WasPlayedFromOutcastPosition(s))
+						Generic.Draw(c);
+				})
+			}));
+
 			// [BT_488] Soul Split - Choose a friendly Demon. Summon a copy of it.
 			cards.Add("BT_488", new CardDef(
 				new Dictionary<PlayReq, int>
@@ -165,7 +176,7 @@ namespace SabberStoneCore.CardSets.Standard
 					PowerTask = new CopyTask(EntityType.TARGET, Zone.PLAY)
 				}));
 
-			// [BT_490] Consume Magic - Silence an enemy minion. Outcast draw is handled in a later mechanic pass.
+			// [BT_490] Consume Magic - Silence an enemy minion. Outcast: Draw a card.
 			cards.Add("BT_490", new CardDef(
 				new Dictionary<PlayReq, int>
 				{
@@ -175,8 +186,25 @@ namespace SabberStoneCore.CardSets.Standard
 				},
 				new Power
 				{
-					PowerTask = new SilenceTask(EntityType.TARGET)
+					PowerTask = ComplexTask.Create(
+						new SilenceTask(EntityType.TARGET),
+						new CustomTask((g, c, s, t, stack) =>
+						{
+							if (WasPlayedFromOutcastPosition(s))
+								Generic.Draw(c);
+						}))
 				}));
+
+			// [BT_491] Spectral Sight - Draw a card. Outcast: Draw another.
+			cards.Add("BT_491", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					Generic.Draw(c);
+					if (WasPlayedFromOutcastPosition(s))
+						Generic.Draw(c);
+				})
+			}));
 
 			// [BT_493] Priestess of Fury - At the end of your turn, deal 6 damage randomly split among all enemies.
 			cards.Add("BT_493", new CardDef(new Power
@@ -212,6 +240,22 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					SingleTask = ComplexTask.SummonRandomMinion(EntityType.DECK, RelaCondition.IsOther(SelfCondition.IsRace(Race.DEMON)))
 				}
+			}));
+
+			// [BT_601] Skull of Gul'dan - Draw 3 cards. Outcast: Reduce their Cost by (3).
+			cards.Add("BT_601", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					bool outcast = WasPlayedFromOutcastPosition(s);
+					Card enchantment = Cards.FromId("BT_601e");
+					for (int i = 0; i < 3; i++)
+					{
+						IPlayable drawn = Generic.Draw(c);
+						if (outcast && drawn != null && drawn.Zone?.Type == Zone.HAND)
+							Generic.AddEnchantmentBlock(g, enchantment, (IPlayable)s, drawn, 0, 0, 0);
+					}
+				})
 			}));
 
 			// [BT_509] Fel Summoner - Deathrattle: Summon a random Demon from your hand.
@@ -251,7 +295,7 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
-			// [BT_801] Eye Beam - Lifesteal. Deal 3 damage to a minion. Outcast cost is handled later.
+			// [BT_801] Eye Beam - Lifesteal. Deal 3 damage to a minion. Outcast: This costs (0).
 			cards.Add("BT_801", new CardDef(
 				new Dictionary<PlayReq, int>
 				{
@@ -260,13 +304,40 @@ namespace SabberStoneCore.CardSets.Standard
 				},
 				new Power
 				{
+					Aura = new AdaptiveCostEffect(p => IsOutcastPosition(p) ? p.Card.Cost : 0),
 					PowerTask = new DamageTask(3, EntityType.TARGET, true)
 				}));
+
+			// [BT_814] Illidari Felblade - Rush. Outcast: Gain Immune this turn.
+			cards.Add("BT_814", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion minion) || !WasPlayedFromOutcastPosition(s))
+						return;
+					minion[GameTag.IMMUNE] = 1;
+					Generic.AddEnchantmentBlock(g, Cards.FromId("BT_814e"), minion, minion, 0, 0, 0);
+				})
+			}));
 
 			// [BT_922] Umberwing - Battlecry: Summon two 1/1 Felwings.
 			cards.Add("BT_922", new CardDef(new Power
 			{
 				PowerTask = new SummonTask("BT_922t", 2)
+			}));
+
+			// [BT_937] Altruis the Outcast - After you play the left- or right-most card in your hand, deal 1 damage to all enemies.
+			cards.Add("BT_937", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.PLAY_CARD)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (t is Playable played && played.WasPlayedFromOutcastPosition)
+							new DamageTask(1, EntityType.ENEMIES, false).Process(g, c, (IPlayable)s, null);
+					})
+				}
 			}));
 
 			// [BT_761] Coilfang Warlord - Deathrattle: Summon a 5/9 Warlord with Taunt.
@@ -439,6 +510,28 @@ namespace SabberStoneCore.CardSets.Standard
 				Enchant = new Enchant(Effects.Attack_N(1))
 			}));
 
+			cards.Add("BT_601e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(3))
+				{
+					RemoveWhenPlayed = true
+				}
+			}));
+
+			cards.Add("BT_814e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = ComplexTask.Create(
+						new CustomTask((g, c, s, t, stack) =>
+						{
+							if (s is Enchantment enchantment)
+								enchantment.Target[GameTag.IMMUNE] = 0;
+						}),
+						RemoveEnchantmentTask.Task)
+				}
+			}));
+
 			cards.Add("BT_175t", new CardDef(new Power
 			{
 				PowerTask = new AddEnchantmentTask("BT_142e", EntityType.HERO)
@@ -484,6 +577,17 @@ namespace SabberStoneCore.CardSets.Standard
 					SingleTask = RemoveEnchantmentTask.Task
 				}
 			}));
+		}
+
+		private static bool IsOutcastPosition(IPlayable playable)
+		{
+			return playable.Zone?.Type == Zone.HAND &&
+				(playable.ZonePosition == 0 || playable.ZonePosition == playable.Controller.HandZone.Count - 1);
+		}
+
+		private static bool WasPlayedFromOutcastPosition(IEntity source)
+		{
+			return source is Playable playable && playable.WasPlayedFromOutcastPosition;
 		}
 	}
 }
