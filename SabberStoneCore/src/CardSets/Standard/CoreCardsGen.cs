@@ -117,6 +117,15 @@ namespace SabberStoneCore.CardSets.Standard
 			// --------------------------------------------------------
 			cards.Add("HERO_09", new CardDef());
 
+			// ------------------------------------- HERO - DEMONHUNTER
+			// [HERO_10] Illidan Stormrage - COST:0 [ATK:0/HP:30]
+			// - Fac: neutral, Set: core, Rarity: free
+			// --------------------------------------------------------
+			// GameTag:
+			// - HERO_POWER = 60224
+			// --------------------------------------------------------
+			cards.Add("HERO_10", new CardDef());
+
 		}
 
 		private static void HeroPowers(IDictionary<string, CardDef> cards)
@@ -250,6 +259,18 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("DS1h_292", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_STEADY_SHOT, 0 }, { PlayReq.REQ_MINION_OR_ENEMY_HERO, 0 } }, new Power
 			{
 				PowerTask = new DamageTask(2, EntityType.OP_HERO)
+			}));
+
+			// ----------------------------- HERO_POWER - DEMONHUNTER
+			// [HERO_10p] Demon Claws (*) - COST:1
+			// - Fac: neutral, Set: core, Rarity: free
+			// --------------------------------------------------------
+			// Text: <b>Hero Power</b>
+			//       +1 Attack this turn.
+			// --------------------------------------------------------
+			cards.Add("HERO_10p", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("HERO_10pe", EntityType.HERO)
 			}));
 		}
 
@@ -450,6 +471,17 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("CS2_017o", new CardDef(new Power
 			{
 				Enchant = GetAutoEnchantFromText("CS2_017o"),
+			}));
+
+			// ---------------------------- ENCHANTMENT - DEMONHUNTER
+			// [HERO_10pe] Demon Claws (*) - COST:0
+			// - Set: core,
+			// --------------------------------------------------------
+			// Text: Your hero has +1 Attack this turn.
+			// --------------------------------------------------------
+			cards.Add("HERO_10pe", new CardDef(new Power
+			{
+				Enchant = GetAutoEnchantFromText("HERO_10pe")
 			}));
 
 			// ------------------------------------------ SPELL - DRUID
@@ -1127,12 +1159,12 @@ namespace SabberStoneCore.CardSets.Standard
 			// [CS1_112] Holy Nova - COST:5
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
-			// Text: Deal $2 damage to all enemies. Restore #2_Health to all friendly characters. @spelldmg
+			// Text: Deal $2 damage to all enemy minions. Restore #2 Health to all friendly characters. @spelldmg
 			// --------------------------------------------------------
 			cards.Add("CS1_112", new CardDef(new Power
 			{
 				PowerTask = ComplexTask.Create(
-					new DamageTask(2, EntityType.ENEMIES, true),
+					new DamageTask(2, EntityType.OP_MINIONS, true),
 					new HealTask(2, EntityType.FRIENDS))
 			}));
 
@@ -1157,14 +1189,15 @@ namespace SabberStoneCore.CardSets.Standard
 			// [CS1_130] Holy Smite - COST:1
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
-			// Text: Deal $2 damage. @spelldmg
+			// Text: Deal $3 damage to a minion. @spelldmg
 			// --------------------------------------------------------
 			// PlayReq:
 			// - REQ_TARGET_TO_PLAY = 0
+			// - REQ_MINION_TARGET = 0
 			// --------------------------------------------------------
-			cards.Add("CS1_130", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
+			cards.Add("CS1_130", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 }, { PlayReq.REQ_MINION_TARGET, 0 } }, new Power
 			{
-				PowerTask = new DamageTask(2, EntityType.TARGET, true)
+				PowerTask = new DamageTask(3, EntityType.TARGET, true)
 			}));
 
 			// ----------------------------------------- SPELL - PRIEST
@@ -1183,7 +1216,6 @@ namespace SabberStoneCore.CardSets.Standard
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: Give a minion +2_Health.
-			//       Draw a card.
 			// --------------------------------------------------------
 			// PlayReq:
 			// - REQ_TARGET_TO_PLAY = 0
@@ -1191,9 +1223,7 @@ namespace SabberStoneCore.CardSets.Standard
 			// --------------------------------------------------------
 			cards.Add("CS2_004", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 }, { PlayReq.REQ_MINION_TARGET, 0 } }, new Power
 			{
-				PowerTask = ComplexTask.Create(
-					new AddEnchantmentTask("CS2_004e", EntityType.TARGET),
-					new DrawTask())
+				PowerTask = new AddEnchantmentTask("CS2_004e", EntityType.TARGET)
 			}));
 
 			// ----------------------------------------- SPELL - PRIEST

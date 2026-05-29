@@ -151,7 +151,8 @@ namespace SabberStoneCore.Enums
 		WARRIOR = 10,
 		DREAM = 11,
 		NEUTRAL = 12,
-		WHIZBANG = 13
+		WHIZBANG = 13,
+		DEMONHUNTER = 14
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -201,7 +202,8 @@ namespace SabberStoneCore.Enums
 		GALAKRONDS_AWAKENING = 1403,
 		BLACK_TEMPLE = 1414,
 		WILD_EVENT = 1439,
-		BATTLEGROUNDS = 1453
+		BATTLEGROUNDS = 1453,
+		DEMON_HUNTER_INITIATE = 1463
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 

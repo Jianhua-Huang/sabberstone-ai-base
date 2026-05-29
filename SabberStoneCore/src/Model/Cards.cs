@@ -48,7 +48,8 @@ namespace SabberStoneCore.Model
 			CardSet.ULDUM, // 2019 Saviors of Uldum
 			CardSet.DRAGONS, // 2019 Descent of Dragons
 			CardSet.GALAKRONDS_AWAKENING, // 2020 Galakrond's Awakening
-			CardSet.BLACK_TEMPLE // 2020 Ashes of Outland
+			CardSet.BLACK_TEMPLE, // 2020 Ashes of Outland
+			CardSet.DEMON_HUNTER_INITIATE // 2020 Demon Hunter Initiate
 		};
 
 		/// <summary>
@@ -68,6 +69,7 @@ namespace SabberStoneCore.Model
 			CardSet.DRAGONS,
 			CardSet.GALAKRONDS_AWAKENING,
 			CardSet.BLACK_TEMPLE,
+			CardSet.DEMON_HUNTER_INITIATE,
 
 			// wild
 			CardSet.BRM,
@@ -99,7 +101,8 @@ namespace SabberStoneCore.Model
 			CardClass.WARLOCK,
 			CardClass.MAGE,
 			CardClass.PRIEST,
-			CardClass.WARRIOR
+			CardClass.WARRIOR,
+			CardClass.DEMONHUNTER
 		};
 
 		#region CARD_SETUP
@@ -265,6 +268,8 @@ namespace SabberStoneCore.Model
 					return FromId("HERO_07");
 				case CardClass.WARRIOR:
 					return FromId("HERO_01");
+				case CardClass.DEMONHUNTER:
+					return FromId("HERO_10");
 				default:
 					throw new NotImplementedException();
 			}
@@ -310,6 +315,8 @@ namespace SabberStoneCore.Model
 					return FromId("BOT_238p");
 				case 56075:
 					return FromId("YOD_009h");
+				case 56550:
+					return FromId("HERO_10p");
 				default:
 					throw new NotImplementedException();
 			}

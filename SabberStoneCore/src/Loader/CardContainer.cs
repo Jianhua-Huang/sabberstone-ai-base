@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 //using Newtonsoft.Json;
+using SabberStoneCore.Enchants;
 using SabberStoneCore.Model;
 using SabberStoneCore.src.Loader;
 //using SabberStoneCore.Properties;
@@ -67,6 +68,11 @@ namespace SabberStoneCore.Loader
 									cardDef.Power.Aura != null ||
 									cardDef.Power.Trigger != null ||
 									cardDef.Power.Enchant != null;
+				}
+				else
+				{
+					c.Power = new Power();
+					c.Implemented = false;
 				}
 			}
 		}

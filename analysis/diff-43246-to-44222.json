@@ -1,0 +1,6438 @@
+{
+  "oldBuild": 43246,
+  "newBuild": 44222,
+  "oldCount": 8722,
+  "newCount": 9057,
+  "addedRelevant": 309,
+  "removedRelevant": 0,
+  "changedRelevantFields": 139,
+  "added": [
+    {
+      "id": "BT_002",
+      "tags": {
+        "CARDNAME": "Incanter's Flow",
+        "CARDTEXT": "Reduce the Cost of spells in your deck by_(1).",
+        "FLAVORTEXT": "&quot;Gettin' them discounts in bulk amounts, spells can come, and spells can go, castin' costs drop with my sweet, sweet flow.&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Incanter's Flow"
+    },
+    {
+      "id": "BT_002e",
+      "tags": {
+        "CARDNAME": "Incanter's Flow",
+        "CARDTEXT": "Costs (1) less.",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "6"
+      },
+      "name": "Incanter's Flow"
+    },
+    {
+      "id": "BT_003",
+      "tags": {
+        "CARDNAME": "Netherwind Portal",
+        "CARDTEXT": "&lt;b&gt;Secret:&lt;/b&gt; After your opponent casts a spell, summon a random\n4-Cost minion.",
+        "FLAVORTEXT": "More aromatic than a regular portal.",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "SECRET": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Netherwind Portal"
+    },
+    {
+      "id": "BT_004",
+      "tags": {
+        "CARDNAME": "Imprisoned Observer",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens,\ndeal 2 damage to all\nenemy minions.",
+        "FLAVORTEXT": "Currently serving two turns on charges of aggravated minion slaughter.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "4",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Observer"
+    },
+    {
+      "id": "BT_006",
+      "tags": {
+        "CARDNAME": "Evocation",
+        "CARDTEXT": "Fill your hand with random Mage spells.\nAt the end of your turn, discard them.",
+        "FLAVORTEXT": "You too could be the winner of the national spelling spree!",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "5",
+        "RARITY": "5",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Evocation"
+    },
+    {
+      "id": "BT_006e",
+      "tags": {
+        "CARDNAME": "Evocation",
+        "CARDTEXT": "Discards at the end of your turn.",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "6"
+      },
+      "name": "Evocation"
+    },
+    {
+      "id": "BT_008",
+      "tags": {
+        "CARDNAME": "Rustsworn Initiate",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 1/1 Impcaster with\n&lt;b&gt;Spell Damage +1&lt;/b&gt;.",
+        "FLAVORTEXT": "The Rusted Legion's training leaves a little to be desired. He hasn't even had a tetanus shot yet!",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Rustsworn Initiate"
+    },
+    {
+      "id": "BT_008t",
+      "tags": {
+        "CARDNAME": "Impcaster",
+        "CARDTEXT": "&lt;b&gt;Spell Damage +1&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "1",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4"
+      },
+      "name": "Impcaster"
+    },
+    {
+      "id": "BT_009",
+      "tags": {
+        "CARDNAME": "Imprisoned Sungill",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens, summon two 1/1\nMurlocs.",
+        "FLAVORTEXT": "Imprisoned for ten thousand years! Not because it's a demon. Because of the dancing.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDRACE": "14",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Sungill"
+    },
+    {
+      "id": "BT_009t",
+      "tags": {
+        "CARDNAME": "Sungill Streamrunner",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDRACE": "14",
+        "CARDTYPE": "4"
+      },
+      "name": "Sungill Streamrunner"
+    },
+    {
+      "id": "BT_010",
+      "tags": {
+        "61934": "61934",
+        "CARDNAME": "Felfin Navigator",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Give your other Murlocs +1/+1.",
+        "FLAVORTEXT": "Return my fishes to me, and I myself shall carry you to the gates of Mrrhalla!",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "4",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "14",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1",
+        "TECH_LEVEL": "3",
+        "IS_BACON_POOL_MINION": "1"
+      },
+      "name": "Felfin Navigator"
+    },
+    {
+      "id": "BT_010e",
+      "tags": {
+        "CARDNAME": "Felfin Fueled",
+        "CARDTEXT": "+1/+1.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Felfin Fueled"
+    },
+    {
+      "id": "BT_011",
+      "tags": {
+        "1": "1",
+        "CARDNAME": "Libram of Justice",
+        "CARDTEXT": "Equip a 1/4 weapon. Change the Health of all enemy minions to 1.",
+        "FLAVORTEXT": "Proper justice. Throw the book at him!",
+        "ARTISTNAME": "",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Libram of Justice"
+    },
+    {
+      "id": "BT_011e",
+      "tags": {
+        "CARDNAME": "Judgment of Justice",
+        "CARDTEXT": "Health changed to 1.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Judgment of Justice"
+    },
+    {
+      "id": "BT_011t",
+      "tags": {
+        "CARDNAME": "Overdue Justice",
+        "ARTISTNAME": "",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "DURABILITY": "4",
+        "CLASS": "5",
+        "CARDTYPE": "7"
+      },
+      "name": "Overdue Justice"
+    },
+    {
+      "id": "BT_014",
+      "tags": {
+        "CARDNAME": "Starscryer",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Draw a spell.",
+        "FLAVORTEXT": "Often grieves with the Starsweeper.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Starscryer"
+    },
+    {
+      "id": "BT_018",
+      "tags": {
+        "CARDNAME": "Underlight Angling Rod",
+        "CARDTEXT": "After your Hero attacks, add a random Murloc to your hand.",
+        "FLAVORTEXT": "&quot;I said I wanted the ASHbringer not FISHbringer!&quot;",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "DURABILITY": "2",
+        "CLASS": "5",
+        "CARDTYPE": "7",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Underlight Angling Rod"
+    },
+    {
+      "id": "BT_019",
+      "tags": {
+        "CARDNAME": "Murgur Murgurgle",
+        "CARDTEXT": "[x]&lt;b&gt;Divine Shield&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle\n'Murgurgle Prime'\ninto your deck.",
+        "FLAVORTEXT": "Murlocs are not native to Outland. When the Sungills arrived, one among them rose to the challenge of this dark world. They call him... Murgurgle. Murgur Murgurgle.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "2",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "DIVINE_SHIELD": "1",
+        "CLASS": "5",
+        "CARDRACE": "14",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "57478"
+      },
+      "name": "Murgur Murgurgle"
+    },
+    {
+      "id": "BT_019t",
+      "tags": {
+        "CARDNAME": "Murgurgle Prime",
+        "CARDTEXT": "&lt;b&gt;Divine Shield&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Summon 4 random Murlocs. Give them &lt;b&gt;Divine Shield&lt;/b&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "6",
+        "COST": "8",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "DIVINE_SHIELD": "1",
+        "CLASS": "5",
+        "CARDRACE": "14",
+        "CARDTYPE": "4",
+        "BATTLECRY": "1"
+      },
+      "name": "Murgurgle Prime"
+    },
+    {
+      "id": "BT_020",
+      "tags": {
+        "CARDNAME": "Aldor Attendant",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Reduce the Cost_of your Librams by_(1) this game.",
+        "FLAVORTEXT": "Will check to make sure you have a valid libramary card.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Aldor Attendant"
+    },
+    {
+      "id": "BT_020e",
+      "tags": {
+        "CARDNAME": "Aldor Attendant",
+        "CARDTEXT": "Reduced Cost.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Aldor Attendant"
+    },
+    {
+      "id": "BT_021",
+      "tags": {
+        "CARDNAME": "Font of Power",
+        "CARDTEXT": "&lt;b&gt;Discover&lt;/b&gt; a Mage minion. If your deck has no minions, keep all 3.",
+        "FLAVORTEXT": "It's Comic Sans.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1",
+        "DISCOVER": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Font of Power"
+    },
+    {
+      "id": "BT_022",
+      "tags": {
+        "CARDNAME": "Apexis Smuggler",
+        "CARDTEXT": "After you play a &lt;b&gt;Secret&lt;/b&gt;, &lt;b&gt;Discover&lt;/b&gt; a spell.",
+        "FLAVORTEXT": "&quot;S-secrets? I don't have any! Whoa, look, a spell!&quot;",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "3",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Apexis Smuggler"
+    },
+    {
+      "id": "BT_024",
+      "tags": {
+        "1": "1",
+        "CARDNAME": "Libram of Hope",
+        "CARDTEXT": "Restore 8 Health. Summon an 8/8 Guardian with &lt;b&gt;Taunt&lt;/b&gt; and_&lt;b&gt;Divine Shield&lt;/b&gt;.",
+        "FLAVORTEXT": "&quot;Think you got lethal? Libram of NOPE!&quot;",
+        "ARTISTNAME": "",
+        "COST": "9",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Libram of Hope"
+    },
+    {
+      "id": "BT_024t",
+      "tags": {
+        "CARDNAME": "Ancient Guardian",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Divine Shield&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "8",
+        "ATK": "8",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "DIVINE_SHIELD": "1",
+        "CLASS": "5",
+        "CARDTYPE": "4"
+      },
+      "name": "Ancient Guardian"
+    },
+    {
+      "id": "BT_025",
+      "tags": {
+        "1": "1",
+        "CARDNAME": "Libram of Wisdom",
+        "CARDTEXT": "[x]Give a minion +1/+1\nand &quot;&lt;b&gt;Deathrattle:&lt;/b&gt; Add\na 'Libram of Wisdom'\nspell to your hand.&quot;",
+        "FLAVORTEXT": "The best wisdom is passed on.",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Libram of Wisdom"
+    },
+    {
+      "id": "BT_025e",
+      "tags": {
+        "CARDNAME": "Light's Wisdom",
+        "CARDTEXT": "+1/+1. &lt;b&gt;Deathrattle:&lt;/b&gt; Add 'Libram of Wisdom' to your hand.",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Light's Wisdom"
+    },
+    {
+      "id": "BT_026",
+      "tags": {
+        "CARDNAME": "Aldor Truthseeker",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt; Reduce the Cost of your Librams by (2) this game.",
+        "FLAVORTEXT": "It’s under 'T.'",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "4",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "5",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Aldor Truthseeker"
+    },
+    {
+      "id": "BT_026e",
+      "tags": {
+        "CARDNAME": "Aldor Truthseeker",
+        "CARDTEXT": "Reduced Cost.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Aldor Truthseeker"
+    },
+    {
+      "id": "BT_028",
+      "tags": {
+        "CARDNAME": "Astromancer Solarian",
+        "CARDTEXT": "[x]&lt;b&gt;Spell Damage +1&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle\n'Solarian Prime'\ninto your deck.",
+        "FLAVORTEXT": "Loyal to Kael'thas Sunstrider, this blood elf mage sought arcane power in the Void. Did she find it... or did IT find her?",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "3",
+        "COST": "2",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "1",
+        "CLASS": "4",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "56718"
+      },
+      "name": "Astromancer Solarian"
+    },
+    {
+      "id": "BT_028t",
+      "tags": {
+        "CARDNAME": "Solarian Prime",
+        "CARDTEXT": "&lt;b&gt;Spell Damage +1&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Cast 5 random Mage spells &lt;i&gt;(targets enemies if possible)&lt;/i&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "7",
+        "ATK": "7",
+        "COST": "7",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "1",
+        "CLASS": "4",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "BATTLECRY": "1"
+      },
+      "name": "Solarian Prime"
+    },
+    {
+      "id": "BT_035",
+      "tags": {
+        "CARDNAME": "Chaos Strike",
+        "CARDTEXT": "Give your hero +2_Attack this turn. Draw a card.",
+        "FLAVORTEXT": "&quot;What do we want?&quot; &quot;CHAOS!&quot;\n &quot;When do we want it?&quot;\n &quot;WHEN LEAST EXPECTED!&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Chaos Strike"
+    },
+    {
+      "id": "BT_035e",
+      "tags": {
+        "CARDNAME": "Chaos Strike",
+        "CARDTEXT": "+2 Attack this turn.",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Chaos Strike"
+    },
+    {
+      "id": "BT_036",
+      "tags": {
+        "CARDNAME": "Coordinated Strike",
+        "CARDTEXT": "Summon three 1/1_Illidari with &lt;b&gt;Rush&lt;/b&gt;.",
+        "FLAVORTEXT": "Undisputed champions of &quot;Dancing with the Satyrs.&quot;",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Coordinated Strike"
+    },
+    {
+      "id": "BT_036t",
+      "tags": {
+        "CARDNAME": "Illidari Initiate",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RUSH": "1"
+      },
+      "name": "Illidari Initiate"
+    },
+    {
+      "id": "BT_042",
+      "tags": {
+        "CARDNAME": "Bamboozle",
+        "CARDTEXT": "[x]&lt;b&gt;Secret:&lt;/b&gt; When one of\nyour minions is attacked,\ntransform it into a random\none that costs (3) more.",
+        "FLAVORTEXT": "&quot;WE DO YOU A BAMBOOZLE, HOOMAN!&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "SECRET": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bamboozle"
+    },
+    {
+      "id": "BT_072",
+      "tags": {
+        "CARDNAME": "Deep Freeze",
+        "CARDTEXT": "&lt;b&gt;Freeze&lt;/b&gt; an enemy. Summon two 3/6 Water Elementals.",
+        "FLAVORTEXT": "&quot;Dancing with the Satyrs… on Ice!&quot;",
+        "ARTISTNAME": "",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "FREEZE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Deep Freeze"
+    },
+    {
+      "id": "BT_100",
+      "tags": {
+        "CARDNAME": "Serpentshrine Portal",
+        "CARDTEXT": "Deal $3 damage.\nSummon a random\n3-Cost minion.\n&lt;b&gt;Overload:&lt;/b&gt; (1)",
+        "FLAVORTEXT": "This is why you never flush a three-cost minion.",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "OVERLOAD": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Serpentshrine Portal"
+    },
+    {
+      "id": "BT_101",
+      "tags": {
+        "CARDNAME": "Vivid Spores",
+        "CARDTEXT": "Give your minions &quot;&lt;b&gt;Deathrattle:&lt;/b&gt; Resummon this minion.&quot;",
+        "FLAVORTEXT": "Hey man, I just feel like... death is just a construct of our imaginations, ya know?",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Vivid Spores"
+    },
+    {
+      "id": "BT_101e",
+      "tags": {
+        "CARDNAME": "Glowcapped",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Resummon this minion.",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "6",
+        "DEATHRATTLE": "1",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Glowcapped"
+    },
+    {
+      "id": "BT_102",
+      "tags": {
+        "CARDNAME": "Boggspine Knuckles",
+        "CARDTEXT": "After your hero attacks, transform your minions into random ones that cost (1) more.",
+        "FLAVORTEXT": "I would NOT want to put my hand in there. It's... SQUISHY.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "ATK": "4",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "DURABILITY": "2",
+        "CLASS": "8",
+        "CARDTYPE": "7",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Boggspine Knuckles"
+    },
+    {
+      "id": "BT_106",
+      "tags": {
+        "CARDNAME": "Bogstrok Clacker",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Transform adjacent minions into random minions that cost (1) more.",
+        "FLAVORTEXT": "This clacker's crackers for hacking slackers into whack attackers.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bogstrok Clacker"
+    },
+    {
+      "id": "BT_109",
+      "tags": {
+        "CARDNAME": "Lady Vashj",
+        "CARDTEXT": "[x]&lt;b&gt;Spell Damage +1&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle 'Vashj\nPrime' into your deck.",
+        "FLAVORTEXT": "Personal handmaiden to Queen Azshara turned lieutenant to Illidan Stormrage. Also quite the hair sssstylist.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "4",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "1",
+        "CLASS": "8",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "56626"
+      },
+      "name": "Lady Vashj"
+    },
+    {
+      "id": "BT_109t",
+      "tags": {
+        "CARDNAME": "Vashj Prime",
+        "CARDTEXT": "[x]&lt;b&gt;Spell Damage +1&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Draw 3 spells.\n___Reduce their Cost by (3).___",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "5",
+        "COST": "7",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "1",
+        "CLASS": "8",
+        "CARDTYPE": "4",
+        "BATTLECRY": "1"
+      },
+      "name": "Vashj Prime"
+    },
+    {
+      "id": "BT_109te",
+      "tags": {
+        "CARDNAME": "Vashj Prime",
+        "CARDTEXT": "Cost (3) less.",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "6"
+      },
+      "name": "Vashj Prime"
+    },
+    {
+      "id": "BT_110",
+      "tags": {
+        "CARDNAME": "Torrent",
+        "CARDTEXT": "[x]Deal $8 damage to a\nminion. Costs (3) less if\nyou cast a spell last turn.",
+        "FLAVORTEXT": "Weeks of underwater cross-training have really built up her fourarms.",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Torrent"
+    },
+    {
+      "id": "BT_113",
+      "tags": {
+        "CARDNAME": "Totemic Reflection",
+        "CARDTEXT": "Give a minion +2/+2.\nIf it's a Totem, summon a copy of it.",
+        "FLAVORTEXT": "&quot;Upon reflection, I have decided that your board needs more ME.&quot;",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Totemic Reflection"
+    },
+    {
+      "id": "BT_113e",
+      "tags": {
+        "CARDNAME": "Totemly Awesome",
+        "CARDTEXT": "+2/+2.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Totemly Awesome"
+    },
+    {
+      "id": "BT_114",
+      "tags": {
+        "CARDNAME": "Shattered Rumbler",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; If you cast a spell last turn, deal 2 damage to all other minions.",
+        "FLAVORTEXT": "HAPPY BIRTHDAY TO THE GROUND!",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "4",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDRACE": "18",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Shattered Rumbler"
+    },
+    {
+      "id": "BT_115",
+      "tags": {
+        "CARDNAME": "Marshspawn",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; If you cast\na spell last turn,\n&lt;b&gt;Discover&lt;/b&gt; a spell.",
+        "FLAVORTEXT": "Hopes to someday promote to Marshsqueen.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDRACE": "18",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Marshspawn"
+    },
+    {
+      "id": "BT_117",
+      "tags": {
+        "CARDNAME": "Bladestorm",
+        "CARDTEXT": "Deal $1 damage to all minions. Repeat until one dies.",
+        "FLAVORTEXT": "Dear minions: \nWoosh, woosh, woosh, woosh, woosh.\nBest regards,\nBladestorm",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bladestorm"
+    },
+    {
+      "id": "BT_120",
+      "tags": {
+        "CARDNAME": "Warmaul Challenger",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Choose\nan enemy minion.\nBattle it to the death!",
+        "FLAVORTEXT": "Old gladiator rules: first one to die loses.",
+        "TARGETING_ARROW_TEXT": "Choose a minion to battle.",
+        "HEALTH": "10",
+        "ATK": "1",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Warmaul Challenger"
+    },
+    {
+      "id": "BT_121",
+      "tags": {
+        "CARDNAME": "Imprisoned Gan'arg",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens,\nequip a 3/2 Axe.",
+        "FLAVORTEXT": "Factory Direct Fiery War Axe. Please allow two turns for delivery.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Gan'arg"
+    },
+    {
+      "id": "BT_123",
+      "tags": {
+        "CARDNAME": "Kargath Bladefist",
+        "CARDTEXT": "[x]&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle\n'Kargath Prime'\ninto your deck.",
+        "FLAVORTEXT": "He rules the Shattered Hand orc clan with an iron... bladefist.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "4",
+        "COST": "4",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "56656"
+      },
+      "name": "Kargath Bladefist"
+    },
+    {
+      "id": "BT_123t",
+      "tags": {
+        "CARDNAME": "Kargath Prime",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;. Whenever this attacks and kills a minion, gain 10 Armor.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "10",
+        "ATK": "10",
+        "COST": "8",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "4",
+        "RUSH": "1"
+      },
+      "name": "Kargath Prime"
+    },
+    {
+      "id": "BT_124",
+      "tags": {
+        "CARDNAME": "Corsair Cache",
+        "CARDTEXT": "Draw a weapon.\nGive it +1/+1.",
+        "FLAVORTEXT": "Where's a corsair's favorite place to hide treasure? Under their deck!",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Corsair Cache"
+    },
+    {
+      "id": "BT_124e",
+      "tags": {
+        "CARDNAME": "Void Sharpened",
+        "CARDTEXT": "+1/+1.",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "6"
+      },
+      "name": "Void Sharpened"
+    },
+    {
+      "id": "BT_126",
+      "tags": {
+        "CARDNAME": "Teron Gorefiend",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Destroy all friendly minions. &lt;b&gt;Deathrattle:&lt;/b&gt; Resummon them with +1/+1.",
+        "FLAVORTEXT": "&quot;You’re fine, friendly minions! You're fine! Don’t tell Mom!&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "3",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Teron Gorefiend"
+    },
+    {
+      "id": "BT_126e",
+      "tags": {
+        "CARDNAME": "Shadowy Construct",
+        "CARDTEXT": "Destroyed {0}.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Shadowy Construct"
+    },
+    {
+      "id": "BT_126e2",
+      "tags": {
+        "CARDNAME": "Vengeful Spirit",
+        "CARDTEXT": "+1/+1.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Vengeful Spirit"
+    },
+    {
+      "id": "BT_127",
+      "tags": {
+        "CARDNAME": "Imprisoned Satyr",
+        "CARDTEXT": "[x]&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens, reduce\nthe Cost of a random minion\nin your hand by (5).",
+        "FLAVORTEXT": "&quot;C'mon down to Illhoof's bargain bin! When the satyr's free, he'll lower your fee!&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Satyr"
+    },
+    {
+      "id": "BT_127e",
+      "tags": {
+        "CARDNAME": "Imprisoned Satyr",
+        "CARDTEXT": "Costs (5) less.",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "6"
+      },
+      "name": "Imprisoned Satyr"
+    },
+    {
+      "id": "BT_128",
+      "tags": {
+        "CARDNAME": "Fungal Fortunes",
+        "CARDTEXT": "Draw 3 cards. Discard any minions drawn.",
+        "FLAVORTEXT": "Far superior to a beanstalk boondoggle.",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Fungal Fortunes"
+    },
+    {
+      "id": "BT_129",
+      "tags": {
+        "CARDNAME": "Germination",
+        "CARDTEXT": "Summon a copy of a friendly minion.\nGive the copy &lt;b&gt;Taunt&lt;/b&gt;.",
+        "FLAVORTEXT": "I regret asking how sporelings are made.",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Germination"
+    },
+    {
+      "id": "BT_129e",
+      "tags": {
+        "CARDNAME": "Mitosis",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Mitosis"
+    },
+    {
+      "id": "BT_130",
+      "tags": {
+        "CARDNAME": "Overgrowth",
+        "CARDTEXT": "Gain two empty Mana_Crystals.",
+        "FLAVORTEXT": "Zangarmarsh: it's a fungal out there!",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Overgrowth"
+    },
+    {
+      "id": "BT_131",
+      "tags": {
+        "CARDNAME": "Ysiel Windsinger",
+        "CARDTEXT": "Your spells cost (1).",
+        "FLAVORTEXT": "Reach down into your lungs. The wind that resides there is your greatest treasure. It provides the gift of song, which is free. \n*But not less than (1)",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "5",
+        "COST": "9",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "COLLECTIBLE": "1",
+        "AURA": "1"
+      },
+      "name": "Ysiel Windsinger"
+    },
+    {
+      "id": "BT_131e",
+      "tags": {
+        "CARDNAME": "Ysiel Windsinger",
+        "CARDTEXT": "Costs (1).",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Ysiel Windsinger"
+    },
+    {
+      "id": "BT_132",
+      "tags": {
+        "CARDNAME": "Ironbark",
+        "CARDTEXT": "Give a minion +1/+3 and &lt;b&gt;Taunt&lt;/b&gt;.\nCosts (0) if you have at least 7 Mana Crystals.",
+        "FLAVORTEXT": "&quot;The important thing, son, is to protect your spores! I have spoken!&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Ironbark"
+    },
+    {
+      "id": "BT_132e",
+      "tags": {
+        "CARDNAME": "Ironbark",
+        "CARDTEXT": "+1/+3 and &lt;b&gt;Taunt&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "6"
+      },
+      "name": "Ironbark"
+    },
+    {
+      "id": "BT_133",
+      "tags": {
+        "CARDNAME": "Marsh Hydra",
+        "CARDTEXT": "[x]&lt;b&gt;Rush&lt;/b&gt;\nAfter this attacks, add a\nrandom 8-Cost minion\nto your hand.",
+        "FLAVORTEXT": "Three heads of marsh-mashing, bog-bashing, swamp-stomping fury!",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "7",
+        "ATK": "7",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1",
+        "RUSH": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Marsh Hydra"
+    },
+    {
+      "id": "BT_134",
+      "tags": {
+        "CARDNAME": "Bogbeam",
+        "CARDTEXT": "Deal $3 damage to_a minion.\nCosts (0) if you have at least 7 Mana Crystals.",
+        "FLAVORTEXT": "Some think the mysterious bright lights in the bog are alien invaders, others think they're just swamp gas. Turns out, it's just druids.",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bogbeam"
+    },
+    {
+      "id": "BT_135",
+      "tags": {
+        "CARDNAME": "Glowfly Swarm",
+        "CARDTEXT": "Summon a 2/2 Glowfly for each spell in your_hand.",
+        "FLAVORTEXT": "Glowflies are distant relations to spelling bees.",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Glowfly Swarm"
+    },
+    {
+      "id": "BT_135t",
+      "tags": {
+        "CARDNAME": "Glowfly",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDRACE": "20",
+        "CARDTYPE": "4"
+      },
+      "name": "Glowfly"
+    },
+    {
+      "id": "BT_136",
+      "tags": {
+        "CARDNAME": "Archspore Msshi'fn",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle\n'Msshi'fn Prime'\ninto your deck.",
+        "FLAVORTEXT": "Brave leader of the Sporeggar. Guided by the philosophy that one should not mssh with matters that are not one's msshiness.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "3",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "2",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "57782"
+      },
+      "name": "Archspore Msshi'fn"
+    },
+    {
+      "id": "BT_136t",
+      "tags": {
+        "CARDNAME": "Msshi'fn Prime",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Choose One -&lt;/b&gt; Summon a 9/9 Fungal Giant with &lt;b&gt;Taunt&lt;/b&gt;; or &lt;b&gt;Rush&lt;/b&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "9",
+        "ATK": "9",
+        "COST": "10",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "4",
+        "CHOOSE_ONE": "1"
+      },
+      "name": "Msshi'fn Prime"
+    },
+    {
+      "id": "BT_136ta",
+      "tags": {
+        "CARDNAME": "Msshi'fn Pro'tec",
+        "CARDTEXT": "Summon a 9/9 Guardian with &lt;b&gt;Taunt&lt;/b&gt;.",
+        "COST": "10",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5"
+      },
+      "name": "Msshi'fn Pro'tec"
+    },
+    {
+      "id": "BT_136tb",
+      "tags": {
+        "CARDNAME": "Msshi'fn At'tac",
+        "CARDTEXT": "Summon a 9/9 Bruiser with &lt;b&gt;Rush&lt;/b&gt;.",
+        "COST": "10",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5"
+      },
+      "name": "Msshi'fn At'tac"
+    },
+    {
+      "id": "BT_136tt",
+      "tags": {
+        "CARDNAME": "Fungal Guardian",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "9",
+        "ATK": "9",
+        "COST": "10",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "2",
+        "CARDTYPE": "4"
+      },
+      "name": "Fungal Guardian"
+    },
+    {
+      "id": "BT_136tt2",
+      "tags": {
+        "CARDNAME": "Fungal Bruiser",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "9",
+        "ATK": "9",
+        "COST": "10",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "4",
+        "RUSH": "1"
+      },
+      "name": "Fungal Bruiser"
+    },
+    {
+      "id": "BT_136tt3",
+      "tags": {
+        "CARDNAME": "Fungal Gargantuan",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Taunt&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "9",
+        "ATK": "9",
+        "COST": "10",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "2",
+        "CARDTYPE": "4",
+        "RUSH": "1"
+      },
+      "name": "Fungal Gargantuan"
+    },
+    {
+      "id": "BT_138",
+      "tags": {
+        "CARDNAME": "Bloodboil Brute",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;\nCosts (1) less for each damaged minion.",
+        "FLAVORTEXT": "Call Gurtogg a brute if you like, but no one else cares about the wounded like he does.",
+        "ARTISTNAME": "",
+        "HEALTH": "8",
+        "ATK": "6",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Bloodboil Brute"
+    },
+    {
+      "id": "BT_140",
+      "tags": {
+        "CARDNAME": "Bonechewer Raider",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; If there is a damaged minion, gain +1/+1 and &lt;b&gt;Rush&lt;/b&gt;.",
+        "FLAVORTEXT": "And if that minion has a frisbee, LOOK OUT!",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bonechewer Raider"
+    },
+    {
+      "id": "BT_140e",
+      "tags": {
+        "CARDNAME": "Worg-mounted",
+        "CARDTEXT": "+1/+1 and &lt;b&gt;Rush&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Worg-mounted"
+    },
+    {
+      "id": "BT_142",
+      "tags": {
+        "CARDNAME": "Shadowhoof Slayer",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Give your hero +1_Attack this turn.",
+        "FLAVORTEXT": "Was a humble Elven Archer before Sargeras got to him.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Shadowhoof Slayer"
+    },
+    {
+      "id": "BT_142e",
+      "tags": {
+        "CARDNAME": "Sharpened Claws",
+        "CARDTEXT": "+1 Attack this turn.",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Sharpened Claws"
+    },
+    {
+      "id": "BT_155",
+      "tags": {
+        "CARDNAME": "Scrapyard Colossus",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a \n7/7 Felcracked Colossus\nwith &lt;b&gt;Taunt&lt;/b&gt;.",
+        "FLAVORTEXT": "Heap on heapin' on.",
+        "ARTISTNAME": "",
+        "HEALTH": "7",
+        "ATK": "7",
+        "COST": "10",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "CARDRACE": "18",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Scrapyard Colossus"
+    },
+    {
+      "id": "BT_155t",
+      "tags": {
+        "CARDNAME": "Felcracked Colossus",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "7",
+        "ATK": "7",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "CARDRACE": "18",
+        "CARDTYPE": "4"
+      },
+      "name": "Felcracked Colossus"
+    },
+    {
+      "id": "BT_156",
+      "tags": {
+        "CARDNAME": "Imprisoned Vilefiend",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\n&lt;b&gt;Rush&lt;/b&gt;",
+        "FLAVORTEXT": "If you do the time, you gotta make up the time.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Imprisoned Vilefiend"
+    },
+    {
+      "id": "BT_159",
+      "tags": {
+        "CARDNAME": "Terrorguard Escapee",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Summon three 1/1 Huntresses for your_opponent.",
+        "FLAVORTEXT": "Poor guy is terrified, look at his faces.",
+        "ARTISTNAME": "",
+        "HEALTH": "7",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Terrorguard Escapee"
+    },
+    {
+      "id": "BT_159t",
+      "tags": {
+        "CARDNAME": "Huntress",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4"
+      },
+      "name": "Huntress"
+    },
+    {
+      "id": "BT_160",
+      "tags": {
+        "CARDNAME": "Rustsworn Cultist",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Give your\nother minions &quot;&lt;b&gt;Deathrattle:&lt;/b&gt;\nSummon a 1/1 Demon.&quot;",
+        "FLAVORTEXT": "&quot;Rust… I love it. It's all coarse, and rough, and irritating. And it gets everywhere.&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Rustsworn Cultist"
+    },
+    {
+      "id": "BT_160e",
+      "tags": {
+        "CARDNAME": "Rustsworn Pact",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 1/1 Demon.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Rustsworn Pact"
+    },
+    {
+      "id": "BT_160t",
+      "tags": {
+        "CARDNAME": "Rusted Devil",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4"
+      },
+      "name": "Rusted Devil"
+    },
+    {
+      "id": "BT_163",
+      "tags": {
+        "CARDNAME": "Nagrand Slam",
+        "CARDTEXT": "Summon four 3/5 Clefthoofs that attack random enemies.",
+        "FLAVORTEXT": "Come on and slam, and welcome to Nagrand!",
+        "ARTISTNAME": "",
+        "COST": "10",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Nagrand Slam"
+    },
+    {
+      "id": "BT_163t",
+      "tags": {
+        "CARDNAME": "Clefthoof",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "3",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "20",
+        "CARDTYPE": "4"
+      },
+      "name": "Clefthoof"
+    },
+    {
+      "id": "BT_173",
+      "tags": {
+        "CARDNAME": "Command the Illidari",
+        "CARDTEXT": "Summon six 1/1_Illidari with &lt;b&gt;Rush&lt;/b&gt;.",
+        "FLAVORTEXT": "Give me an R! \nGive me a U! \nGive me an S! \nGive me an H! \nYou two, you’re exclamation points!",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Command the Illidari"
+    },
+    {
+      "id": "BT_175",
+      "tags": {
+        "CARDNAME": "Twin Slice",
+        "CARDTEXT": "Give your hero +1 Attack this turn. Add 'Second Slice' to your hand.",
+        "FLAVORTEXT": "The slice so nice, it'll cut you twice.",
+        "ARTISTNAME": "",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Twin Slice"
+    },
+    {
+      "id": "BT_175e",
+      "tags": {
+        "CARDNAME": "Twin Slice",
+        "CARDTEXT": "Your hero has +1 Attack this turn.",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Twin Slice"
+    },
+    {
+      "id": "BT_175t",
+      "tags": {
+        "CARDNAME": "Second Slice",
+        "CARDTEXT": "Give your hero +1_Attack this turn.",
+        "ARTISTNAME": "",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5"
+      },
+      "name": "Second Slice"
+    },
+    {
+      "id": "BT_187",
+      "tags": {
+        "CARDNAME": "Kayn Sunfury",
+        "CARDTEXT": "&lt;b&gt;Charge&lt;/b&gt;\nAll friendly attacks ignore_&lt;b&gt;Taunt&lt;/b&gt;.",
+        "FLAVORTEXT": "&quot;Armor and heals may slow my zeal, but fel and glaives excite me!&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "3",
+        "COST": "4",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CHARGE": "1",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "COLLECTIBLE": "1",
+        "AURA": "1"
+      },
+      "name": "Kayn Sunfury"
+    },
+    {
+      "id": "BT_187e",
+      "tags": {
+        "CARDNAME": "Death's Dance",
+        "CARDTEXT": "Your attacks ignore &lt;b&gt;Taunt&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "AURA": "1"
+      },
+      "name": "Death's Dance"
+    },
+    {
+      "id": "BT_187e2",
+      "tags": {
+        "CARDNAME": "Death's Dance",
+        "CARDTEXT": "Kayn is letting this ignore &lt;b&gt;Taunt&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Death's Dance"
+    },
+    {
+      "id": "BT_188",
+      "tags": {
+        "CARDNAME": "Shadowjeweler Hanar",
+        "CARDTEXT": "[x]After you play a &lt;b&gt;Secret&lt;/b&gt;,\n&lt;b&gt;Discover&lt;/b&gt; a &lt;b&gt;Secret&lt;/b&gt; from\na different class.",
+        "FLAVORTEXT": "What is a shadowjeweler? A miserable little pile of secrets.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "5",
+        "ATK": "1",
+        "COST": "2",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Shadowjeweler Hanar"
+    },
+    {
+      "id": "BT_190",
+      "tags": {
+        "CARDNAME": "Replicat-o-tron",
+        "CARDTEXT": "At the end of your turn, transform a neighbor into a copy of this.",
+        "FLAVORTEXT": "According to the Boom Labs sales brochure, it &quot;impractically makes itself!&quot;",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "17",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Replicat-o-tron"
+    },
+    {
+      "id": "BT_196",
+      "tags": {
+        "CARDNAME": "Keli'dan the Breaker",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Destroy a minion.\nIf drawn this turn, instead\ndestroy all minions\nexcept this one.",
+        "FLAVORTEXT": "He calms down a lot if you just give him a turn.",
+        "TARGETING_ARROW_TEXT": "Destroy a minion.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "6",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Keli'dan the Breaker"
+    },
+    {
+      "id": "BT_196e",
+      "tags": {
+        "CARDNAME": "Come Closer",
+        "CARDTEXT": "Drawn this turn.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1",
+        "ENCHANTMENT_INVISIBLE": "1"
+      },
+      "name": "Come Closer"
+    },
+    {
+      "id": "BT_197",
+      "tags": {
+        "CARDNAME": "Reliquary of Souls",
+        "CARDTEXT": "[x]&lt;b&gt;Lifesteal&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle\n'Reliquary Prime'\ninto your deck.",
+        "FLAVORTEXT": "These three represent Anger, Desire, and Suffering. Much like raid night guild chat.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "1",
+        "COST": "1",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "LIFESTEAL": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "57172"
+      },
+      "name": "Reliquary of Souls"
+    },
+    {
+      "id": "BT_197t",
+      "tags": {
+        "CARDNAME": "Reliquary Prime",
+        "CARDTEXT": "[x]&lt;b&gt;&lt;b&gt;Taunt&lt;/b&gt;, Lifesteal&lt;/b&gt;\nOnly you can target this with\nspells and Hero Powers.",
+        "ARTISTNAME": "",
+        "HEALTH": "8",
+        "ATK": "6",
+        "COST": "7",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "LIFESTEAL": "1"
+      },
+      "name": "Reliquary Prime"
+    },
+    {
+      "id": "BT_198",
+      "tags": {
+        "CARDNAME": "Soul Mirror",
+        "CARDTEXT": "Summon copies of enemy minions. They attack their copies.",
+        "FLAVORTEXT": "It’s a doppelgang-war!",
+        "ARTISTNAME": "",
+        "COST": "7",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "5",
+        "RARITY": "5",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Soul Mirror"
+    },
+    {
+      "id": "BT_199",
+      "tags": {
+        "CARDNAME": "Unstable Felbolt",
+        "CARDTEXT": "Deal $3 damage to an enemy minion and a random friendly one.",
+        "FLAVORTEXT": "Warning! Your minions are seated in the splash zone.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "FACTION": "3",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "AttackVisualType": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Unstable Felbolt"
+    },
+    {
+      "id": "BT_201",
+      "tags": {
+        "CARDNAME": "Augmented Porcupine",
+        "CARDTEXT": "[x]&lt;b&gt;Deathrattle&lt;/b&gt;: Deal this\nminion's Attack damage\nrandomly split among\nall enemies.",
+        "FLAVORTEXT": "Pokey-man. Gotta spike 'em all!",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "2",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Augmented Porcupine"
+    },
+    {
+      "id": "BT_202",
+      "tags": {
+        "CARDNAME": "Helboar",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Give a random Beast in your hand +1/+1.",
+        "FLAVORTEXT": "Beasts love Helbacon Strips!",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Helboar"
+    },
+    {
+      "id": "BT_202e",
+      "tags": {
+        "CARDNAME": "Scent of Blood",
+        "CARDTEXT": "+1/+1.",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "6"
+      },
+      "name": "Scent of Blood"
+    },
+    {
+      "id": "BT_203",
+      "tags": {
+        "1": "1",
+        "CARDNAME": "Pack Tactics",
+        "CARDTEXT": "&lt;b&gt;Secret:&lt;/b&gt; When a friendly minion is attacked, summon a 3/3 copy.",
+        "FLAVORTEXT": "&quot;Just you wait, I’ll go get on my main!&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "SECRET": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Pack Tactics"
+    },
+    {
+      "id": "BT_203e",
+      "tags": {
+        "CARDNAME": "Packmate",
+        "CARDTEXT": "Attack and Health set to 3.",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "6"
+      },
+      "name": "Packmate"
+    },
+    {
+      "id": "BT_205",
+      "tags": {
+        "CARDNAME": "Scrap Shot",
+        "CARDTEXT": "Deal $3 damage.\nGive a random Beast in_your hand +3/+3.",
+        "FLAVORTEXT": "Make your foe's armor your fauna's fashion!",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Scrap Shot"
+    },
+    {
+      "id": "BT_205e",
+      "tags": {
+        "CARDNAME": "Scrapmetal Claws",
+        "CARDTEXT": "+3/+3.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Scrapmetal Claws"
+    },
+    {
+      "id": "BT_210",
+      "tags": {
+        "CARDNAME": "Zixor, Apex Predator",
+        "CARDTEXT": "[x]&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle 'Zixor\nPrime' into your deck.",
+        "FLAVORTEXT": "A living terror. Teleports at will. Feasts on tainted helboar meat. No head scritches unless you're Leoroxx.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "2",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "57631"
+      },
+      "name": "Zixor, Apex Predator"
+    },
+    {
+      "id": "BT_210t",
+      "tags": {
+        "CARDNAME": "Zixor Prime",
+        "CARDTEXT": "[x]&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Summon 3\ncopies of this minion.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "4",
+        "COST": "8",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "BATTLECRY": "1",
+        "RUSH": "1"
+      },
+      "name": "Zixor Prime"
+    },
+    {
+      "id": "BT_211",
+      "tags": {
+        "CARDNAME": "Imprisoned Felmaw",
+        "CARDTEXT": "[x]&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens,\n__attack a random enemy.",
+        "FLAVORTEXT": "It doesn't care who woke it up, someone's getting bitten.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "5",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Felmaw"
+    },
+    {
+      "id": "BT_212",
+      "tags": {
+        "CARDNAME": "Mok'Nathal Lion",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt; Choose a friendly minion. Gain a copy of its &lt;b&gt;Deathrattle&lt;/b&gt;.",
+        "FLAVORTEXT": "Never underestimate a lioness when her pride is on the line.",
+        "TARGETING_ARROW_TEXT": "Choose a friendly minion.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "5",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Mok'Nathal Lion"
+    },
+    {
+      "id": "BT_212e",
+      "tags": {
+        "CARDNAME": "Stalking",
+        "CARDTEXT": "Copied &lt;b&gt;Deathrattle&lt;/b&gt; from {0}.",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Stalking"
+    },
+    {
+      "id": "BT_213",
+      "tags": {
+        "CARDNAME": "Scavenger's Ingenuity",
+        "CARDTEXT": "Draw a Beast.\nGive it +3/+3.",
+        "FLAVORTEXT": "&quot;A beast, barely alive. Gentlemen, we can rebuild it! Make it stronger, faster... spikier.&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Scavenger's Ingenuity"
+    },
+    {
+      "id": "BT_213e",
+      "tags": {
+        "CARDNAME": "Pack Tactics",
+        "CARDTEXT": "+3/+3.",
+        "CARD_SET": "1414",
+        "CARDTYPE": "6"
+      },
+      "name": "Pack Tactics"
+    },
+    {
+      "id": "BT_214",
+      "tags": {
+        "CARDNAME": "Beastmaster Leoroxx",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Summon 3 Beasts from your hand.",
+        "FLAVORTEXT": "Father of Rexxar, Champion of the Horde, and Flexxar, Champion of the Gym.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "5",
+        "COST": "8",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Beastmaster Leoroxx"
+    },
+    {
+      "id": "BT_230",
+      "tags": {
+        "CARDNAME": "The Lurker Below",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Deal 3 damage\nto an enemy minion. If it\ndies, repeat on one of\nits neighbors.",
+        "FLAVORTEXT": "&quot;Throw it back! THROW IT BACK!&quot;",
+        "TARGETING_ARROW_TEXT": "Deal 3 damage.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "6",
+        "COST": "6",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "8",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "The Lurker Below"
+    },
+    {
+      "id": "BT_233",
+      "tags": {
+        "CARDNAME": "Sword and Board",
+        "CARDTEXT": "Deal $2 damage to a minion. Gain 2 Armor.",
+        "FLAVORTEXT": "Stab and Slab. Charge and Targe. Slash and Bash. You get the idea.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Sword and Board"
+    },
+    {
+      "id": "BT_235",
+      "tags": {
+        "CARDNAME": "Chaos Nova",
+        "CARDTEXT": "Deal $4 damage to all_minions.",
+        "FLAVORTEXT": "Illin' Illidan laying down the damage, flinging out the chaos as far as he can manage.",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Chaos Nova"
+    },
+    {
+      "id": "BT_249",
+      "tags": {
+        "CARDNAME": "Scrap Golem",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;. &lt;b&gt;Deathrattle&lt;/b&gt;: Gain Armor equal to this minion's Attack.",
+        "FLAVORTEXT": "Abuse, reuse, recycle.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "4",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "10",
+        "CARDRACE": "17",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Scrap Golem"
+    },
+    {
+      "id": "BT_252",
+      "tags": {
+        "CARDNAME": "Renew",
+        "CARDTEXT": "Restore #3 Health. &lt;b&gt;Discover&lt;/b&gt; a spell.",
+        "FLAVORTEXT": "I am rejuvenated, I am renewed, I am my own nightlight!",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "DISCOVER": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Renew"
+    },
+    {
+      "id": "BT_253",
+      "tags": {
+        "CARDNAME": "Psyche Split",
+        "CARDTEXT": "Give a minion +1/+2. Summon a copy of it.",
+        "FLAVORTEXT": "This is how the arakkoa make friends.",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Psyche Split"
+    },
+    {
+      "id": "BT_253e",
+      "tags": {
+        "CARDNAME": "Twin Vision",
+        "CARDTEXT": "+1/+2.",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "6"
+      },
+      "name": "Twin Vision"
+    },
+    {
+      "id": "BT_254",
+      "tags": {
+        "CARDNAME": "Sethekk Veilweaver",
+        "CARDTEXT": "[x]After you cast a spell on\na minion, add a Priest\nspell to your hand.",
+        "FLAVORTEXT": "The Sethekk weren't able to survive this long by being wasteful with their power. Or their wacky hats.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "3",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Sethekk Veilweaver"
+    },
+    {
+      "id": "BT_256",
+      "tags": {
+        "CARDNAME": "Dragonmaw Overseer",
+        "CARDTEXT": "At the end of your turn, give another friendly minion +2/+2.",
+        "FLAVORTEXT": "Ah, the Booterang... nothing cures peon laziness faster.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Dragonmaw Overseer"
+    },
+    {
+      "id": "BT_256e",
+      "tags": {
+        "CARDNAME": "Booted",
+        "CARDTEXT": "Stats increased.",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "6"
+      },
+      "name": "Booted"
+    },
+    {
+      "id": "BT_257",
+      "tags": {
+        "CARDNAME": "Apotheosis",
+        "CARDTEXT": "Give a minion +2/+3 and &lt;b&gt;Lifesteal&lt;/b&gt;.",
+        "FLAVORTEXT": "Defined as the absolute pinnacle of existence. Plus Lifesteal.",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Apotheosis"
+    },
+    {
+      "id": "BT_257e",
+      "tags": {
+        "CARDNAME": "Apotheosis",
+        "CARDTEXT": "+2/+3 and &lt;b&gt;Lifesteal&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "6",
+        "RARITY": "4"
+      },
+      "name": "Apotheosis"
+    },
+    {
+      "id": "BT_258",
+      "tags": {
+        "CARDNAME": "Imprisoned Homunculus",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\n&lt;b&gt;Taunt&lt;/b&gt;",
+        "FLAVORTEXT": "He got a time out for excessive vulgarity.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "6",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Homunculus"
+    },
+    {
+      "id": "BT_262",
+      "tags": {
+        "CARDNAME": "Dragonmaw Sentinel",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; If you're holding a Dragon, gain +1 Attack and &lt;b&gt;Lifesteal&lt;/b&gt;.",
+        "FLAVORTEXT": "On the side, she's training for the annual Dragonmaw hammer throw tournament.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "1",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Dragonmaw Sentinel"
+    },
+    {
+      "id": "BT_262e",
+      "tags": {
+        "CARDNAME": "Nether Sight",
+        "CARDTEXT": "+1 Attack and &lt;b&gt;Lifesteal&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "6"
+      },
+      "name": "Nether Sight"
+    },
+    {
+      "id": "BT_271",
+      "tags": {
+        "CARDNAME": "Flamereaper",
+        "CARDTEXT": "Also damages the minions next to whomever your hero_attacks.",
+        "FLAVORTEXT": "Honestly it sows more flame than it reaps.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "ATK": "4",
+        "COST": "7",
+        "CARD_SET": "1463",
+        "DURABILITY": "3",
+        "CLASS": "14",
+        "CARDTYPE": "7",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Flamereaper"
+    },
+    {
+      "id": "BT_291",
+      "tags": {
+        "CARDNAME": "Apexis Blast",
+        "CARDTEXT": "Deal $5 damage.\nIf your deck has no minions, summon a random 5-Cost minion.",
+        "FLAVORTEXT": "Lonely mages can still have a blast!",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "4",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Apexis Blast"
+    },
+    {
+      "id": "BT_292",
+      "tags": {
+        "CARDNAME": "Hand of A'dal",
+        "CARDTEXT": "Give a minion +2/+2.\nDraw a card.",
+        "FLAVORTEXT": "When it meets the Hand of Gul'dan, they're SHAKING.",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Hand of A'dal"
+    },
+    {
+      "id": "BT_292e",
+      "tags": {
+        "CARDNAME": "Hand of A'dal",
+        "CARDTEXT": "+2/+2.",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "6",
+        "RARITY": "1"
+      },
+      "name": "Hand of A'dal"
+    },
+    {
+      "id": "BT_300",
+      "tags": {
+        "CARDNAME": "Hand of Gul'dan",
+        "CARDTEXT": "When you play\nor discard this,\ndraw 3 cards.",
+        "FLAVORTEXT": "His skull also draws three cards. Imagine how many cards he could draw with HIS ENTIRE BODY!",
+        "ARTISTNAME": "",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "InvisibleDeathrattle": "1"
+      },
+      "name": "Hand of Gul'dan"
+    },
+    {
+      "id": "BT_301",
+      "tags": {
+        "CARDNAME": "Nightshade Matron",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Discard your highest Cost card.",
+        "FLAVORTEXT": "Throws shade at those &quot;high-cost&quot; minions.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "5",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Nightshade Matron"
+    },
+    {
+      "id": "BT_302",
+      "tags": {
+        "CARDNAME": "The Dark Portal",
+        "CARDTEXT": "Draw a minion. If you have at least 8 cards in hand, it costs (5) less.",
+        "FLAVORTEXT": "Some say it's the source of Azeroth's greatest problems—aside from the gnomes.",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "The Dark Portal"
+    },
+    {
+      "id": "BT_302e",
+      "tags": {
+        "CARDNAME": "Dark Portal",
+        "CARDTEXT": "Costs (5) less.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Dark Portal"
+    },
+    {
+      "id": "BT_304",
+      "tags": {
+        "CARDNAME": "Enhanced Dreadlord",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 5/5\nDreadlord with &lt;b&gt;Lifesteal&lt;/b&gt;.",
+        "FLAVORTEXT": "Photo actually taken across the street in the reflection of a doorknob.",
+        "ARTISTNAME": "",
+        "HEALTH": "7",
+        "ATK": "5",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "9",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Enhanced Dreadlord"
+    },
+    {
+      "id": "BT_304t",
+      "tags": {
+        "CARDNAME": "Desperate Dreadlord",
+        "CARDTEXT": "&lt;b&gt;Lifesteal&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "5",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "LIFESTEAL": "1"
+      },
+      "name": "Desperate Dreadlord"
+    },
+    {
+      "id": "BT_305",
+      "tags": {
+        "CARDNAME": "Imprisoned Scrap Imp",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens,\ngive all minions in your hand +2/+2.",
+        "FLAVORTEXT": "His impish imports imply impressively impetuous impropriety.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Scrap Imp"
+    },
+    {
+      "id": "BT_305e",
+      "tags": {
+        "CARDNAME": "Scrap Weapons",
+        "CARDTEXT": "+2/+2.",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "FACTION": "3",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Scrap Weapons"
+    },
+    {
+      "id": "BT_306",
+      "tags": {
+        "CARDNAME": "Shadow Council",
+        "CARDTEXT": "Replace your hand\nwith random Demons.\nGive them +2/+2.",
+        "FLAVORTEXT": "Why is everybody in Outland replacing their hands?!",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Shadow Council"
+    },
+    {
+      "id": "BT_306e",
+      "tags": {
+        "CARDNAME": "Ritual Summons",
+        "CARDTEXT": "+2/+2.",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "6"
+      },
+      "name": "Ritual Summons"
+    },
+    {
+      "id": "BT_307",
+      "tags": {
+        "CARDNAME": "Darkglare",
+        "CARDTEXT": "After your hero takes damage, refresh 2 Mana_Crystals.",
+        "FLAVORTEXT": "He's got a dark glare, but he sees crystal clear!",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "4",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Darkglare"
+    },
+    {
+      "id": "BT_309",
+      "tags": {
+        "CARDNAME": "Kanrethad Ebonlocke",
+        "CARDTEXT": "[x]Your Demons cost (1) less.\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle\n'Kanrethad Prime'\ninto your deck.",
+        "FLAVORTEXT": "After Illidan's downfall, Kanrethad formed the Council of the Black Harvest to study Illidan's fel magic. Some say he was... green with envy.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "3",
+        "COST": "2",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "AURA": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "57155"
+      },
+      "name": "Kanrethad Ebonlocke"
+    },
+    {
+      "id": "BT_309e",
+      "tags": {
+        "CARDNAME": "Black Harvest",
+        "CARDTEXT": "Costs (1) less.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Black Harvest"
+    },
+    {
+      "id": "BT_309t",
+      "tags": {
+        "CARDNAME": "Kanrethad Prime",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Summon 3 friendly Demons that died_this game.",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "7",
+        "COST": "8",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "BATTLECRY": "1"
+      },
+      "name": "Kanrethad Prime"
+    },
+    {
+      "id": "BT_321",
+      "tags": {
+        "CARDNAME": "Netherwalker",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Discover&lt;/b&gt; a Demon.",
+        "FLAVORTEXT": "You got to Nethercrawl before you can Netherwalk.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1",
+        "DISCOVER": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Netherwalker"
+    },
+    {
+      "id": "BT_323",
+      "tags": {
+        "CARDNAME": "Sightless Watcher",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Look at 3 cards in your deck. Choose one to put on top.",
+        "FLAVORTEXT": "What he lacks in sight, he makes up for in sleight-of-tentacle tricks.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Sightless Watcher"
+    },
+    {
+      "id": "BT_334",
+      "tags": {
+        "CARDNAME": "Lady Liadrin",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Add a copy of\neach spell you cast on\nfriendly characters this\ngame to your hand.",
+        "FLAVORTEXT": "When it comes to spells, she loves 'em then she librams.",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "4",
+        "COST": "7",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "5",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Lady Liadrin"
+    },
+    {
+      "id": "BT_341",
+      "tags": {
+        "CARDNAME": "Skeletal Dragon",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\nAt the end of your turn, add\na Dragon to your hand.",
+        "FLAVORTEXT": "I wish to complain about this dragon what I purchased not half an hour ago from this very boutique.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "9",
+        "ATK": "4",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "6",
+        "CARDRACE": "24",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Skeletal Dragon"
+    },
+    {
+      "id": "BT_351",
+      "tags": {
+        "CARDNAME": "Battlefiend",
+        "CARDTEXT": "After your hero attacks, gain +1 Attack.",
+        "FLAVORTEXT": "Say what you like about my hatchet-headed hooligan, he’s my battle-friend.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Battlefiend"
+    },
+    {
+      "id": "BT_351e",
+      "tags": {
+        "CARDNAME": "Felheartened",
+        "CARDTEXT": "Increased Attack.",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "6"
+      },
+      "name": "Felheartened"
+    },
+    {
+      "id": "BT_352",
+      "tags": {
+        "CARDNAME": "Satyr Overseer",
+        "CARDTEXT": "After your hero attacks, summon a 2/2 Satyr.",
+        "FLAVORTEXT": "What he lacks in communication skills, he makes up for with highly responsive staffing allocations.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "2",
+        "ATK": "4",
+        "COST": "3",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Satyr Overseer"
+    },
+    {
+      "id": "BT_352t",
+      "tags": {
+        "CARDNAME": "Illidari Satyr",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4"
+      },
+      "name": "Illidari Satyr"
+    },
+    {
+      "id": "BT_354",
+      "tags": {
+        "CARDNAME": "Blade Dance",
+        "CARDTEXT": "Deal damage equal to your hero's Attack to 3 random enemy minions.",
+        "FLAVORTEXT": "The surest way to clear the dance floor.",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1",
+        "AFFECTED_BY_SPELL_POWER": "1"
+      },
+      "name": "Blade Dance"
+    },
+    {
+      "id": "BT_355",
+      "tags": {
+        "CARDNAME": "Wrathscale Naga",
+        "CARDTEXT": "After a friendly minion dies, deal 3 damage to a_random enemy.",
+        "FLAVORTEXT": "If throwing glaives is what you crave; \nsummon tokens and make 'em broken.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "1",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Wrathscale Naga"
+    },
+    {
+      "id": "BT_407",
+      "tags": {
+        "CARDNAME": "Ur'zul Horror",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Add a 2/1 Lost Soul to your hand.",
+        "FLAVORTEXT": "You face face face face face Jaraxxus!",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Ur'zul Horror"
+    },
+    {
+      "id": "BT_407t",
+      "tags": {
+        "CARDNAME": "Lost Soul",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "4"
+      },
+      "name": "Lost Soul"
+    },
+    {
+      "id": "BT_416",
+      "tags": {
+        "CARDNAME": "Raging Felscreamer",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; The next Demon you play costs (2) less.",
+        "FLAVORTEXT": "Screaming loudly will not reduce the cost of non-demonic goods.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "4",
+        "COST": "4",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Raging Felscreamer"
+    },
+    {
+      "id": "BT_416e",
+      "tags": {
+        "CARDNAME": "Felscream",
+        "CARDTEXT": "Your next Demon costs (2) less.",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "6"
+      },
+      "name": "Felscream"
+    },
+    {
+      "id": "BT_423",
+      "tags": {
+        "CARDNAME": "Ashtongue Battlelord",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Lifesteal&lt;/b&gt;",
+        "FLAVORTEXT": "Demons have destroyed the lives of the Ashtongue draenei. Now he’s got a shoulder-axe to grind.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "3",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "14",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "AttackVisualType": "1",
+        "COLLECTIBLE": "1",
+        "LIFESTEAL": "1"
+      },
+      "name": "Ashtongue Battlelord"
+    },
+    {
+      "id": "BT_427",
+      "tags": {
+        "CARDNAME": "Feast of Souls",
+        "CARDTEXT": "Draw a card for each friendly minion that died this turn.",
+        "FLAVORTEXT": "Nothing fills you up like soul food!",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Feast of Souls"
+    },
+    {
+      "id": "BT_429",
+      "tags": {
+        "CARDNAME": "Metamorphosis",
+        "CARDTEXT": "Swap your Hero Power to &quot;Deal 5 damage.&quot; After 2 uses, swap it back.",
+        "FLAVORTEXT": "As the humble caterpillar becomes a beautiful butterfly, so too does a demon hunter become a hideous mass of writhing destruction and unfettered chaos.",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "5",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Metamorphosis"
+    },
+    {
+      "id": "BT_429p",
+      "tags": {
+        "CARDNAME": "Demonic Blast",
+        "CARDTEXT": "[x]&lt;b&gt;Hero Power&lt;/b&gt;\nDeal $5 damage.\n&lt;i&gt;(Two uses left!)&lt;/i&gt;",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "10"
+      },
+      "name": "Demonic Blast"
+    },
+    {
+      "id": "BT_429p2",
+      "tags": {
+        "CARDNAME": "Demonic Blast",
+        "CARDTEXT": "[x]&lt;b&gt;Hero Power&lt;/b&gt;\nDeal $5 damage.\n&lt;i&gt;(Last use!)&lt;/i&gt;",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "10"
+      },
+      "name": "Demonic Blast"
+    },
+    {
+      "id": "BT_430",
+      "tags": {
+        "CARDNAME": "Warglaives of Azzinoth",
+        "CARDTEXT": "After attacking a minion, your hero may attack again.",
+        "FLAVORTEXT": "The blades glow green from things unseen, dark dreams whirling in the felfire gleam.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "ATK": "3",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "DURABILITY": "4",
+        "CLASS": "14",
+        "CARDTYPE": "7",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Warglaives of Azzinoth"
+    },
+    {
+      "id": "BT_480",
+      "tags": {
+        "CARDNAME": "Crimson Sigil Runner",
+        "CARDTEXT": "&lt;b&gt;Outcast:&lt;/b&gt; Draw a card.",
+        "FLAVORTEXT": "He's not the fastest of the bunch, but he'll take a stab at it anyway.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "OUTCAST": "1"
+      },
+      "name": "Crimson Sigil Runner"
+    },
+    {
+      "id": "BT_481",
+      "tags": {
+        "CARDNAME": "Nethrandamus",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Summon two\nrandom @-Cost minions.\n&lt;i&gt;(Upgrades each time a\nfriendly minion dies!)&lt;/i&gt;",
+        "FLAVORTEXT": "Missed the big descent with the other dragons. But better late and nether!",
+        "ARTISTNAME": "",
+        "HEALTH": "8",
+        "ATK": "8",
+        "COST": "9",
+        "ELITE": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDRACE": "24",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Nethrandamus"
+    },
+    {
+      "id": "BT_486",
+      "tags": {
+        "CARDNAME": "Pit Commander",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;\nAt the end of your turn, summon a Demon from your deck.",
+        "FLAVORTEXT": "&quot;Pit! Do as I say!&quot;",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "9",
+        "ATK": "7",
+        "COST": "9",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Pit Commander"
+    },
+    {
+      "id": "BT_487",
+      "tags": {
+        "CARDNAME": "Hulking Overfiend",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;. After this attacks and kills a minion, it may_attack again.",
+        "FLAVORTEXT": "To hulk, perhaps, to fiend: ay, there's the rub.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "10",
+        "ATK": "5",
+        "COST": "8",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Hulking Overfiend"
+    },
+    {
+      "id": "BT_488",
+      "tags": {
+        "CARDNAME": "Soul Split",
+        "CARDTEXT": "Choose a friendly Demon. Summon a copy of it.",
+        "FLAVORTEXT": "Spoiler: they're both the evil twin.",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "FACTION": "3",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Soul Split"
+    },
+    {
+      "id": "BT_490",
+      "tags": {
+        "CARDNAME": "Consume Magic",
+        "CARDTEXT": "&lt;b&gt;Silence&lt;/b&gt; an enemy_minion.\n&lt;b&gt;Outcast:&lt;/b&gt; Draw a card.",
+        "FLAVORTEXT": "Please be mindful when consuming raw or undercooked magic.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "OUTCAST": "1"
+      },
+      "name": "Consume Magic"
+    },
+    {
+      "id": "BT_491",
+      "tags": {
+        "CARDNAME": "Spectral Sight",
+        "CARDTEXT": "[x]Draw a card.\n&lt;b&gt;Outcast:&lt;/b&gt; Draw another.",
+        "FLAVORTEXT": "&quot;Pick a card, any card! Preferably the left- or right-most card.&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1",
+        "OUTCAST": "1"
+      },
+      "name": "Spectral Sight"
+    },
+    {
+      "id": "BT_493",
+      "tags": {
+        "CARDNAME": "Priestess of Fury",
+        "CARDTEXT": "At the end of your turn, deal 6 damage randomly split among all enemies.",
+        "FLAVORTEXT": "Furious that she only has six warglaives. The Sightless Watcher has eight! The fel is always greener on the other side.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "7",
+        "ATK": "6",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Priestess of Fury"
+    },
+    {
+      "id": "BT_495",
+      "tags": {
+        "CARDNAME": "Glaivebound Adept",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; If your hero attacked this turn,\ndeal 4 damage.",
+        "FLAVORTEXT": "&quot;Initiate, this is your glaive. Think of it as an extension of yourself... Did you just throw it?!&quot;",
+        "TARGETING_ARROW_TEXT": "Deal 4 damage.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "7",
+        "COST": "5",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Glaivebound Adept"
+    },
+    {
+      "id": "BT_496",
+      "tags": {
+        "CARDNAME": "Furious Felfin",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; If your hero\nattacked this turn, gain\n+1 Attack and &lt;b&gt;Rush&lt;/b&gt;.",
+        "FLAVORTEXT": "Signature moves include Eye Bream, Feast of Soles, and Metamorphofish.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDRACE": "14",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Furious Felfin"
+    },
+    {
+      "id": "BT_496e",
+      "tags": {
+        "CARDNAME": "Finned and Furious",
+        "CARDTEXT": "+1 Attack and &lt;b&gt;Rush&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Finned and Furious"
+    },
+    {
+      "id": "BT_509",
+      "tags": {
+        "CARDNAME": "Fel Summoner",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a random Demon from your_hand.",
+        "FLAVORTEXT": "All's well that ends fel when the fel summoner summons well.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "8",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Fel Summoner"
+    },
+    {
+      "id": "BT_510",
+      "tags": {
+        "CARDNAME": "Wrathspike Brute",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\nAfter this is attacked,\ndeal 1 damage to\nall enemies.",
+        "FLAVORTEXT": "You scratch her back, her back scratches back.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "6",
+        "ATK": "2",
+        "COST": "5",
+        "CARD_SET": "1463",
+        "TAUNT": "1",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Wrathspike Brute"
+    },
+    {
+      "id": "BT_512",
+      "tags": {
+        "CARDNAME": "Inner Demon",
+        "CARDTEXT": "Give your hero +8_Attack this turn.",
+        "FLAVORTEXT": "Critical component of any tragic backstory.",
+        "ARTISTNAME": "",
+        "COST": "8",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Inner Demon"
+    },
+    {
+      "id": "BT_512e",
+      "tags": {
+        "CARDNAME": "Demon Power",
+        "CARDTEXT": "+8 Attack",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Demon Power"
+    },
+    {
+      "id": "BT_514",
+      "tags": {
+        "CARDNAME": "Immolation Aura",
+        "CARDTEXT": "Deal $1 damage to all minions twice.",
+        "FLAVORTEXT": "If you can't take the heat, stop standing in the fire.",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Immolation Aura"
+    },
+    {
+      "id": "BT_601",
+      "tags": {
+        "CARDNAME": "Skull of Gul'dan",
+        "CARDTEXT": "Draw 3 cards.\n&lt;b&gt;Outcast:&lt;/b&gt; Reduce their Cost by (3).",
+        "FLAVORTEXT": "A fellow of evil possessed, of most devious shadow. He hath turned on his kin a thousand times, and now, how abhorred in all imagination he is!",
+        "ARTISTNAME": "",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "COLLECTIBLE": "1",
+        "OUTCAST": "1"
+      },
+      "name": "Skull of Gul'dan"
+    },
+    {
+      "id": "BT_601e",
+      "tags": {
+        "CARDNAME": "Embrace Power",
+        "CARDTEXT": "Costs (3) less.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Embrace Power"
+    },
+    {
+      "id": "BT_701",
+      "tags": {
+        "CARDNAME": "Spymistress",
+        "CARDTEXT": "&lt;b&gt;Stealth&lt;/b&gt;",
+        "FLAVORTEXT": "Spies in Outland must blend into the environment. That means hot-pink gear and bright green hair. It’s a weird place.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "3",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "STEALTH": "1",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Spymistress"
+    },
+    {
+      "id": "BT_702",
+      "tags": {
+        "CARDNAME": "Ashtongue Slayer",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Give a &lt;b&gt;&lt;b&gt;Stealth&lt;/b&gt;ed&lt;/b&gt; minion +3 Attack and &lt;b&gt;Immune&lt;/b&gt; this turn.",
+        "FLAVORTEXT": "Her other hand attachments include a corkscrew and a bottle opener.",
+        "TARGETING_ARROW_TEXT": "Give +3 Attack and\nImmune this turn.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Ashtongue Slayer"
+    },
+    {
+      "id": "BT_702e",
+      "tags": {
+        "CARDNAME": "Guile of the Ashtongue",
+        "CARDTEXT": "+3 Attack and &lt;b&gt;Immune&lt;/b&gt; this turn.",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "6"
+      },
+      "name": "Guile of the Ashtongue"
+    },
+    {
+      "id": "BT_703",
+      "tags": {
+        "CARDNAME": "Cursed Vagrant",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 7/5 Shadow with &lt;b&gt;Stealth&lt;/b&gt;.",
+        "FLAVORTEXT": "Little did he know… it was really the talbuk leg that was cursed.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "7",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Cursed Vagrant"
+    },
+    {
+      "id": "BT_703t",
+      "tags": {
+        "CARDNAME": "Cursed Shadow",
+        "CARDTEXT": "&lt;b&gt;Stealth&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "7",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "STEALTH": "1",
+        "CLASS": "7",
+        "CARDTYPE": "4"
+      },
+      "name": "Cursed Shadow"
+    },
+    {
+      "id": "BT_707",
+      "tags": {
+        "CARDNAME": "Ambush",
+        "CARDTEXT": "[x]&lt;b&gt;Secret:&lt;/b&gt; After your\nopponent plays a minion,\nsummon a 2/3 Ambusher\nwith &lt;b&gt;Poisonous&lt;/b&gt;.",
+        "FLAVORTEXT": "Clip-clop clip-clop CLIP-CLOP STAB!",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "SECRET": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Ambush"
+    },
+    {
+      "id": "BT_707t",
+      "tags": {
+        "CARDNAME": "Broken Ambusher",
+        "CARDTEXT": "&lt;b&gt;Poisonous&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "POISONOUS": "1"
+      },
+      "name": "Broken Ambusher"
+    },
+    {
+      "id": "BT_709",
+      "tags": {
+        "CARDNAME": "Dirty Tricks",
+        "CARDTEXT": "[x]&lt;b&gt;Secret:&lt;/b&gt; After your\nopponent casts a spell,\ndraw 2 cards.",
+        "FLAVORTEXT": "&quot;Ahh sand in my eyes! Also, I'm being stabbed.&quot;",
+        "ARTISTNAME": "",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "SECRET": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Dirty Tricks"
+    },
+    {
+      "id": "BT_710",
+      "tags": {
+        "CARDNAME": "Greyheart Sage",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; If you control\na &lt;b&gt;&lt;b&gt;Stealth&lt;/b&gt;ed&lt;/b&gt; minion,\ndraw 2 cards.",
+        "FLAVORTEXT": "&quot;What am I drinking again?&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Greyheart Sage"
+    },
+    {
+      "id": "BT_711",
+      "tags": {
+        "CARDNAME": "Blackjack Stunner",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; If you control a\n&lt;b&gt;Secret&lt;/b&gt;, return a minion\nto its owner's hand.\nIt costs (2) more.",
+        "FLAVORTEXT": "&quot;I'm about to ruin this 10-cost minion's whole career.&quot;",
+        "TARGETING_ARROW_TEXT": "Return a minion to hand.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Blackjack Stunner"
+    },
+    {
+      "id": "BT_711e",
+      "tags": {
+        "CARDNAME": "Stunned",
+        "CARDTEXT": "Costs (2) more.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Stunned"
+    },
+    {
+      "id": "BT_713",
+      "tags": {
+        "CARDNAME": "Akama",
+        "CARDTEXT": "[x]&lt;b&gt;Stealth&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Shuffle 'Akama\nPrime' into your deck.",
+        "FLAVORTEXT": "&quot;To many of my people, I am known as a traitor... as Illidan's lapdog. I will remain in the shadows, for now... Actually, maybe I'll just remain in the shadows forever.&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "3",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "STEALTH": "1",
+        "CLASS": "7",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "COLLECTION_RELATED_CARD_DATABASE_ID": "57156"
+      },
+      "name": "Akama"
+    },
+    {
+      "id": "BT_713t",
+      "tags": {
+        "CARDNAME": "Akama Prime",
+        "CARDTEXT": "Permanently &lt;b&gt;&lt;b&gt;Stealth&lt;/b&gt;ed&lt;/b&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "6",
+        "COST": "6",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "STEALTH": "1",
+        "CLASS": "7",
+        "CARDTYPE": "4"
+      },
+      "name": "Akama Prime"
+    },
+    {
+      "id": "BT_714",
+      "tags": {
+        "CARDNAME": "Frozen Shadoweaver",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; &lt;b&gt;Freeze&lt;/b&gt; an_enemy.",
+        "FLAVORTEXT": "She still wears her Frozen Shadoweave set despite the many, many nerfs. She just can't let it go!",
+        "TARGETING_ARROW_TEXT": "Freeze an enemy.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "4",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Frozen Shadoweaver"
+    },
+    {
+      "id": "BT_715",
+      "tags": {
+        "CARDNAME": "Bonechewer Brawler",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\nWhenever this minion takes\n_damage, gain +2 Attack.",
+        "FLAVORTEXT": "When you get this swole, arrows are basically free acupuncture.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "3",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bonechewer Brawler"
+    },
+    {
+      "id": "BT_715e",
+      "tags": {
+        "CARDNAME": "Brawling",
+        "CARDTEXT": "Increased Attack.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Brawling"
+    },
+    {
+      "id": "BT_716",
+      "tags": {
+        "CARDNAME": "Bonechewer Vanguard",
+        "CARDTEXT": "[x]&lt;b&gt;Taunt&lt;/b&gt;\nWhenever this minion takes\ndamage, gain +2 Attack.",
+        "FLAVORTEXT": "She came here to taunt you and chew on bones, and she's all outta bones.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "10",
+        "ATK": "4",
+        "COST": "7",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bonechewer Vanguard"
+    },
+    {
+      "id": "BT_716e",
+      "tags": {
+        "CARDNAME": "Victorious",
+        "CARDTEXT": "Increased Attack.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Victorious"
+    },
+    {
+      "id": "BT_717",
+      "tags": {
+        "CARDNAME": "Burrowing Scorpid",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Deal 2 damage.\nIf that kills the target,\ngain &lt;b&gt;Stealth&lt;/b&gt;.",
+        "FLAVORTEXT": "It's a game of hide and go sting.",
+        "TARGETING_ARROW_TEXT": "Deal 2 damage.",
+        "ARTISTNAME": "",
+        "HEALTH": "2",
+        "ATK": "5",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "20",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Burrowing Scorpid"
+    },
+    {
+      "id": "BT_720",
+      "tags": {
+        "CARDNAME": "Ruststeed Raider",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;, &lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Gain +4 Attack this turn.",
+        "FLAVORTEXT": "Three-time winner (and sole survivor) of the Crashes of Outland motocross!",
+        "ARTISTNAME": "",
+        "HEALTH": "8",
+        "ATK": "1",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Ruststeed Raider"
+    },
+    {
+      "id": "BT_720e",
+      "tags": {
+        "CARDNAME": "Ride Eternal",
+        "CARDTEXT": "+4 Attack this turn.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Ride Eternal"
+    },
+    {
+      "id": "BT_721",
+      "tags": {
+        "CARDNAME": "Blistering Rot",
+        "CARDTEXT": "[x]At the end of your turn,\nsummon a Rot with stats\nequal to this minion's.",
+        "FLAVORTEXT": "Known as 'Fel Gel' to the Illidari, it's excellent protection against harsh Draenic sunshine.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "2",
+        "ATK": "1",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Blistering Rot"
+    },
+    {
+      "id": "BT_721t",
+      "tags": {
+        "CARDNAME": "Living Rot",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4"
+      },
+      "name": "Living Rot"
+    },
+    {
+      "id": "BT_722",
+      "tags": {
+        "CARDNAME": "Guardian Augmerchant",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Deal 1 damage to a minion and give it &lt;b&gt;Divine Shield&lt;/b&gt;.",
+        "FLAVORTEXT": "&quot;What doesn't kill you makes me money!&quot;",
+        "TARGETING_ARROW_TEXT": "Deal 1 damage and give &lt;b&gt;Divine Shield&lt;/b&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Guardian Augmerchant"
+    },
+    {
+      "id": "BT_723",
+      "tags": {
+        "CARDNAME": "Rocket Augmerchant",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Deal 1 damage to a minion and give it &lt;b&gt;Rush&lt;/b&gt;.",
+        "FLAVORTEXT": "&quot;Don't worry, this won't hurt me a bit.&quot;",
+        "TARGETING_ARROW_TEXT": "Deal 1 damage and give &lt;b&gt;Rush&lt;/b&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Rocket Augmerchant"
+    },
+    {
+      "id": "BT_724",
+      "tags": {
+        "CARDNAME": "Ethereal Augmerchant",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Deal 1 damage to a minion and give it &lt;b&gt;Spell Damage +1&lt;/b&gt;.",
+        "FLAVORTEXT": "According to him, undamaged minions just spell problems.",
+        "TARGETING_ARROW_TEXT": "Deal 1 damage and give &lt;b&gt;Spell Damage +1&lt;/b&gt;.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Ethereal Augmerchant"
+    },
+    {
+      "id": "BT_724e",
+      "tags": {
+        "CARDNAME": "Ethereal Augment",
+        "CARDTEXT": "&lt;b&gt;Spell Damage +1&lt;/b&gt;.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Ethereal Augment"
+    },
+    {
+      "id": "BT_726",
+      "tags": {
+        "CARDNAME": "Dragonmaw Sky Stalker",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 3/4 Dragonrider.",
+        "FLAVORTEXT": "&quot;I will find you, sky!&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "5",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "24",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Dragonmaw Sky Stalker"
+    },
+    {
+      "id": "BT_726t",
+      "tags": {
+        "CARDNAME": "Dragonrider",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "3",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4"
+      },
+      "name": "Dragonrider"
+    },
+    {
+      "id": "BT_727",
+      "tags": {
+        "CARDNAME": "Soulbound Ashtongue",
+        "CARDTEXT": "Whenever this minion takes damage, also deal that amount to your hero.",
+        "FLAVORTEXT": "He claims to be &quot;soulbound,&quot; but I just think he's clingy.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "4",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Soulbound Ashtongue"
+    },
+    {
+      "id": "BT_728",
+      "tags": {
+        "CARDNAME": "Disguised Wanderer",
+        "CARDTEXT": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 9/1 Inquisitor.",
+        "FLAVORTEXT": "He wanders east... always into the east.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Disguised Wanderer"
+    },
+    {
+      "id": "BT_728t",
+      "tags": {
+        "CARDNAME": "Rustsworn Inquisitor",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "9",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4"
+      },
+      "name": "Rustsworn Inquisitor"
+    },
+    {
+      "id": "BT_729",
+      "tags": {
+        "CARDNAME": "Waste Warden",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Deal 3 damage to\na minion and all others of\nthe same minion type.",
+        "FLAVORTEXT": "Recycle that can, or you get the cuffs!",
+        "TARGETING_ARROW_TEXT": "Deal 3 damage.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "3",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Waste Warden"
+    },
+    {
+      "id": "BT_730",
+      "tags": {
+        "CARDNAME": "Overconfident Orc",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;\nWhile at full Health,\nthis has +2 Attack.",
+        "FLAVORTEXT": "&quot;I am da powerful! You are da poop!&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "1",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Overconfident Orc"
+    },
+    {
+      "id": "BT_731",
+      "tags": {
+        "CARDNAME": "Infectious Sporeling",
+        "CARDTEXT": "After this damages a minion, turn it into an Infectious_Sporeling.",
+        "FLAVORTEXT": "&quot;The best thing about being me—there’s so many 'me's.&quot;",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "2",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Infectious Sporeling"
+    },
+    {
+      "id": "BT_732",
+      "tags": {
+        "CARDNAME": "Scavenging Shivarra",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Deal 6 damage randomly split among all_other minions.",
+        "FLAVORTEXT": "Say what you want but finding a matching set of six swords takes commitment.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "6",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Scavenging Shivarra"
+    },
+    {
+      "id": "BT_733",
+      "tags": {
+        "CARDNAME": "Mo'arg Artificer",
+        "CARDTEXT": "All minions take double damage from spells.",
+        "FLAVORTEXT": "Double-damage. You know the drill.",
+        "ARTISTNAME": "",
+        "HEALTH": "4",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Mo'arg Artificer"
+    },
+    {
+      "id": "BT_734",
+      "tags": {
+        "CARDNAME": "Supreme Abyssal",
+        "CARDTEXT": "Can't attack heroes.",
+        "FLAVORTEXT": "Yet, you still feel attacked.",
+        "ARTISTNAME": "",
+        "HEALTH": "12",
+        "ATK": "12",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Supreme Abyssal"
+    },
+    {
+      "id": "BT_735",
+      "tags": {
+        "CARDNAME": "Al'ar",
+        "CARDTEXT": "&lt;b&gt;Deathrattle&lt;/b&gt;: Summon a\n 0/3 Ashes of Al'ar that resurrects this minion on your next turn.",
+        "FLAVORTEXT": "Week #679: Still no mount...",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "7",
+        "COST": "5",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "18",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "USE_DISCOVER_VISUALS": "1"
+      },
+      "name": "Al'ar"
+    },
+    {
+      "id": "BT_735t",
+      "tags": {
+        "CARDNAME": "Ashes of Al'ar",
+        "CARDTEXT": "At the start of your turn, transform this into Al'ar.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "3",
+        "COST": "1",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4"
+      },
+      "name": "Ashes of Al'ar"
+    },
+    {
+      "id": "BT_737",
+      "tags": {
+        "CARDNAME": "Maiev Shadowsong",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Choose a minion.\nIt goes &lt;b&gt;Dormant&lt;/b&gt; for 2 turns.",
+        "FLAVORTEXT": "Go directly to Demon Jail. Do not attack minions, do not collect mana crystals.",
+        "TARGETING_ARROW_TEXT": "Choose a minion.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "4",
+        "COST": "4",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Maiev Shadowsong"
+    },
+    {
+      "id": "BT_737e",
+      "tags": {
+        "CARDNAME": "Imprisoned",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt;. Awaken in @ |4(turn, turns).",
+        "TRIGGER_VISUAL": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "SCORE_VALUE_1": "2"
+      },
+      "name": "Imprisoned"
+    },
+    {
+      "id": "BT_740",
+      "tags": {
+        "CARDNAME": "Soul Cleave",
+        "CARDTEXT": "&lt;b&gt;Lifesteal&lt;/b&gt;\nDeal $2 damage to two random enemy minions.",
+        "FLAVORTEXT": "The way to a demon's soul is through its stomach.",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "2",
+        "COLLECTIBLE": "1",
+        "LIFESTEAL": "1"
+      },
+      "name": "Soul Cleave"
+    },
+    {
+      "id": "BT_752",
+      "tags": {
+        "CARDNAME": "Blur",
+        "CARDTEXT": "Your hero can't take damage this turn.",
+        "FLAVORTEXT": "&quot;What are you trying to tell me? That I can dodge axes?&quot; \n&quot;I’m trying to tell you that when you’re a Demon Hunter, you won’t have to.&quot;",
+        "ARTISTNAME": "",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Blur"
+    },
+    {
+      "id": "BT_752e",
+      "tags": {
+        "CARDNAME": "Blur",
+        "CARDTEXT": "&lt;b&gt;Immune&lt;/b&gt; this turn.",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Blur"
+    },
+    {
+      "id": "BT_753",
+      "tags": {
+        "CARDNAME": "Mana Burn",
+        "CARDTEXT": "Your opponent has 2 fewer Mana Crystals next turn.",
+        "FLAVORTEXT": "One way to ensure that they are not prepared.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Mana Burn"
+    },
+    {
+      "id": "BT_753e",
+      "tags": {
+        "CARDNAME": "Mana Burned",
+        "CARDTEXT": "Start with 2 fewer Mana Crystals this turn.",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1"
+      },
+      "name": "Mana Burned"
+    },
+    {
+      "id": "BT_761",
+      "tags": {
+        "CARDNAME": "Coilfang Warlord",
+        "CARDTEXT": "[x]&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a\n 5/9 Warlord with &lt;b&gt;Taunt&lt;/b&gt;.",
+        "FLAVORTEXT": "Prepare for the staunch conch launch!",
+        "ARTISTNAME": "",
+        "HEALTH": "5",
+        "ATK": "9",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "DEATHRATTLE": "1",
+        "COLLECTIBLE": "1",
+        "RUSH": "1"
+      },
+      "name": "Coilfang Warlord"
+    },
+    {
+      "id": "BT_761t",
+      "tags": {
+        "CARDNAME": "Conchguard Warlord",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;",
+        "ARTISTNAME": "",
+        "HEALTH": "9",
+        "ATK": "5",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "14",
+        "CARDTYPE": "4"
+      },
+      "name": "Conchguard Warlord"
+    },
+    {
+      "id": "BT_781",
+      "tags": {
+        "CARDNAME": "Bulwark of Azzinoth",
+        "CARDTEXT": "[x]Whenever your hero would\ntake damage, this loses\n_1 Durability instead.",
+        "FLAVORTEXT": "This plate turned shield you shall wield, praying its powers fel will serve you well.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "ATK": "1",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "DURABILITY": "4",
+        "CLASS": "10",
+        "CARDTYPE": "7",
+        "RARITY": "5",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Bulwark of Azzinoth"
+    },
+    {
+      "id": "BT_801",
+      "tags": {
+        "CARDNAME": "Eye Beam",
+        "CARDTEXT": "&lt;b&gt;Lifesteal&lt;/b&gt;. Deal $3 damage to a minion.\n&lt;b&gt;Outcast:&lt;/b&gt; This costs (0).",
+        "FLAVORTEXT": "Sometimes looks CAN kill.",
+        "ARTISTNAME": "",
+        "COST": "3",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1",
+        "LIFESTEAL": "1",
+        "OUTCAST": "1"
+      },
+      "name": "Eye Beam"
+    },
+    {
+      "id": "BT_814",
+      "tags": {
+        "CARDNAME": "Illidari Felblade",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;\n&lt;b&gt;Outcast:&lt;/b&gt; Gain &lt;b&gt;Immune&lt;/b&gt; this_turn.",
+        "FLAVORTEXT": "A whirling dervish of demonic devastation.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "5",
+        "COST": "4",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1",
+        "RUSH": "1",
+        "OUTCAST": "1"
+      },
+      "name": "Illidari Felblade"
+    },
+    {
+      "id": "BT_814e",
+      "tags": {
+        "CARDNAME": "Nimble",
+        "CARDTEXT": "&lt;b&gt;Immune&lt;/b&gt; this turn.",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "ENCHANTMENT_IDLE_VISUAL": "1",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Nimble"
+    },
+    {
+      "id": "BT_850",
+      "tags": {
+        "1": "1",
+        "CARDNAME": "Magtheridon",
+        "CARDTEXT": "[x]&lt;b&gt;Dormant&lt;/b&gt;. &lt;b&gt;Battlecry:&lt;/b&gt; Summon\nthree 1/3 enemy Warders.\nWhen they die, destroy all\nminions and awaken.",
+        "FLAVORTEXT": "Came from another world to invade Outland and bend it to his will… only to be overthrown by an elf from another world who invaded Outland and bent it to his will.",
+        "ARTISTNAME": "",
+        "HEALTH": "12",
+        "ATK": "12",
+        "COST": "4",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Magtheridon"
+    },
+    {
+      "id": "BT_850e",
+      "tags": {
+        "CARDNAME": "Imprisoned",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt;. Awaken after @ |4(Warder dies, Warders die).",
+        "TRIGGER_VISUAL": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "SCORE_VALUE_1": "3"
+      },
+      "name": "Imprisoned"
+    },
+    {
+      "id": "BT_850t",
+      "tags": {
+        "CARDNAME": "Hellfire Warder",
+        "CARDTEXT": "[x]&lt;i&gt;(Magtheridon will destroy\nall minions and awaken\nafter 3 Warders die.)&lt;/i&gt;",
+        "HEALTH": "3",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4"
+      },
+      "name": "Hellfire Warder"
+    },
+    {
+      "id": "BT_921",
+      "tags": {
+        "CARDNAME": "Aldrachi Warblades",
+        "CARDTEXT": "&lt;b&gt;Lifesteal&lt;/b&gt;",
+        "FLAVORTEXT": "The ancient Aldrachi were the greatest warriors in the universe. Imagine their power if they'd put the handle at the END of the blade.",
+        "ARTISTNAME": "",
+        "ATK": "2",
+        "COST": "3",
+        "CARD_SET": "2",
+        "DURABILITY": "3",
+        "CLASS": "14",
+        "CARDTYPE": "7",
+        "RARITY": "2",
+        "COLLECTIBLE": "1",
+        "LIFESTEAL": "1"
+      },
+      "name": "Aldrachi Warblades"
+    },
+    {
+      "id": "BT_922",
+      "tags": {
+        "CARDNAME": "Umberwing",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Summon two 1/1 Felwings.",
+        "FLAVORTEXT": "Demon Hunters refer to these glaives as &quot;the ol’ flappy-attackys.&quot;",
+        "ARTISTNAME": "",
+        "ATK": "1",
+        "COST": "2",
+        "CARD_SET": "1463",
+        "DURABILITY": "2",
+        "CLASS": "14",
+        "CARDTYPE": "7",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Umberwing"
+    },
+    {
+      "id": "BT_922t",
+      "tags": {
+        "CARDNAME": "Felwing",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4"
+      },
+      "name": "Felwing"
+    },
+    {
+      "id": "BT_934",
+      "tags": {
+        "CARDNAME": "Imprisoned Antaen",
+        "CARDTEXT": "[x]&lt;b&gt;Dormant&lt;/b&gt; for 2 turns.\nWhen this awakens, deal\n10 damage randomly split\namong all enemies.",
+        "FLAVORTEXT": "Can I get a pair of size XXXXXL manacles?",
+        "ARTISTNAME": "",
+        "HEALTH": "6",
+        "ATK": "10",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Imprisoned Antaen"
+    },
+    {
+      "id": "BT_937",
+      "tags": {
+        "CARDNAME": "Altruis the Outcast",
+        "CARDTEXT": "[x]After you play the left-\nor right-most card in your\nhand, deal 1 damage\nto all enemies.",
+        "FLAVORTEXT": "Altruis betrayed Illidan to forge his own way in Outland. With Blackjack. And Netherdrakes.",
+        "ARTISTNAME": "",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "2",
+        "ATK": "3",
+        "COST": "3",
+        "ELITE": "1",
+        "CARD_SET": "1463",
+        "CLASS": "14",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Altruis the Outcast"
+    },
+    {
+      "id": "EX1_193",
+      "tags": {
+        "CARDNAME": "Psychic Conjurer",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Copy a card in your opponent’s deck and add it to your hand.",
+        "FLAVORTEXT": "&quot;I see... a WISP? Why do you have a wisp?!&quot;",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "1",
+        "COST": "1",
+        "CARD_SET": "2",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Psychic Conjurer"
+    },
+    {
+      "id": "EX1_194",
+      "tags": {
+        "CARDNAME": "Power Infusion",
+        "CARDTEXT": "Give a minion +2/+6.",
+        "FLAVORTEXT": "It infuses, it enthuses, it amuses!",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "2",
+        "CLASS": "6",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Power Infusion"
+    },
+    {
+      "id": "EX1_194e",
+      "tags": {
+        "CARDNAME": "Power Infusion",
+        "CARDTEXT": "+2/+6.",
+        "CARD_SET": "2",
+        "CLASS": "6",
+        "CARDTYPE": "6"
+      },
+      "name": "Power Infusion"
+    },
+    {
+      "id": "EX1_195",
+      "tags": {
+        "CARDNAME": "Kul Tiran Chaplain",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Give a friendly minion +2 Health.",
+        "FLAVORTEXT": "The maritime Kul Tiran clergy are unique among priests for using holy saltwater.",
+        "TARGETING_ARROW_TEXT": "Give +2 Health.",
+        "ARTISTNAME": "",
+        "HEALTH": "3",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "3",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Kul Tiran Chaplain"
+    },
+    {
+      "id": "EX1_195e",
+      "tags": {
+        "CARDNAME": "Aided",
+        "CARDTEXT": "+2 Health.",
+        "CARD_SET": "3",
+        "CLASS": "6",
+        "CARDTYPE": "6"
+      },
+      "name": "Aided"
+    },
+    {
+      "id": "EX1_196",
+      "tags": {
+        "CARDNAME": "Scarlet Subjugator",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Give an enemy minion -2 Attack until your_next turn.",
+        "FLAVORTEXT": "At the Scarlet Monastery, he learned the sacred art of kicking people when they're up.",
+        "TARGETING_ARROW_TEXT": "Give -2 Attack\nuntil next turn.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "1",
+        "CARD_SET": "3",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "3",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Scarlet Subjugator"
+    },
+    {
+      "id": "EX1_196e",
+      "tags": {
+        "CARDNAME": "Subjugated",
+        "CARDTEXT": "-2 Attack until your next turn.",
+        "CARD_SET": "3",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "2",
+        "ENCHANTMENT_IDLE_VISUAL": "2"
+      },
+      "name": "Subjugated"
+    },
+    {
+      "id": "EX1_197",
+      "tags": {
+        "CARDNAME": "Shadow Word: Ruin",
+        "CARDTEXT": "Destroy all minions with 5 or more Attack.",
+        "FLAVORTEXT": "Discovered by a worgen priest after a giant spilled a drink on her new white robes.",
+        "ARTISTNAME": "",
+        "COST": "4",
+        "CARD_SET": "3",
+        "CLASS": "6",
+        "CARDTYPE": "5",
+        "RARITY": "4",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Shadow Word: Ruin"
+    },
+    {
+      "id": "EX1_198",
+      "tags": {
+        "CARDNAME": "Natalie Seline",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Destroy a minion and gain its Health.",
+        "FLAVORTEXT": "She discovered Xal'atath, Blade of the Black Empire, a terrible weapon of shadow magic that could both swallow a soul &lt;i&gt;and&lt;/i&gt; cut a mean julienne.",
+        "TARGETING_ARROW_TEXT": "Destroy a minion.",
+        "ARTISTNAME": "",
+        "HEALTH": "1",
+        "ATK": "8",
+        "COST": "8",
+        "ELITE": "1",
+        "CARD_SET": "3",
+        "CLASS": "6",
+        "CARDTYPE": "4",
+        "RARITY": "5",
+        "BATTLECRY": "1",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Natalie Seline"
+    },
+    {
+      "id": "EX1_198e",
+      "tags": {
+        "CARDNAME": "Forgotten Shadows",
+        "CARDTEXT": "Increased Health.",
+        "CARD_SET": "3",
+        "CLASS": "6",
+        "CARDTYPE": "6"
+      },
+      "name": "Forgotten Shadows"
+    },
+    {
+      "id": "HERO_10",
+      "tags": {
+        "CARDNAME": "Illidan Stormrage",
+        "ARTISTNAME": "",
+        "HEALTH": "30",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "3",
+        "RARITY": "2",
+        "COLLECTIBLE": "1"
+      },
+      "name": "Illidan Stormrage"
+    },
+    {
+      "id": "HERO_10p",
+      "tags": {
+        "60483": "60483",
+        "CARDNAME": "Demon Claws",
+        "CARDTEXT": "[x]&lt;b&gt;Hero Power&lt;/b&gt;\n+1 Attack this turn.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "10"
+      },
+      "name": "Demon Claws"
+    },
+    {
+      "id": "HERO_10p_UP",
+      "tags": {
+        "CARDNAME": "Demon's Bite",
+        "CARDTEXT": "[x]&lt;b&gt;Hero Power&lt;/b&gt;\n+2 Attack this turn.",
+        "ARTISTNAME": "",
+        "COST": "1",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "10"
+      },
+      "name": "Demon's Bite"
+    },
+    {
+      "id": "HERO_10pe",
+      "tags": {
+        "CARDNAME": "Demon Claws",
+        "CARDTEXT": "Your hero has +1 Attack this turn.",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Demon Claws"
+    },
+    {
+      "id": "HERO_10pe_UP",
+      "tags": {
+        "CARDNAME": "Demon's Bite",
+        "CARDTEXT": "Your hero has +2 Attack this turn.",
+        "CARD_SET": "2",
+        "CLASS": "14",
+        "CARDTYPE": "6",
+        "TAG_ONE_TURN_EFFECT": "1"
+      },
+      "name": "Demon's Bite"
+    },
+    {
+      "id": "LOOT_526e",
+      "tags": {
+        "CARDNAME": "Darkness Awaits",
+        "CARDTEXT": "&lt;b&gt;Dormant&lt;/b&gt;. Awaken when you opponent draws @ |4(Candle, Candles).",
+        "TRIGGER_VISUAL": "1",
+        "CARD_SET": "1004",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "COLLECTIBLE": "1",
+        "SCORE_VALUE_1": "3"
+      },
+      "name": "Darkness Awaits"
+    },
+    {
+      "id": "Prologue_Azshara",
+      "tags": {
+        "CARDNAME": "Queen Azshara",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Summon Handmaiden Vashj, and 4 Royal Guardians.",
+        "HEALTH": "5",
+        "ATK": "2",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "AttackVisualType": "7",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Queen Azshara"
+    },
+    {
+      "id": "Prologue_Azzinoth",
+      "tags": {
+        "CARDNAME": "Azzinoth",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "10",
+        "CARDTYPE": "3",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Azzinoth"
+    },
+    {
+      "id": "Prologue_AzzinothHP",
+      "tags": {
+        "CARDNAME": "Warglaives",
+        "CARDTEXT": "&lt;b&gt;Hero Power&lt;/b&gt;\nEquip the Warglaives of Azzinoth.",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "10",
+        "AttackVisualType": "1"
+      },
+      "name": "Warglaives"
+    },
+    {
+      "id": "Prologue_Captain",
+      "tags": {
+        "48948": "48948",
+        "CARDNAME": "Captain Varo'then",
+        "CARDTEXT": "&lt;b&gt;Battlecry:&lt;/b&gt; Deal 2 damage to a minion and 1 damage to each adjacent minion.",
+        "HEALTH": "6",
+        "ATK": "3",
+        "COST": "8",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "AttackVisualType": "7",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Captain Varo'then"
+    },
+    {
+      "id": "Prologue_Cenarius",
+      "tags": {
+        "CARDNAME": "Cenarius",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "3",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Cenarius"
+    },
+    {
+      "id": "Prologue_CenariusHP",
+      "tags": {
+        "54442": "54442",
+        "CARDNAME": "Nature's Grasp",
+        "CARDTEXT": "&lt;b&gt;Hero Power&lt;/b&gt;\nSummon a 2/2 Treant with &lt;b&gt;Taunt&lt;/b&gt;.",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "FACTION": "3",
+        "CARDTYPE": "10",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Nature's Grasp"
+    },
+    {
+      "id": "Prologue_ChaosNova",
+      "tags": {
+        "57847": "57847",
+        "CARDNAME": "Chaos Nova",
+        "CARDTEXT": "Deal $4 damage to all_minions.",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "WATERMARK_OVERRIDE_CARD_SET": "2"
+      },
+      "name": "Chaos Nova"
+    },
+    {
+      "id": "Prologue_ChaosStrike",
+      "tags": {
+        "56791": "56791",
+        "CARDNAME": "Chaos Strike",
+        "CARDTEXT": "Give your hero +2_Attack this turn. Draw a card.",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "2",
+        "WATERMARK_OVERRIDE_CARD_SET": "2"
+      },
+      "name": "Chaos Strike"
+    },
+    {
+      "id": "Prologue_DemonicPortal",
+      "tags": {
+        "CARDNAME": "Demonic Portal",
+        "CARDTEXT": "[x]Each turn, summons\nUnstable Energy. Destroy\n30 to stabilize the portal\nand win! &lt;i&gt;(@ left!)&lt;/i&gt;",
+        "TAG_SCRIPT_DATA_NUM_1": "30",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "30",
+        "COST": "4",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "4",
+        "ENCHANTMENT_BIRTH_VISUAL": "1",
+        "HIDE_STATS": "1",
+        "UNTOUCHABLE": "1",
+        "SCORE_VALUE_1": "30",
+        "DORMANT_VISUAL": "1",
+        "HIDE_WATERMARK": "1",
+        "MOUSE_OVER_CARD_APPEARANCE": "4"
+      },
+      "name": "Demonic Portal"
+    },
+    {
+      "id": "Prologue_Felhound",
+      "tags": {
+        "CARDNAME": "Felhound",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;",
+        "HEALTH": "1",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDRACE": "15",
+        "CARDTYPE": "4",
+        "RUSH": "1",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Felhound"
+    },
+    {
+      "id": "Prologue_Guard",
+      "tags": {
+        "CARDNAME": "Royal Guardian",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;",
+        "HEALTH": "4",
+        "ATK": "2",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Royal Guardian"
+    },
+    {
+      "id": "Prologue_Illidan_DH",
+      "tags": {
+        "CARDNAME": "Illidan Stormrage",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "3"
+      },
+      "name": "Illidan Stormrage"
+    },
+    {
+      "id": "Prologue_Jarod",
+      "tags": {
+        "CARDNAME": "Jarod Shadowsong",
+        "CARDTEXT": "[x]&lt;b&gt;Battlecry:&lt;/b&gt; Reduce the cost\nof cards in your hand by (2).\n&lt;b&gt;Deathrattle:&lt;/b&gt; Summon\nPriestess Maiev.",
+        "HEALTH": "5",
+        "ATK": "5",
+        "COST": "5",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "DEATHRATTLE": "1",
+        "BATTLECRY": "1",
+        "AttackVisualType": "7",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Jarod Shadowsong"
+    },
+    {
+      "id": "Prologue_Jarod_Ench",
+      "tags": {
+        "CARDNAME": "Might of Nature",
+        "CARDTEXT": "Costs (2) less.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6"
+      },
+      "name": "Might of Nature"
+    },
+    {
+      "id": "Prologue_Maiev",
+      "tags": {
+        "CARDNAME": "Priestess Maiev",
+        "CARDTEXT": "At the end of your turn, restore #5 Health to all other friendly characters.",
+        "HEALTH": "5",
+        "ATK": "1",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "AttackVisualType": "7",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Priestess Maiev"
+    },
+    {
+      "id": "Prologue_ManaBurn",
+      "tags": {
+        "58610": "58610",
+        "CARDNAME": "Mana Burn",
+        "CARDTEXT": "Your opponent has 2 fewer Mana Crystals next turn.",
+        "COST": "1",
+        "CARD_SET": "1414",
+        "CLASS": "14",
+        "CARDTYPE": "5",
+        "RARITY": "1",
+        "WATERMARK_OVERRIDE_CARD_SET": "1463"
+      },
+      "name": "Mana Burn"
+    },
+    {
+      "id": "Prologue_Mannoroth",
+      "tags": {
+        "CARDNAME": "Mannoroth",
+        "HEALTH": "40",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "3",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Mannoroth"
+    },
+    {
+      "id": "Prologue_MannorothHP",
+      "tags": {
+        "2301": "2301",
+        "CARDNAME": "Felstorm",
+        "CARDTEXT": "&lt;b&gt;Hero Power&lt;/b&gt;\nDeal $1 damage to\nall non-Demon\nminions.",
+        "CARD_SET": "1414",
+        "CLASS": "9",
+        "CARDTYPE": "10"
+      },
+      "name": "Felstorm"
+    },
+    {
+      "id": "Prologue_MoongladePortal",
+      "tags": {
+        "39714": "39714",
+        "CARDNAME": "Moonglade Portal",
+        "CARDTEXT": "Restore #6 Health. Summon a random\n6-Cost minion.",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "CARDTYPE": "5",
+        "RARITY": "3",
+        "WATERMARK_OVERRIDE_CARD_SET": "23"
+      },
+      "name": "Moonglade Portal"
+    },
+    {
+      "id": "Prologue_Ravencrest",
+      "tags": {
+        "CARDNAME": "Kur'talos Ravencrest",
+        "CARDTEXT": "&lt;b&gt;Taunt&lt;/b&gt;\nAfter you cast a spell, summon a 4/4 Lancer with &lt;b&gt;Rush&lt;/b&gt;.",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "12",
+        "ATK": "4",
+        "COST": "5",
+        "ELITE": "1",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Kur'talos Ravencrest"
+    },
+    {
+      "id": "Prologue_Ravencrest_Lancer",
+      "tags": {
+        "CARDNAME": "Ravencrest Lancer",
+        "CARDTEXT": "&lt;b&gt;Rush&lt;/b&gt;",
+        "HEALTH": "4",
+        "ATK": "4",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "RUSH": "1",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Ravencrest Lancer"
+    },
+    {
+      "id": "Prologue_Sargeras",
+      "tags": {
+        "CARDNAME": "Sargeras",
+        "HEALTH": "1",
+        "ATK": "1",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "AttackVisualType": "7",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Sargeras"
+    },
+    {
+      "id": "Prologue_Sorcerer",
+      "tags": {
+        "CARDNAME": "Highborne Sorcerer",
+        "CARDTEXT": "&lt;b&gt;Spell Damage +2&lt;/b&gt;\n&lt;b&gt;Battlecry:&lt;/b&gt; Draw 3 spells.",
+        "HEALTH": "3",
+        "ATK": "5",
+        "COST": "6",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "2",
+        "CLASS": "4",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "BATTLECRY": "1",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Highborne Sorcerer"
+    },
+    {
+      "id": "Prologue_UnstableEnergy",
+      "tags": {
+        "CARDNAME": "Dark Unstable Energy",
+        "CARDTEXT": "Can't attack.\n&lt;b&gt;Taunt&lt;/b&gt;",
+        "HEALTH": "1",
+        "ATK": "3",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "TAUNT": "1",
+        "CLASS": "12",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "CANT_ATTACK": "1",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Dark Unstable Energy"
+    },
+    {
+      "id": "Prologue_UnstableEnergy2",
+      "tags": {
+        "CARDNAME": "Fiery Unstable Energy",
+        "CARDTEXT": "Can't attack.\nAt the end of each turn,\ndeal 3 damage to\nboth heroes.",
+        "TRIGGER_VISUAL": "1",
+        "HEALTH": "5",
+        "ATK": "4",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "CANT_ATTACK": "1",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Fiery Unstable Energy"
+    },
+    {
+      "id": "Prologue_UnstableEnergy3",
+      "tags": {
+        "CARDNAME": "Fel Unstable Energy",
+        "CARDTEXT": "Can't attack.\n&lt;b&gt;Deathrattle:&lt;/b&gt; Deal 2 damage to ALL minions.",
+        "HEALTH": "3",
+        "ATK": "5",
+        "COST": "3",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "1",
+        "CARDTYPE": "4",
+        "RARITY": "2",
+        "DEATHRATTLE": "1",
+        "CANT_ATTACK": "1",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Fel Unstable Energy"
+    },
+    {
+      "id": "Prologue_Vashj",
+      "tags": {
+        "CARDNAME": "Handmaiden Vashj",
+        "CARDTEXT": "&lt;b&gt;Spell Damage +1&lt;/b&gt;\nYour spells cost (1) less.",
+        "HEALTH": "2",
+        "ATK": "4",
+        "COST": "4",
+        "CARD_SET": "1414",
+        "SPELLPOWER": "1",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "4",
+        "RARITY": "1",
+        "AttackVisualType": "7",
+        "AURA": "1",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Handmaiden Vashj"
+    },
+    {
+      "id": "Prologue_Xavius",
+      "tags": {
+        "CARDNAME": "Xavius",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "CARDTYPE": "3",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Xavius"
+    },
+    {
+      "id": "Prologue_XaviusHP",
+      "tags": {
+        "141": "141",
+        "CARDNAME": "Wither Soul",
+        "CARDTEXT": "&lt;b&gt;Hero Power&lt;/b&gt;\nChange an enemy minion's Health to 1.",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "10",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Wither Soul"
+    },
+    {
+      "id": "Prologue_XaviusHPe",
+      "tags": {
+        "CARDNAME": "Withered Soul",
+        "CARDTEXT": "This minion has 1 Health.",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "CARDTYPE": "6",
+        "ENCHANTMENT_BIRTH_VISUAL": "2",
+        "ENCHANTMENT_IDLE_VISUAL": "2"
+      },
+      "name": "Withered Soul"
+    },
+    {
+      "id": "TB_HERO_ILLIDAN2",
+      "tags": {
+        "CARDNAME": "Illidan Stormrage",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "12",
+        "FACTION": "3",
+        "CARDTYPE": "3",
+        "RARITY": "2",
+        "AttackVisualType": "1",
+        "DevState": "2",
+        "HERO_POWER": "59849",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Illidan Stormrage"
+    },
+    {
+      "id": "TB_HERO_MALFURION",
+      "tags": {
+        "CARDNAME": "Malfurion Stormrage",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "2",
+        "FACTION": "3",
+        "CARDTYPE": "3",
+        "RARITY": "2",
+        "AttackVisualType": "1",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Malfurion Stormrage"
+    },
+    {
+      "id": "TB_HERO_Tyrande",
+      "tags": {
+        "CARDNAME": "Tyrande Whisperwind",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "6",
+        "FACTION": "3",
+        "CARDTYPE": "3",
+        "RARITY": "4",
+        "AttackVisualType": "1",
+        "HIDE_WATERMARK": "1"
+      },
+      "name": "Tyrande Whisperwind"
+    },
+    {
+      "id": "TB_ReturningPlayer_HoundmastHP",
+      "tags": {
+        "48419": "48419",
+        "CARDNAME": "Fel Whip",
+        "CARDTEXT": "&lt;b&gt;Hero Power&lt;/b&gt;\nSummon a 2/1 Felhound with &lt;b&gt;Rush&lt;/b&gt;.",
+        "COST": "2",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "CARDTYPE": "10"
+      },
+      "name": "Fel Whip"
+    },
+    {
+      "id": "TB_ReturningPlayer_Houndmastr2",
+      "tags": {
+        "CARDNAME": "Hakkar the Houndmaster",
+        "HEALTH": "30",
+        "CARD_SET": "1414",
+        "CLASS": "3",
+        "FACTION": "3",
+        "CARDTYPE": "3",
+        "RARITY": "2",
+        "AttackVisualType": "1"
+      },
+      "name": "Hakkar the Houndmaster"
+    }
+  ],
+  "removed": [],
+  "changed": [
+    {
+      "id": "AT_037",
+      "name": "Living Roots",
+      "field": "RARITY",
+      "old": "1",
+      "new": "4",
+      "collectible": true,
+      "set": "15"
+    },
+    {
+      "id": "BOT_238",
+      "name": "Dr. Boom, Mad Genius",
+      "field": "COST",
+      "old": "9",
+      "new": "7",
+      "collectible": true,
+      "set": "1127"
+    },
+    {
+      "id": "BOT_243e",
+      "name": "Necroalchemy",
+      "field": "CARDTEXT",
+      "old": "Copied Deathrattle from {0}.",
+      "new": "Copied &lt;b&gt;Deathrattle&lt;/b&gt; from {0}.",
+      "collectible": false,
+      "set": "1127"
+    },
+    {
+      "id": "BOT_270",
+      "name": "Giggling Inventor",
+      "field": "COST",
+      "old": "7",
+      "new": "6",
+      "collectible": true,
+      "set": "1127"
+    },
+    {
+      "id": "BOT_566",
+      "name": "Reckless Experimenter",
+      "field": "CARDTEXT",
+      "old": "[x]&lt;b&gt;Deathrattle&lt;/b&gt; minions you\nplay cost (3) less, but die at\nend of turn. &lt;i&gt;(Cost can't be\nreduced below 1.)&lt;/i&gt;",
+      "new": "[x]&lt;b&gt;Deathrattle&lt;/b&gt; minions you\nplay cost (3) less, but die\nat the end of the turn.",
+      "collectible": true,
+      "set": "1127"
+    },
+    {
+      "id": "CS1_112",
+      "name": "Holy Nova",
+      "field": "CARDTEXT",
+      "old": "Deal $2 damage to all enemies. Restore #2_Health to all friendly characters.",
+      "new": "Deal $2 damage to all enemy minions. Restore #2 Health to all friendly characters.",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "CS1_112",
+      "name": "Holy Nova",
+      "field": "COST",
+      "old": "5",
+      "new": "4",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "CS1_130",
+      "name": "Holy Smite",
+      "field": "CARDTEXT",
+      "old": "Deal $2 damage.",
+      "new": "Deal $3 damage\nto a minion.",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "CS2_004",
+      "name": "Power Word: Shield",
+      "field": "CARDTEXT",
+      "old": "Give a minion +2_Health.\nDraw a card.",
+      "new": "Give a minion +2_Health.",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "CS2_004",
+      "name": "Power Word: Shield",
+      "field": "COST",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "CS2_235",
+      "name": "Northshire Cleric",
+      "field": "CARD_SET",
+      "old": "2",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "CS2_235",
+      "name": "Northshire Cleric",
+      "field": "RARITY",
+      "old": "2",
+      "new": "1",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "CS2_236",
+      "name": "Divine Spirit",
+      "field": "CARD_SET",
+      "old": "2",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "CS2_236",
+      "name": "Divine Spirit",
+      "field": "RARITY",
+      "old": "2",
+      "new": "1",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "DAL_357",
+      "name": "Lucentbark",
+      "field": "CARDTEXT",
+      "old": "&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Go dormant. Restore 5 Health to awaken this minion.",
+      "new": "&lt;b&gt;Taunt&lt;/b&gt;\n&lt;b&gt;Deathrattle:&lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt;. Restore 5 Health to awaken this minion.",
+      "collectible": true,
+      "set": "1130"
+    },
+    {
+      "id": "DAL_357t",
+      "name": "Spirit of Lucentbark",
+      "field": "CARDTEXT",
+      "old": "When you restore 5 Health, awaken this minion.\n&lt;i&gt;(@ left!)&lt;/i&gt;",
+      "new": "&lt;b&gt;Dormant&lt;/b&gt;\nWhen you restore 5 Health, awaken this minion.\n&lt;i&gt;(@ left!)&lt;/i&gt;",
+      "collectible": false,
+      "set": "1130"
+    },
+    {
+      "id": "DAL_357t",
+      "name": "Spirit of Lucentbark",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1130"
+    },
+    {
+      "id": "DAL_357t",
+      "name": "Spirit of Lucentbark",
+      "field": "MOUSE_OVER_CARD_APPEARANCE",
+      "old": "",
+      "new": "4",
+      "collectible": false,
+      "set": "1130"
+    },
+    {
+      "id": "DALA_832t",
+      "name": "Violet Prison",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1130"
+    },
+    {
+      "id": "DALA_832t",
+      "name": "Violet Prison",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1130"
+    },
+    {
+      "id": "DRG_019",
+      "name": "Scion of Ruin",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_021",
+      "name": "Ritual Chopper",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_027",
+      "name": "Umbral Skulker",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_030",
+      "name": "Praise Galakrond!",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_031e",
+      "name": "Necrium Infusion",
+      "field": "CARDTEXT",
+      "old": "Copied Deathrattle from {0}.",
+      "new": "Copied &lt;b&gt;Deathrattle&lt;/b&gt; from {0}.",
+      "collectible": false,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_050",
+      "name": "Devoted Maniac",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_202",
+      "name": "Dragonblight Cultist",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_203",
+      "name": "Veiled Worshipper",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_217",
+      "name": "Dragon's Pack",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_218",
+      "name": "Corrupt Elementalist",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_242",
+      "name": "Shield of Galakrond",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_246",
+      "name": "Time Rip",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_247",
+      "name": "Seal Fate",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_248",
+      "name": "Invocation of Frost",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_249",
+      "name": "Awaken!",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_250",
+      "name": "Fiendish Rites",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_300",
+      "name": "Fate Weaver",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRG_303",
+      "name": "Disciple of Galakrond",
+      "field": "1",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "1347"
+    },
+    {
+      "id": "DRGA_001t",
+      "name": "Imprisoned Reno",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1403"
+    },
+    {
+      "id": "DRGA_001t",
+      "name": "Imprisoned Reno",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1403"
+    },
+    {
+      "id": "DRGA_BOSS_05t3",
+      "name": "Lighterbot",
+      "field": "BATTLECRY",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1403"
+    },
+    {
+      "id": "DRGA_BOSS_18t",
+      "name": "Pile of Bones",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1403"
+    },
+    {
+      "id": "DRGA_BOSS_18t",
+      "name": "Pile of Bones",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1403"
+    },
+    {
+      "id": "EX1_007",
+      "name": "Acolyte of Pain",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_048",
+      "name": "Spellbreaker",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_085",
+      "name": "Mind Control Tech",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_105",
+      "name": "Mountain Giant",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_116",
+      "name": "Leeroy Jenkins",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_158e",
+      "name": "Soul of the Forest",
+      "field": "CARDTEXT",
+      "old": "Deathrattle: Summon a 2/2 Treant.",
+      "new": "&lt;b&gt;Deathrattle:&lt;/b&gt; Summon a 2/2 Treant.",
+      "collectible": false,
+      "set": "3"
+    },
+    {
+      "id": "EX1_334",
+      "name": "Shadow Madness",
+      "field": "COST",
+      "old": "4",
+      "new": "3",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_339",
+      "name": "Thoughtsteal",
+      "field": "COST",
+      "old": "3",
+      "new": "2",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_350",
+      "name": "Prophet Velen",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_591",
+      "name": "Auchenai Soulpriest",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_614",
+      "name": "Xavius",
+      "field": "CARDNAME",
+      "old": "Illidan Stormrage",
+      "new": "Xavius",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_614",
+      "name": "Xavius",
+      "field": "CARDTEXT",
+      "old": "Whenever you play a card, summon a 2/1 Flame of_Azzinoth.",
+      "new": "After you play a card, summon a 2/1 Satyr.",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_614",
+      "name": "Xavius",
+      "field": "FLAVORTEXT",
+      "old": "Illidan's brother, Malfurion, imprisoned him beneath Hyjal for 10,000 years.  Stormrages are not good at letting go of grudges.",
+      "new": "Xavius has grand nightmares of summoning Sargeras into this world, but a few Satyr will have to do for now.",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_614t",
+      "name": "Xavian Satyr",
+      "field": "CARDNAME",
+      "old": "Flame of Azzinoth",
+      "new": "Xavian Satyr",
+      "collectible": false,
+      "set": "3"
+    },
+    {
+      "id": "EX1_614t",
+      "name": "Xavian Satyr",
+      "field": "CARDRACE",
+      "old": "18",
+      "new": "15",
+      "collectible": false,
+      "set": "3"
+    },
+    {
+      "id": "EX1_622",
+      "name": "Shadow Word: Death",
+      "field": "COST",
+      "old": "3",
+      "new": "2",
+      "collectible": true,
+      "set": "2"
+    },
+    {
+      "id": "EX1_623",
+      "name": "Temple Enforcer",
+      "field": "ATK",
+      "old": "6",
+      "new": "5",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_623",
+      "name": "Temple Enforcer",
+      "field": "COST",
+      "old": "6",
+      "new": "5",
+      "collectible": true,
+      "set": "3"
+    },
+    {
+      "id": "EX1_624",
+      "name": "Holy Fire",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "EX1_625",
+      "name": "Shadowform",
+      "field": "CARD_SET",
+      "old": "3",
+      "new": "4",
+      "collectible": true,
+      "set": "4"
+    },
+    {
+      "id": "FP1_012t",
+      "name": "Putrid Slime",
+      "field": "CARDNAME",
+      "old": "Slime",
+      "new": "Putrid Slime",
+      "collectible": false,
+      "set": "12"
+    },
+    {
+      "id": "GILA_411e",
+      "name": "Princess's Bone",
+      "field": "CARDTEXT",
+      "old": "Copied Deathrattle from {0}.",
+      "new": "Copied &lt;b&gt;Deathrattle&lt;/b&gt; from {0}.",
+      "collectible": false,
+      "set": "1125"
+    },
+    {
+      "id": "GVG_062",
+      "name": "Cobalt Guardian",
+      "field": "IS_BACON_POOL_MINION",
+      "old": "1",
+      "new": "",
+      "collectible": true,
+      "set": "13"
+    },
+    {
+      "id": "KARA_00_11",
+      "name": "Guardian’s Evocation",
+      "field": "CARDNAME",
+      "old": "Evocation",
+      "new": "Guardian’s Evocation",
+      "collectible": false,
+      "set": "23"
+    },
+    {
+      "id": "LOE_019e",
+      "name": "Unearthed Raptor",
+      "field": "CARDTEXT",
+      "old": "Copied Deathrattle from {0}.",
+      "new": "Copied &lt;b&gt;Deathrattle&lt;/b&gt; from {0}.",
+      "collectible": false,
+      "set": "20"
+    },
+    {
+      "id": "LOOT_520e",
+      "name": "Albino Chameleon",
+      "field": "CARDTEXT",
+      "old": "Copied Deathrattle from {0}.",
+      "new": "Copied &lt;b&gt;Deathrattle&lt;/b&gt; from {0}.",
+      "collectible": false,
+      "set": "1004"
+    },
+    {
+      "id": "LOOT_526",
+      "name": "The Darkness",
+      "field": "CARDTEXT",
+      "old": "[x]Starts dormant.\n&lt;b&gt;Battlecry:&lt;/b&gt; Shuffle 3 Candles\ninto the enemy deck. When\ndrawn, this awakens.",
+      "new": "[x]Starts &lt;b&gt;Dormant&lt;/b&gt;.\n&lt;b&gt;Battlecry:&lt;/b&gt; Shuffle 3 Candles\ninto the enemy deck. When\ndrawn, this awakens.",
+      "collectible": true,
+      "set": "1004"
+    },
+    {
+      "id": "LOOT_526",
+      "name": "The Darkness",
+      "field": "1",
+      "old": "",
+      "new": "1",
+      "collectible": true,
+      "set": "1004"
+    },
+    {
+      "id": "LOOT_526d",
+      "name": "The Darkness",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1004"
+    },
+    {
+      "id": "LOOT_526d",
+      "name": "The Darkness",
+      "field": "MOUSE_OVER_CARD_APPEARANCE",
+      "old": "",
+      "new": "4",
+      "collectible": false,
+      "set": "1004"
+    },
+    {
+      "id": "NEW1_027e",
+      "name": "Yarrr!",
+      "field": "CARD_SET",
+      "old": "4",
+      "new": "3",
+      "collectible": false,
+      "set": "3"
+    },
+    {
+      "id": "TRL_124",
+      "name": "Raiding Party",
+      "field": "COST",
+      "old": "4",
+      "new": "3",
+      "collectible": true,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_104t",
+      "name": "Akali's Champion",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_104t",
+      "name": "Akali's Champion",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_105t",
+      "name": "Shirvallah's Protection",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_105t",
+      "name": "Shirvallah's Protection",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_106t",
+      "name": "Bottled Terror",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_106t",
+      "name": "Bottled Terror",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_107t",
+      "name": "Tribal Shrine",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_107t",
+      "name": "Tribal Shrine",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_108t",
+      "name": "Jan'alai's Mantle",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_108t",
+      "name": "Jan'alai's Mantle",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_109t",
+      "name": "Krag'wa's Lure",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_109t",
+      "name": "Krag'wa's Lure",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_110t",
+      "name": "Halazzi's Trap",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_110t",
+      "name": "Halazzi's Trap",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_112t",
+      "name": "Gonk's Armament",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_112t",
+      "name": "Gonk's Armament",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_113t",
+      "name": "Blood Pact",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_113t",
+      "name": "Blood Pact",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_114t",
+      "name": "Bwonsamdi's Sanctum",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_114t",
+      "name": "Bwonsamdi's Sanctum",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_115t",
+      "name": "Gonk's Mark",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_115t",
+      "name": "Gonk's Mark",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_116t",
+      "name": "Bonds of Balance",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_116t",
+      "name": "Bonds of Balance",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_128t",
+      "name": "Jan'alai's Flame",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_128t",
+      "name": "Jan'alai's Flame",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_129t",
+      "name": "Jan'alai's Progeny",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_129t",
+      "name": "Jan'alai's Progeny",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_137t",
+      "name": "Shirvallah's Vengeance",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_137t",
+      "name": "Shirvallah's Vengeance",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_138t",
+      "name": "Shirvallah's Grace",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_138t",
+      "name": "Shirvallah's Grace",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_146t",
+      "name": "Bwonsamdi's Tome",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_146t",
+      "name": "Bwonsamdi's Tome",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_147t",
+      "name": "Bwonsamdi's Covenant",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_147t",
+      "name": "Bwonsamdi's Covenant",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_154t",
+      "name": "Tribute from the Tides",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_154t",
+      "name": "Tribute from the Tides",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_155t",
+      "name": "Krag'wa's Grace",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_155t",
+      "name": "Krag'wa's Grace",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_162t",
+      "name": "Halazzi's Hunt",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_162t",
+      "name": "Halazzi's Hunt",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_163t",
+      "name": "Halazzi's Guise",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_163t",
+      "name": "Halazzi's Guise",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_170t",
+      "name": "Akali's War Drum",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_170t",
+      "name": "Akali's War Drum",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_171t",
+      "name": "Akali's Horn",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_171t",
+      "name": "Akali's Horn",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_178t",
+      "name": "Dark Reliquary",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_178t",
+      "name": "Dark Reliquary",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_179t",
+      "name": "Hir'eek's Hunger",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_179t",
+      "name": "Hir'eek's Hunger",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_186t",
+      "name": "Treasure from Below",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_186t",
+      "name": "Treasure from Below",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_187t",
+      "name": "Pirate's Mark",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "TRLA_187t",
+      "name": "Pirate's Mark",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1129"
+    },
+    {
+      "id": "ULD_155",
+      "name": "Unseal the Vault",
+      "field": "CARDTEXT",
+      "old": "&lt;b&gt;Quest:&lt;/b&gt; Summon 20_minions.\n&lt;b&gt;Reward:&lt;/b&gt; Ramkahen Roar.",
+      "new": "&lt;b&gt;Quest:&lt;/b&gt; Summon 20_minions.\n&lt;b&gt;Reward:&lt;/b&gt; Pharaoh's Warmask.",
+      "collectible": true,
+      "set": "1158"
+    },
+    {
+      "id": "ULD_155p",
+      "name": "Pharaoh's Warmask",
+      "field": "CARDNAME",
+      "old": "Ramkahen Roar",
+      "new": "Pharaoh's Warmask",
+      "collectible": false,
+      "set": "1158"
+    },
+    {
+      "id": "ULDA_804t",
+      "name": "Eternal Tomb",
+      "field": "DORMANT",
+      "old": "1",
+      "new": "",
+      "collectible": false,
+      "set": "1158"
+    },
+    {
+      "id": "ULDA_804t",
+      "name": "Eternal Tomb",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "1158"
+    },
+    {
+      "id": "UNG_065",
+      "name": "Sherazin, Corpse Flower",
+      "field": "CARDTEXT",
+      "old": "&lt;b&gt;Deathrattle:&lt;/b&gt; Go dormant. Play 4 cards in a turn to revive this minion.",
+      "new": "&lt;b&gt;Deathrattle:&lt;/b&gt; Go &lt;b&gt;Dormant&lt;/b&gt;. Play 4 cards in a turn to revive this minion.",
+      "collectible": true,
+      "set": "27"
+    },
+    {
+      "id": "UNG_065t",
+      "name": "Sherazin, Seed",
+      "field": "CARDTEXT",
+      "old": "When you play 4 cards in a_turn, revive this minion.",
+      "new": "[x]&lt;b&gt;Dormant&lt;/b&gt;\nWhen you play 4 cards\nin a turn, revive\nthis minion.",
+      "collectible": false,
+      "set": "27"
+    },
+    {
+      "id": "UNG_065t",
+      "name": "Sherazin, Seed",
+      "field": "DORMANT_VISUAL",
+      "old": "",
+      "new": "1",
+      "collectible": false,
+      "set": "27"
+    },
+    {
+      "id": "UNG_065t",
+      "name": "Sherazin, Seed",
+      "field": "MOUSE_OVER_CARD_APPEARANCE",
+      "old": "",
+      "new": "4",
+      "collectible": false,
+      "set": "27"
+    }
+  ]
+}

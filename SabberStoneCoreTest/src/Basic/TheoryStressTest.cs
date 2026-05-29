@@ -55,7 +55,7 @@ namespace SabberStoneCoreTest.Basic
 				game.ProcessCard("Knife Juggler", null, true);
 				game.ProcessCard("Knife Juggler", null, true);
 
-				game.ProcessCard("Illidan Stormrage", null, true);
+				game.ProcessCard("Xavius", null, true);
 
 				game.EndTurn();
 

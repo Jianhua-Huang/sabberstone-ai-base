@@ -1641,7 +1641,7 @@ namespace SabberStoneCoreTest.CardSets
 			game.Process(PlayCardTask.Minion(game.CurrentPlayer, testCard));
 			IPlayable spell = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Holy Nova"));
 			game.AuraUpdate();
-			Assert.Equal(4, spell.Cost);
+			Assert.Equal(3, spell.Cost);
 		}
 
 		// ---------------------------------------- MINION - PRIEST

@@ -2324,10 +2324,10 @@ namespace SabberStoneCoreTest.CardSets.Standard
 	public class PriestCoreTest
 	{
 		// ----------------------------------------- SPELL - PRIEST
-		// [CS1_112] Holy Nova - COST:5 
+		// [CS1_112] Holy Nova - COST:4 
 		// - Fac: neutral, Set: core, Rarity: common
 		// --------------------------------------------------------
-		// Text: Deal $2 damage to all enemies. Restore #2_Health to all friendly characters. *spelldmg
+		// Text: Deal $2 damage to all enemy minions. Restore #2 Health to all friendly characters. *spelldmg
 		// --------------------------------------------------------
 		[Fact]
 		public void HolyNova_CS1_112()
@@ -2389,7 +2389,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.Process(PlayCardTask.Spell(game.CurrentPlayer, spell));
 
 			Assert.Equal(1, game.CurrentPlayer[GameTag.NUM_CARDS_DRAWN_THIS_TURN]);
-			Assert.Equal(28, game.CurrentOpponent.Hero.Health);
+			Assert.Equal(30, game.CurrentOpponent.Hero.Health);
 			Assert.Equal(3, minion13.Health);
 			Assert.Equal(Zone.GRAVEYARD, minion24.Zone.Type);
 			Assert.Equal(Zone.GRAVEYARD, minion25.Zone.Type);
@@ -2531,11 +2531,10 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		// ----------------------------------------- SPELL - PRIEST
-		// [CS2_004] Power Word: Shield - COST:1 
+		// [CS2_004] Power Word: Shield - COST:0 
 		// - Fac: neutral, Set: core, Rarity: free
 		// --------------------------------------------------------
 		// Text: Give a minion +2_Health.
-		//       Draw a card.
 		// --------------------------------------------------------
 		// PlayReq:
 		// - REQ_MINION_TARGET = 0
@@ -2572,7 +2571,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			game.Process(PlayCardTask.SpellTarget(game.CurrentPlayer, spell, (ICharacter) minion1));
 
-			Assert.Equal(2, game.Player1[GameTag.NUM_CARDS_DRAWN_THIS_TURN]);
+			Assert.Equal(1, game.Player1[GameTag.NUM_CARDS_DRAWN_THIS_TURN]);
 			Assert.Equal(2, game.Player1[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
 			Assert.Equal(3, game.Player1.BoardZone[0].BaseHealth);
 		}

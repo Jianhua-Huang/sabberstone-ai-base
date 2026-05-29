@@ -2145,15 +2145,15 @@ namespace SabberStoneCoreTest.CardSets
 			//var testCard = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Dragon Soul"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, "Dragon Soul"));
 
-			game.ProcessCard("Holy Smite", game.CurrentOpponent.Hero);
-			game.ProcessCard("Holy Smite", game.CurrentOpponent.Hero);
-			game.ProcessCard("Holy Smite", game.CurrentOpponent.Hero);
+			Minion target = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.ProcessCard("Power Word: Shield", target, asZeroCost: true);
+			game.ProcessCard("Power Word: Shield", target, asZeroCost: true);
+			game.ProcessCard("Power Word: Shield", target, asZeroCost: true);
 
-			Assert.Single(game.CurrentPlayer.BoardZone);
-			Assert.Equal("Dragon Spirit", game.CurrentPlayer.BoardZone[0].Card.Name);
+			Assert.Single(game.CurrentPlayer.BoardZone.Where(p => p.Card.Name == "Dragon Spirit"));
 			Assert.Equal(0, game.CurrentPlayer.Hero.Weapon[GameTag.TAG_SCRIPT_DATA_NUM_1]);
 
-			game.ProcessCard("Holy Smite", game.CurrentOpponent.Hero);
+			game.ProcessCard("Power Word: Shield", target, asZeroCost: true);
 
 			game.EndTurn();
 			Assert.Equal(0, game.CurrentOpponent.Hero.Weapon[GameTag.TAG_SCRIPT_DATA_NUM_1]);

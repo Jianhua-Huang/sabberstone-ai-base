@@ -2980,9 +2980,10 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			IPlayable testCard = Generic.DrawCard(game.CurrentPlayer,Cards.FromName("Prophet Velen"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, testCard));
 
+			Minion target = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
 			IPlayable spell = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Holy Smite"));
-			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell, game.CurrentOpponent.Hero));
-			Assert.Equal(4, game.CurrentOpponent.Hero.Damage);
+			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell, target));
+			Assert.Equal(6, target.Damage);
 
 			game.Process(HeroPowerTask.Any(game.CurrentPlayer, game.CurrentOpponent.Hero));
 			Assert.Equal(0, game.CurrentOpponent.Hero.Damage);
@@ -3014,16 +3015,18 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			IPlayable spell2 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Holy Smite"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, thalnos));
 			Assert.Equal(0, game.CurrentOpponent.Hero.Damage);
-			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell2, game.CurrentOpponent.Hero));
-			Assert.Equal(6, game.CurrentOpponent.Hero.Damage);
+			Minion secondTarget = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell2, secondTarget));
+			Assert.Equal(8, secondTarget.Damage);
 
 			game.CurrentPlayer.UsedMana = 0;
 
 			IPlayable secondVelen = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Prophet Velen"));
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, secondVelen));
 			IPlayable spell3 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Holy Smite"));
-			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell3, game.CurrentOpponent.Hero));
-			Assert.Equal(18, game.CurrentOpponent.Hero.Damage);	// 6 + ((2 + 1) * 2 * 2) = 18
+			Minion thirdTarget = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell3, thirdTarget));
+			Assert.Equal(16, thirdTarget.Damage);	// (3 + 1) * 2 * 2 = 16
 		}
 
 		// ---------------------------------------- MINION - PRIEST
@@ -8454,16 +8457,16 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		// --------------------------------------- MINION - NEUTRAL
-		// [EX1_614] Illidan Stormrage - COST:6 [ATK:7/HP:5] 
+		// [EX1_614] Xavius - COST:6 [ATK:7/HP:5] 
 		// - Race: demon, Fac: neutral, Set: expert1, Rarity: legendary
 		// --------------------------------------------------------
-		// Text: Whenever you play a card, summon a 2/1 Flame of_Azzinoth.
+		// Text: After you play a card, summon a 2/1 Satyr.
 		// --------------------------------------------------------
 		// GameTag:
 		// - ELITE = 1
 		// --------------------------------------------------------
 		[Fact]
-		public void IllidanStormrage_EX1_614()
+		public void Xavius_EX1_614()
 		{
 			var game = new Game(new GameConfig
 			{
@@ -8477,7 +8480,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.Player1.BaseMana = 10;
 			game.Player2.BaseMana = 10;
 
-			IPlayable minion1 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Illidan Stormrage"));
+			IPlayable minion1 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Xavius"));
 			IPlayable minion2 = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Bloodfen Raptor"));
 
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, minion1));

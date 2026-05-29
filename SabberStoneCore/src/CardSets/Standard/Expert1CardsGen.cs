@@ -5058,10 +5058,10 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 
 			// --------------------------------------- MINION - NEUTRAL
-			// [EX1_614] Illidan Stormrage - COST:6 [ATK:7/HP:5]
+			// [EX1_614] Xavius - COST:6 [ATK:7/HP:5]
 			// - Race: demon, Fac: neutral, Set: expert1, Rarity: legendary
 			// --------------------------------------------------------
-			// Text: Whenever you play a card, summon a 2/1 Flame of_Azzinoth.
+			// Text: After you play a card, summon a 2/1 Satyr.
 			// --------------------------------------------------------
 			// GameTag:
 			// - ELITE = 1
@@ -5862,8 +5862,8 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("EX1_598", new CardDef());
 
 			// --------------------------------------- MINION - NEUTRAL
-			// [EX1_614t] Flame of Azzinoth (*) - COST:1 [ATK:2/HP:1]
-			// - Race: elemental, Set: expert1,
+			// [EX1_614t] Xavian Satyr (*) - COST:1 [ATK:2/HP:1]
+			// - Race: demon, Set: expert1,
 			// --------------------------------------------------------
 			cards.Add("EX1_614t", new CardDef());
 

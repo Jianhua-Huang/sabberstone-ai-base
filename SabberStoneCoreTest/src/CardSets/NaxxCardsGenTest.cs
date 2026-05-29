@@ -701,7 +701,7 @@ namespace SabberStoneCoreTest.CardSets
 
             Assert.Equal(1, game.CurrentOpponent.BoardZone.Count);
 
-            Assert.Equal("Slime", game.CurrentOpponent.BoardZone[0].Card.Name);
+            Assert.Equal("Putrid Slime", game.CurrentOpponent.BoardZone[0].Card.Name);
             Assert.Equal(1, game.CurrentOpponent.BoardZone[0].AttackDamage);
             Assert.Equal(2, game.CurrentOpponent.BoardZone[0].Health);
             Assert.True(game.CurrentOpponent.BoardZone[0].HasTaunt);
