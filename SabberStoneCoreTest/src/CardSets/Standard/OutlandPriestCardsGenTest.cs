@@ -40,6 +40,11 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				Generic.RemoveFromZone(card.Controller, card);
 		}
 
+		private static IPlayable AddHandCard(Game game, string cardName)
+		{
+			return Generic.DrawCard(game.CurrentPlayer, Cards.FromName(cardName));
+		}
+
 		[Fact]
 		public void PsychicConjurer_EX1_193_ShouldCopyCardFromOpponentDeck()
 		{
@@ -125,6 +130,109 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.True(target.ToBeDestroyed);
 			Assert.Equal(5, natalie.Health);
+		}
+
+		[Fact]
+		public void ReliquaryOfSouls_BT_197_ShouldShufflePrimeOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion reliquary = game.ProcessCard<Minion>("Reliquary of Souls", asZeroCost: true);
+			int deckCount = game.CurrentPlayer.DeckZone.Count;
+
+			game.ProcessCard("Fireball", reliquary, asZeroCost: true);
+
+			Assert.Equal(deckCount + 1, game.CurrentPlayer.DeckZone.Count);
+			Assert.Contains(game.CurrentPlayer.DeckZone, p => p.Card.Id == "BT_197t");
+		}
+
+		[Fact]
+		public void SoulMirror_BT_198_ShouldSummonCopiesThatAttackOriginals()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Soul Mirror", asZeroCost: true);
+
+			Minion copy = Assert.Single(game.CurrentPlayer.BoardZone.Where(p => p.Card.Name == "Chillwind Yeti"));
+			Assert.Equal(4, copy.Damage);
+			Assert.Equal(4, enemy.Damage);
+		}
+
+		[Fact]
+		public void PsycheSplit_BT_253_ShouldBuffAndSummonCopy()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Psyche Split", target, asZeroCost: true);
+
+			Assert.Equal(2, target.AttackDamage);
+			Assert.Equal(3, target.Health);
+			Assert.Equal(2, game.CurrentPlayer.BoardZone.Count(p => p.Card.Name == "Wisp" && p.AttackDamage == 2 && p.Health == 3));
+		}
+
+		[Fact]
+		public void SethekkVeilweaver_BT_254_ShouldAddPriestSpellAfterSpellOnMinion()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Sethekk Veilweaver", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			IPlayable powerInfusion = AddHandCard(game, "Power Infusion");
+
+			game.ProcessCard(powerInfusion, target, asZeroCost: true);
+
+			Assert.Contains(game.CurrentPlayer.HandZone, p => p.Card.Class == CardClass.PRIEST && p.Card.Type == CardType.SPELL);
+		}
+
+		[Fact]
+		public void DragonmawOverseer_BT_256_ShouldBuffAnotherFriendlyMinionAtEndOfTurn()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Dragonmaw Overseer", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Equal(3, target.AttackDamage);
+			Assert.Equal(3, target.Health);
+		}
+
+		[Fact]
+		public void Apotheosis_BT_257_ShouldBuffAndGiveLifesteal()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Apotheosis", target, asZeroCost: true);
+
+			Assert.Equal(3, target.AttackDamage);
+			Assert.Equal(4, target.Health);
+			Assert.Equal(1, target[GameTag.LIFESTEAL]);
+		}
+
+		[Fact]
+		public void DragonmawSentinel_BT_262_ShouldGainAttackAndLifestealIfHoldingDragon()
+		{
+			Game game = CreateGame();
+			AddHandCard(game, "Alexstrasza");
+
+			Minion sentinel = game.ProcessCard<Minion>("Dragonmaw Sentinel", asZeroCost: true);
+
+			Assert.Equal(2, sentinel.AttackDamage);
+			Assert.Equal(1, sentinel[GameTag.LIFESTEAL]);
+		}
+
+		[Fact]
+		public void SkeletalDragon_BT_341_ShouldAddDragonAtEndOfTurn()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Skeletal Dragon", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Contains(game.CurrentOpponent.HandZone, p => p.Card.IsRace(Race.DRAGON));
 		}
 	}
 }

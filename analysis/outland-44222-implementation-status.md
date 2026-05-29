@@ -5,11 +5,11 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 ## Current status
 
 - New collectible cards in scope: 172
-- Implemented collectible ids from this diff in code: 84
-- Effect-focused tests added so far: 85
-- Remaining collectible cards: 88
+- Implemented collectible ids from this diff in code: 131
+- Effect-focused Outland tests added so far: 156
+- Remaining collectible cards: 41
 
-## Completed in this pass
+## Completed so far
 
 ### Demon Hunter
 
@@ -18,15 +18,20 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_142` Shadowhoof Slayer
 - `BT_173` Command the Illidari
 - `BT_175` Twin Slice / `BT_175t` Second Slice
+- `BT_187` Kayn Sunfury
 - `BT_235` Chaos Nova
+- `BT_271` Flamereaper
 - `BT_351` Battlefiend
 - `BT_352` Satyr Overseer
 - `BT_354` Blade Dance
 - `BT_355` Wrathscale Naga
 - `BT_407` Ur'zul Horror
+- `BT_423` Ashtongue Battlelord
 - `BT_427` Feast of Souls
+- `BT_430` Warglaives of Azzinoth
 - `BT_480` Crimson Sigil Runner
 - `BT_486` Pit Commander
+- `BT_487` Hulking Overfiend
 - `BT_488` Soul Split
 - `BT_490` Consume Magic
 - `BT_491` Spectral Sight
@@ -34,24 +39,19 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_495` Glaivebound Adept
 - `BT_496` Furious Felfin
 - `BT_509` Fel Summoner
+- `BT_510` Wrathspike Brute
 - `BT_512` Inner Demon
 - `BT_514` Immolation Aura
 - `BT_601` Skull of Gul'dan
 - `BT_740` Soul Cleave
 - `BT_752` Blur
+- `BT_753` Mana Burn
 - `BT_761` Coilfang Warlord
 - `BT_801` Eye Beam
 - `BT_814` Illidari Felblade
+- `BT_921` Aldrachi Warblades
 - `BT_922` Umberwing
 - `BT_937` Altruis the Outcast
-- `BT_187` Kayn Sunfury
-- `BT_271` Flamereaper
-- `BT_423` Ashtongue Battlelord
-- `BT_430` Warglaives of Azzinoth
-- `BT_487` Hulking Overfiend
-- `BT_510` Wrathspike Brute
-- `BT_753` Mana Burn
-- `BT_921` Aldrachi Warblades
 
 ### Warrior
 
@@ -93,8 +93,27 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `BT_072` Deep Freeze
 - `BT_291` Apexis Blast
 
+### Paladin
+
+- `BT_011` Libram of Justice
+- `BT_018` Underlight Angling Rod
+- `BT_019` Murgur Murgurgle / `BT_019t` Murgurgle Prime
+- `BT_020` Aldor Attendant
+- `BT_024` Libram of Hope
+- `BT_025` Libram of Wisdom
+- `BT_026` Aldor Truthseeker
+- `BT_292` Hand of A'dal
+
 ### Priest
 
+- `BT_197` Reliquary of Souls / `BT_197t` Reliquary Prime
+- `BT_198` Soul Mirror
+- `BT_253` Psyche Split
+- `BT_254` Sethekk Veilweaver
+- `BT_256` Dragonmaw Overseer
+- `BT_257` Apotheosis
+- `BT_262` Dragonmaw Sentinel
+- `BT_341` Skeletal Dragon
 - `EX1_193` Psychic Conjurer
 - `EX1_194` Power Infusion
 - `EX1_195` Kul Tiran Chaplain
@@ -102,31 +121,77 @@ Scope: collectible cards introduced by hsdata `43246 -> 44222`, traditional 1v1 
 - `EX1_197` Shadow Word: Ruin
 - `EX1_198` Natalie Seline
 
+### Rogue
+
+- `BT_701` Spymistress
+- `BT_702` Ashtongue Slayer
+- `BT_703` Cursed Vagrant
+- `BT_710` Greyheart Sage
+- `BT_713` Akama / `BT_713t` Akama Prime
+
+### Shaman
+
+- `BT_100` Serpentshrine Portal
+- `BT_101` Vivid Spores
+- `BT_102` Boggspine Knuckles
+- `BT_106` Bogstrok Clacker
+- `BT_109` Lady Vashj
+- `BT_113` Totemic Reflection
+- `BT_230` The Lurker Below
+
+### Warlock
+
+- `BT_199` Unstable Felbolt
+- `BT_300` Hand of Gul'dan
+- `BT_301` Nightshade Matron
+- `BT_302` Dark Portal
+- `BT_304` Enhanced Dreadlord
+- `BT_306` Shadow Council
+- `BT_307` Darkglare
+- `BT_309` Kanrethad Ebonlocke
+
 ### Neutral
 
 - `BT_008` Rustsworn Initiate
 - `BT_010` Felfin Navigator
+- `BT_155` Scrapyard Colossus
+- `BT_159` Terrorguard Escapee
+- `BT_160` Rustsworn Cultist
 - `BT_714` Frozen Shadoweaver
 - `BT_715` Bonechewer Brawler
 - `BT_716` Bonechewer Vanguard
+- `BT_717` Burrowing Scorpid
 - `BT_720` Ruststeed Raider
+- `BT_721` Blistering Rot
 - `BT_722` Guardian Augmerchant
 - `BT_723` Rocket Augmerchant
 - `BT_724` Ethereal Augmerchant
+- `BT_726` Dragonmaw Sky Stalker
 - `BT_727` Soulbound Ashtongue
+- `BT_728` Disguised Wanderer
+- `BT_729` Waste Warden
 - `BT_730` Overconfident Orc
+- `BT_731` Infectious Sporeling
+- `BT_732` Scavenging Shivarra
+- `BT_734` Supreme Abyssal
 
 ## Verification
 
-- Targeted Outland filter passed: 111 passed.
-- Full test suite passed on second run: 1273 passed, 1934 skipped, 0 failed.
-- Note: one first full run failed `GrimyGadgeteer_CFM_754`; the test passed when isolated and the immediate no-build full rerun passed. Treat as pre-existing order/random sensitivity unless it repeats.
+- Targeted Paladin tests passed: 7 passed.
+- Targeted Priest tests passed: 14 passed.
+- Targeted Rogue tests passed: 5 passed.
+- Targeted Shaman tests passed: 7 passed.
+- Targeted Warlock tests passed: 7 passed.
+- Targeted Neutral tests passed: 22 passed.
+- Outland filter passed after this pass: 156 passed, 0 failed.
+- Full suite no-build run currently has a pre-existing order/random-sensitive failure outside Outland:
+  `VentureCoMercenary_CS2_227` failed in the full run but passed immediately when isolated.
 
 ## Remaining high-priority mechanics
 
 - Dormant minions and delayed wake-up effects.
 - Discover and choice flows for cards that require user choice.
 - Secrets introduced in this patch.
-- Hero power replacement with limited use counters.
+- Hero and hero power replacement with limited-use counters.
 - Global replacement/prevention effects such as `Bulwark of Azzinoth`.
-- Remaining class sets: Paladin, Rogue, Shaman, Warlock, newer Priest cards, and remaining neutral cards.
+- Remaining complex 44222 cards: 41 collectible ids.

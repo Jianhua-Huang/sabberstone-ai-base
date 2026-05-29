@@ -746,7 +746,7 @@ namespace SabberStoneCore.Model.Entities
 			get
 			{
 				_data.TryGetValue(GameTag.CANNOT_ATTACK_HEROES, out int value);
-				return value > 0;
+				return value > 0 || Card[GameTag.CANNOT_ATTACK_HEROES] > 0;
 			}
 			set => this[GameTag.CANNOT_ATTACK_HEROES] = value ? 1 : 0;
 		}

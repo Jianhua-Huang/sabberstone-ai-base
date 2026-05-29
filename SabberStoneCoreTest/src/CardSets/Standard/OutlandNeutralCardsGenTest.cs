@@ -173,5 +173,155 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Moonfire", orc, asZeroCost: true);
 			Assert.Equal(1, orc.AttackDamage);
 		}
+
+		[Fact]
+		public void ScrapyardColossus_BT_155_ShouldSummonTauntColossusOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion colossus = game.ProcessCard<Minion>("Scrapyard Colossus", asZeroCost: true);
+
+			game.ProcessCard("Fireball", colossus, asZeroCost: true);
+			game.ProcessCard("Moonfire", colossus, asZeroCost: true);
+
+			Minion token = Assert.Single(game.CurrentPlayer.BoardZone.Where(p => p.Card.Id == "BT_155t"));
+			Assert.Equal(7, token.AttackDamage);
+			Assert.Equal(7, token.Health);
+			Assert.Equal(1, token[GameTag.TAUNT]);
+		}
+
+		[Fact]
+		public void TerrorguardEscapee_BT_159_ShouldSummonHuntressesForOpponent()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Terrorguard Escapee", asZeroCost: true);
+
+			Assert.Equal(3, game.CurrentOpponent.BoardZone.Count(p => p.Card.Id == "BT_159t"));
+		}
+
+		[Fact]
+		public void RustswornCultist_BT_160_ShouldGiveOtherMinionsDeathrattleToSummonDemon()
+		{
+			Game game = CreateGame();
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Rustsworn Cultist", asZeroCost: true);
+			game.ProcessCard("Moonfire", wisp, asZeroCost: true);
+
+			Assert.Contains(game.CurrentPlayer.BoardZone, p => p.Card.Id == "BT_160t");
+		}
+
+		[Fact]
+		public void BurrowingScorpid_BT_717_ShouldGainStealthIfBattlecryKillsTarget()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+
+			Minion scorpid = game.ProcessCard<Minion>("Burrowing Scorpid", target, asZeroCost: true);
+
+			Assert.True(target.ToBeDestroyed);
+			Assert.Equal(1, scorpid[GameTag.STEALTH]);
+		}
+
+		[Fact]
+		public void BlisteringRot_BT_721_ShouldSummonRotWithSameStatsAtEndOfTurn()
+		{
+			Game game = CreateGame();
+			game.ProcessCard("Blistering Rot", asZeroCost: true);
+
+			game.EndTurn();
+
+			Minion token = Assert.Single(game.CurrentOpponent.BoardZone.Where(p => p.Card.Id == "BT_721t"));
+			Assert.Equal(1, token.AttackDamage);
+			Assert.Equal(2, token.Health);
+		}
+
+		[Fact]
+		public void DragonmawSkyStalker_BT_726_ShouldSummonDragonriderOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion stalker = game.ProcessCard<Minion>("Dragonmaw Sky Stalker", asZeroCost: true);
+
+			game.ProcessCard("Fireball", stalker, asZeroCost: true);
+
+			Minion token = Assert.Single(game.CurrentPlayer.BoardZone.Where(p => p.Card.Id == "BT_726t"));
+			Assert.Equal(3, token.AttackDamage);
+			Assert.Equal(4, token.Health);
+		}
+
+		[Fact]
+		public void DisguisedWanderer_BT_728_ShouldSummonInquisitorOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion wanderer = game.ProcessCard<Minion>("Disguised Wanderer", asZeroCost: true);
+
+			game.ProcessCard("Fireball", wanderer, asZeroCost: true);
+
+			Minion token = Assert.Single(game.CurrentPlayer.BoardZone.Where(p => p.Card.Id == "BT_728t"));
+			Assert.Equal(9, token.AttackDamage);
+			Assert.Equal(1, token.Health);
+		}
+
+		[Fact]
+		public void WasteWarden_BT_729_ShouldDamageTargetAndSameRaceMinions()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion beast1 = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			Minion beast2 = game.ProcessCard<Minion>("Bloodfen Raptor", asZeroCost: true);
+			Minion nonBeast = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Waste Warden", beast1, asZeroCost: true);
+
+			Assert.Equal(3, beast1.Damage);
+			Assert.Equal(3, beast2.Damage);
+			Assert.Equal(0, nonBeast.Damage);
+		}
+
+		[Fact]
+		public void InfectiousSporeling_BT_731_ShouldTransformDamagedMinionIntoSporeling()
+		{
+			Game game = CreateGame();
+			Minion sporeling = game.ProcessCard<Minion>("Infectious Sporeling", asZeroCost: true);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Dalaran Mage", asZeroCost: true);
+			game.EndTurn();
+			sporeling.IsExhausted = false;
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, sporeling, target));
+
+			Assert.Contains(game.CurrentOpponent.BoardZone, p => p.Card.Id == "BT_731");
+			Assert.DoesNotContain(game.CurrentOpponent.BoardZone, p => p.Card.Name == "Dalaran Mage");
+		}
+
+		[Fact]
+		public void ScavengingShivarra_BT_732_ShouldDealSixRandomlySplitAmongOtherMinions()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy1 = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion enemy2 = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion enemy3 = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Scavenging Shivarra", asZeroCost: true);
+
+			Assert.True(enemy1.ToBeDestroyed);
+			Assert.True(enemy2.ToBeDestroyed);
+			Assert.True(enemy3.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void SupremeAbyssal_BT_734_ShouldNotBeAbleToAttackHeroes()
+		{
+			Game game = CreateGame();
+			Minion abyssal = game.ProcessCard<Minion>("Supreme Abyssal", asZeroCost: true);
+			abyssal.IsExhausted = false;
+
+			Assert.DoesNotContain(game.CurrentOpponent.Hero, abyssal.ValidAttackTargets);
+		}
 	}
 }

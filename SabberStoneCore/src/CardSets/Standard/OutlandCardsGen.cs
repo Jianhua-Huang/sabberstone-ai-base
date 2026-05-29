@@ -23,9 +23,371 @@ namespace SabberStoneCore.CardSets.Standard
 			Hunter(cards);
 			Mage(cards);
 			DemonHunter(cards);
+			Paladin(cards);
 			Priest(cards);
+			Rogue(cards);
+			Shaman(cards);
+			Warlock(cards);
 			Neutral(cards);
 			NonCollect(cards);
+		}
+
+		private static void Shaman(IDictionary<string, CardDef> cards)
+		{
+			// [BT_100] Serpentshrine Portal - Deal 3 damage. Summon a random 3-Cost minion. Overload: (1)
+			cards.Add("BT_100", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new DamageTask(3, EntityType.TARGET, true),
+						SummonRandomCostMinion(3))
+				}));
+
+			// [BT_101] Vivid Spores - Give your minions "Deathrattle: Resummon this minion."
+			cards.Add("BT_101", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.BoardZone.GetAll())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_101e"), (IPlayable)s, minion, 0, 0, 0);
+				})
+			}));
+
+			// [BT_102] Boggspine Knuckles - After your hero attacks, transform your minions into random ones that cost (1) more.
+			cards.Add("BT_102", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new TransformMinionTask(EntityType.MINIONS, 1)
+				}
+			}));
+
+			// [BT_106] Bogstrok Clacker - Battlecry: Transform adjacent minions into random minions that cost (1) more.
+			cards.Add("BT_106", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion clacker))
+						return;
+					foreach (Minion adjacent in clacker.GetAdjacentMinions())
+						new TransformMinionTask(EntityType.TARGET, 1).Process(g, c, s, adjacent, stack);
+				})
+			}));
+
+			// [BT_109] Lady Vashj - Spell Damage +1. Deathrattle: Shuffle Vashj Prime into your deck.
+			cards.Add("BT_109", new CardDef(new Power
+			{
+				DeathrattleTask = new AddCardTo("BT_109t", EntityType.DECK)
+			}));
+
+			// [BT_113] Totemic Reflection - Give a minion +2/+2. If it's a Totem, summon a copy of it.
+			cards.Add("BT_113", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new AddEnchantmentTask("BT_113e", EntityType.TARGET),
+						new CustomTask((g, c, s, t, stack) =>
+						{
+							if (t is Minion target && target.Card.IsRace(Race.TOTEM) && !c.BoardZone.IsFull)
+								new SummonCopyTask(EntityType.TARGET).Process(g, c, s, t, stack);
+						}))
+				}));
+
+			// [BT_230] The Lurker Below - Battlecry: Deal 3 damage to an enemy minion. If it dies, repeat on one of its neighbors.
+			cards.Add("BT_230", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 },
+					{ PlayReq.REQ_ENEMY_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						Minion target = t as Minion;
+						while (target != null && !target.ToBeDestroyed)
+						{
+							Generic.DamageCharFunc.Invoke((IPlayable)s, target, 3, false);
+							if (!target.ToBeDestroyed)
+								break;
+							target = target.GetAdjacentMinions().FirstOrDefault(p => !p.ToBeDestroyed);
+						}
+					})
+				}));
+		}
+
+		private static void Warlock(IDictionary<string, CardDef> cards)
+		{
+			// [BT_199] Unstable Felbolt - Deal 3 damage to an enemy minion and a random friendly one.
+			cards.Add("BT_199", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 },
+					{ PlayReq.REQ_ENEMY_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new DamageTask(3, EntityType.TARGET, true),
+						ComplexTask.DamageRandomTargets(1, EntityType.MINIONS, 3, true))
+				}));
+
+			// [BT_300] Hand of Gul'dan - When you play or discard this, draw 3 cards.
+			cards.Add("BT_300", new CardDef(new Power
+			{
+				PowerTask = new DrawTask(3),
+				Trigger = new Trigger(TriggerType.DISCARD)
+				{
+					TriggerActivation = TriggerActivation.HAND,
+					TriggerSource = TriggerSource.SELF,
+					SingleTask = new DrawTask(3)
+				}
+			}));
+
+			// [BT_301] Nightshade Matron - Rush. Battlecry: Discard your highest Cost card.
+			cards.Add("BT_301", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					IPlayable card = c.HandZone.GetAll().OrderByDescending(p => p.Cost).FirstOrDefault();
+					if (card != null)
+						Generic.DiscardBlock.Invoke(c, card);
+				})
+			}));
+
+			// [BT_302] The Dark Portal - Draw a minion. If you have at least 8 cards in hand, it costs (5) less.
+			cards.Add("BT_302", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					bool reduce = c.HandZone.Count >= 8;
+					var minions = c.DeckZone.GetAll().Where(p => p.Card.Type == CardType.MINION).ToList();
+					if (minions.Count == 0)
+						return;
+					IPlayable minion = minions.Choose(g.Random);
+					Generic.RemoveFromZone.Invoke(c, minion);
+					Generic.AddHandPhase.Invoke(c, minion);
+					if (reduce)
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_302e"), (IPlayable)s, minion, 0, 0, 0);
+					if (minions.Count > 1)
+						g.OnRandomHappened(true);
+				})
+			}));
+
+			// [BT_304] Enhanced Dreadlord - Taunt. Deathrattle: Summon a 5/5 Dreadlord with Lifesteal.
+			cards.Add("BT_304", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_304t", SummonSide.DEATHRATTLE)
+			}));
+
+			// [BT_306] Shadow Council - Replace your hand with random Demons. Give them +2/+2.
+			cards.Add("BT_306", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var demons = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.MINION && card.IsRace(Race.DEMON)).ToList();
+					int count = c.HandZone.Count;
+					foreach (IPlayable card in c.HandZone.GetAll().ToArray())
+						Generic.RemoveFromZone.Invoke(c, card);
+					for (int i = 0; i < count && demons.Count > 0; i++)
+					{
+						IPlayable demon = Generic.DrawCard(c, demons.Choose(g.Random));
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_306e"), (IPlayable)s, demon, 0, 0, 0);
+					}
+					if (count > 0)
+						g.OnRandomHappened(true);
+				})
+			}));
+
+			// [BT_307] Darkglare - After your hero takes damage, refresh 2 Mana Crystals.
+			cards.Add("BT_307", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TAKE_DAMAGE)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						c.UsedMana = c.UsedMana > 2 ? c.UsedMana - 2 : 0;
+					})
+				}
+			}));
+
+			// [BT_309] Kanrethad Ebonlocke - Your Demons cost (1) less. Deathrattle: Shuffle Kanrethad Prime into your deck.
+			cards.Add("BT_309", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsRace(Race.DEMON)
+				},
+				DeathrattleTask = new AddCardTo("BT_309t", EntityType.DECK)
+			}));
+		}
+
+		private static void Rogue(IDictionary<string, CardDef> cards)
+		{
+			// [BT_701] Spymistress - Stealth.
+			cards.Add("BT_701", new CardDef(new Power()));
+
+			// [BT_702] Ashtongue Slayer - Battlecry: Give a Stealthed minion +3 Attack and Immune this turn.
+			cards.Add("BT_702", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_IF_AVAILABLE, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 },
+					{ PlayReq.REQ_FRIENDLY_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (t is Minion target && target.HasStealth)
+							Generic.AddEnchantmentBlock(g, Cards.FromId("BT_702e"), (IPlayable)s, target, 0, 0, 0);
+					})
+				}));
+
+			// [BT_703] Cursed Vagrant - Deathrattle: Summon a 7/5 Shadow with Stealth.
+			cards.Add("BT_703", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_703t", SummonSide.DEATHRATTLE)
+			}));
+
+			// [BT_710] Greyheart Sage - Battlecry: If you control a Stealthed minion, draw 2 cards.
+			cards.Add("BT_710", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!c.BoardZone.Any(p => p.HasStealth))
+						return;
+					Generic.Draw(c);
+					Generic.Draw(c);
+				})
+			}));
+
+			// [BT_713] Akama - Stealth. Deathrattle: Shuffle Akama Prime into your deck.
+			cards.Add("BT_713", new CardDef(new Power
+			{
+				DeathrattleTask = new AddCardTo("BT_713t", EntityType.DECK)
+			}));
+
+			// [BT_713t] Akama Prime - Permanently Stealthed.
+			cards.Add("BT_713t", new CardDef(new Power()));
+		}
+
+		private static void Paladin(IDictionary<string, CardDef> cards)
+		{
+			// [BT_011] Libram of Justice - Equip a 1/4 weapon. Change the Health of all enemy minions to 1.
+			cards.Add("BT_011", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new WeaponTask("BT_011t"),
+					new CustomTask((g, c, s, t, stack) =>
+					{
+						foreach (Minion minion in c.Opponent.BoardZone.GetAll())
+							minion.BaseHealth = minion.Damage + 1;
+					}))
+			}));
+
+			// [BT_018] Underlight Angling Rod - After your Hero attacks, add a random Murloc to your hand.
+			cards.Add("BT_018", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						var murlocs = Cards.AllStandard.Where(card => card.Collectible && card.IsRace(Race.MURLOC)).ToList();
+						if (murlocs.Count == 0)
+							return;
+						Generic.DrawCard(c, murlocs.Choose(g.Random));
+						g.OnRandomHappened(true);
+					})
+				}
+			}));
+
+			// [BT_019] Murgur Murgurgle - Divine Shield. Deathrattle: Shuffle Murgurgle Prime into your deck.
+			cards.Add("BT_019", new CardDef(new Power
+			{
+				DeathrattleTask = new AddCardTo("BT_019t", EntityType.DECK)
+			}));
+
+			// [BT_019t] Murgurgle Prime - Divine Shield. Battlecry: Summon 4 random Murlocs. Give them Divine Shield.
+			cards.Add("BT_019t", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var murlocs = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.MINION && card.IsRace(Race.MURLOC)).ToList();
+					for (int i = 0; i < 4 && !c.BoardZone.IsFull && murlocs.Count > 0; i++)
+					{
+						var murloc = (Minion)Entity.FromCard(c, murlocs.Choose(g.Random));
+						Generic.SummonBlock.Invoke(g, murloc, -1, s);
+						murloc[GameTag.DIVINE_SHIELD] = 1;
+					}
+					g.OnRandomHappened(true);
+				})
+			}));
+
+			// [BT_020] Aldor Attendant - Battlecry: Reduce the Cost of your Librams by (1) this game.
+			cards.Add("BT_020", new CardDef(new Power
+			{
+				PowerTask = ReduceLibrams("BT_020e")
+			}));
+
+			// [BT_024] Libram of Hope - Restore 8 Health. Summon an 8/8 Guardian with Taunt and Divine Shield.
+			cards.Add("BT_024", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new HealTask(8, EntityType.TARGET),
+						new SummonTask("BT_024t"))
+				}));
+
+			// [BT_025] Libram of Wisdom - Give a minion +1/+1 and Deathrattle: Add Libram of Wisdom to your hand.
+			cards.Add("BT_025", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new AddEnchantmentTask("BT_025e", EntityType.TARGET)
+				}));
+
+			// [BT_026] Aldor Truthseeker - Taunt. Battlecry: Reduce the Cost of your Librams by (2) this game.
+			cards.Add("BT_026", new CardDef(new Power
+			{
+				PowerTask = ReduceLibrams("BT_026e")
+			}));
+
+			// [BT_292] Hand of A'dal - Give a minion +2/+2. Draw a card.
+			cards.Add("BT_292", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new AddEnchantmentTask("BT_292e", EntityType.TARGET),
+						new DrawTask())
+				}));
 		}
 
 		private static void Mage(IDictionary<string, CardDef> cards)
@@ -798,6 +1160,107 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Priest(IDictionary<string, CardDef> cards)
 		{
+			// [BT_197] Reliquary of Souls - Lifesteal. Deathrattle: Shuffle Reliquary Prime into your deck.
+			cards.Add("BT_197", new CardDef(new Power
+			{
+				DeathrattleTask = new AddCardTo("BT_197t", EntityType.DECK)
+			}));
+
+			// [BT_197t] Reliquary Prime - Taunt, Lifesteal. Only you can target this with spells and Hero Powers.
+			cards.Add("BT_197t", new CardDef(new Power()));
+
+			// [BT_198] Soul Mirror - Summon copies of enemy minions. They attack their copies.
+			cards.Add("BT_198", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion original in c.Opponent.BoardZone.GetAll().ToArray())
+					{
+						if (c.BoardZone.IsFull)
+							break;
+						var copy = (Minion)Entity.FromCard(c, original.Card, new EntityData((EntityData)original.NativeTags), c.BoardZone, creator: s);
+						original.CopyInternalAttributes(copy);
+						Generic.AttackBlock.Invoke(c, copy, original, true, false);
+					}
+				})
+			}));
+
+			// [BT_253] Psyche Split - Give a minion +1/+2. Summon a copy of it.
+			cards.Add("BT_253", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = ComplexTask.Create(
+						new AddEnchantmentTask("BT_253e", EntityType.TARGET),
+						new SummonCopyTask(EntityType.TARGET))
+				}));
+
+			// [BT_254] Sethekk Veilweaver - After you cast a spell on a minion, add a Priest spell to your hand.
+			cards.Add("BT_254", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_CAST)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					Condition = new SelfCondition(p => p.Game.CurrentEventData?.EventTarget?.Card.Type == CardType.MINION),
+					SingleTask = AddRandomClassCardToHand(CardClass.PRIEST, CardType.SPELL)
+				}
+			}));
+
+			// [BT_256] Dragonmaw Overseer - At the end of your turn, give another friendly minion +2/+2.
+			cards.Add("BT_256", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						var targets = c.BoardZone.GetAll().Where(p => p != s).ToList();
+						if (targets.Count == 0)
+							return;
+						Minion target = targets.Choose(g.Random);
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_256e"), (IPlayable)s, target, 0, 0, 0);
+						if (targets.Count > 1)
+							g.OnRandomHappened(true);
+					})
+				}
+			}));
+
+			// [BT_257] Apotheosis - Give a minion +2/+3 and Lifesteal.
+			cards.Add("BT_257", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new AddEnchantmentTask("BT_257e", EntityType.TARGET)
+				}));
+
+			// [BT_262] Dragonmaw Sentinel - Battlecry: If you're holding a Dragon, gain +1 Attack and Lifesteal.
+			cards.Add("BT_262", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion sentinel) || !c.HandZone.Any(p => p.Card.IsRace(Race.DRAGON)))
+						return;
+					Generic.AddEnchantmentBlock(g, Cards.FromId("BT_262e"), sentinel, sentinel, 0, 0, 0);
+					sentinel[GameTag.LIFESTEAL] = 1;
+				})
+			}));
+
+			// [BT_341] Skeletal Dragon - Taunt. At the end of your turn, add a Dragon to your hand.
+			cards.Add("BT_341", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = AddRandomRaceCardToHand(Race.DRAGON)
+				}
+			}));
+
 			// [EX1_193] Psychic Conjurer - Battlecry: Copy a card in your opponent's deck and add it to your hand.
 			cards.Add("EX1_193", new CardDef(new Power
 			{
@@ -901,6 +1364,28 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [BT_155] Scrapyard Colossus - Taunt. Deathrattle: Summon a 7/7 Felcracked Colossus with Taunt.
+			cards.Add("BT_155", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_155t", SummonSide.DEATHRATTLE)
+			}));
+
+			// [BT_159] Terrorguard Escapee - Battlecry: Summon three 1/1 Huntresses for your opponent.
+			cards.Add("BT_159", new CardDef(new Power
+			{
+				PowerTask = new SummonOpTask("BT_159t", 3)
+			}));
+
+			// [BT_160] Rustsworn Cultist - Battlecry: Give your other minions "Deathrattle: Summon a 1/1 Demon."
+			cards.Add("BT_160", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.BoardZone.GetAll().Where(p => p != s))
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BT_160e"), (IPlayable)s, minion, 0, 0, 0);
+				})
+			}));
+
 			// [BT_255] Kael'thas Sunstrider - Every third spell you cast each turn costs (0).
 			cards.Add("BT_255", new CardDef(new Power
 			{
@@ -953,10 +1438,45 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [BT_717] Burrowing Scorpid - Battlecry: Deal 2 damage. If that kills the target, gain Stealth.
+			cards.Add("BT_717", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_IF_AVAILABLE, 0 }
+				},
+				new Power
+				{
+					PowerTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion scorpid) || !(t is ICharacter target))
+							return;
+						Generic.DamageCharFunc.Invoke(scorpid, target, 2, false);
+						if (target.ToBeDestroyed)
+							scorpid[GameTag.STEALTH] = 1;
+					})
+				}));
+
 			// [BT_720] Ruststeed Raider - Taunt, Rush. Battlecry: Gain +4 Attack this turn.
 			cards.Add("BT_720", new CardDef(new Power
 			{
 				PowerTask = new AddEnchantmentTask("BT_720e", EntityType.SOURCE)
+			}));
+
+			// [BT_721] Blistering Rot - At the end of your turn, summon a Rot with stats equal to this minion's.
+			cards.Add("BT_721", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion source) || c.BoardZone.IsFull)
+							return;
+						var rot = (Minion)Entity.FromCard(c, Cards.FromId("BT_721t"));
+						rot[GameTag.ATK] = source.AttackDamage;
+						rot[GameTag.HEALTH] = source.Health;
+						Generic.SummonBlock.Invoke(g, rot, -1, s);
+					})
+				}
 			}));
 
 			// [BT_722] Guardian Augmerchant - Battlecry: Deal 1 damage to a minion and give it Divine Shield.
@@ -1012,6 +1532,12 @@ namespace SabberStoneCore.CardSets.Standard
 						new AddEnchantmentTask("BT_724e", EntityType.TARGET))
 				}));
 
+			// [BT_726] Dragonmaw Sky Stalker - Deathrattle: Summon a 3/4 Dragonrider.
+			cards.Add("BT_726", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_726t", SummonSide.DEATHRATTLE)
+			}));
+
 			// [BT_727] Soulbound Ashtongue - Whenever this minion takes damage, also deal that amount to your hero.
 			cards.Add("BT_727", new CardDef(new Power
 			{
@@ -1025,10 +1551,72 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [BT_728] Disguised Wanderer - Deathrattle: Summon a 9/1 Inquisitor.
+			cards.Add("BT_728", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_728t", SummonSide.DEATHRATTLE)
+			}));
+
+			// [BT_729] Waste Warden - Battlecry: Deal 3 damage to a minion and all others of the same minion type.
+			cards.Add("BT_729", new CardDef(
+				new Dictionary<PlayReq, int>
+				{
+					{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+					{ PlayReq.REQ_MINION_TARGET, 0 }
+				},
+				new Power
+				{
+					PowerTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(t is Minion target))
+							return;
+						Race race = target.Card.GetRawRace();
+						foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p.Card.IsRace(race)).ToArray())
+							Generic.DamageCharFunc.Invoke((IPlayable)s, minion, 3, false);
+					})
+				}));
+
 			// [BT_730] Overconfident Orc - Taunt. While at full Health, this has +2 Attack.
 			cards.Add("BT_730", new CardDef(new Power
 			{
 				Aura = new AdaptiveEffect(GameTag.ATK, EffectOperator.ADD, p => p is ICharacter character && character.Damage == 0 ? 2 : 0)
+			}));
+
+			// [BT_731] Infectious Sporeling - After this damages a minion, turn it into an Infectious Sporeling.
+			cards.Add("BT_731", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.SELF,
+					Condition = new SelfCondition(p => p.Game.CurrentEventData?.EventTarget?.Card.Type == CardType.MINION),
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (g.CurrentEventData?.EventTarget is Minion target && target.Damage > 0 && !target.ToBeDestroyed)
+							Generic.TransformBlock.Invoke(target.Controller, Cards.FromId("BT_731"), target);
+					})
+				}
+			}));
+
+			// [BT_732] Scavenging Shivarra - Battlecry: Deal 6 damage randomly split among all other minions.
+			cards.Add("BT_732", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					for (int i = 0; i < 6; i++)
+					{
+						var targets = c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != s && !p.ToBeDestroyed).Cast<IPlayable>().ToList();
+						if (targets.Count == 0)
+							return;
+						Generic.DamageCharFunc.Invoke((IPlayable)s, (ICharacter)targets.Choose(g.Random), 1, false);
+						g.OnRandomHappened(true);
+					}
+				})
+			}));
+
+			// [BT_734] Supreme Abyssal - Can't attack heroes.
+			cards.Add("BT_734", new CardDef(new Power
+			{
+				PowerTask = new SetGameTagTask(GameTag.CANNOT_ATTACK_HEROES, 1, EntityType.SOURCE)
 			}));
 		}
 
@@ -1098,6 +1686,89 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("BT_002e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.ReduceCost(1))
+			}));
+
+			cards.Add("BT_020e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(1))
+			}));
+
+			cards.Add("BT_026e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(2))
+			}));
+
+			cards.Add("BT_025e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1), Effects.Health_N(1)),
+				DeathrattleTask = new AddCardTo("BT_025", EntityType.HAND)
+			}));
+
+			cards.Add("BT_292e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_253e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_256e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_257e", new CardDef(new Power
+			{
+				Enchant = new Enchant(
+					Effects.Attack_N(2),
+					Effects.Health_N(3),
+					new Effect(GameTag.LIFESTEAL, EffectOperator.SET, 1))
+			}));
+
+			cards.Add("BT_262e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1))
+			}));
+
+			cards.Add("BT_702e", new CardDef(new Power
+			{
+				Enchant = new Enchant(
+					Effects.Attack_N(3),
+					new Effect(GameTag.IMMUNE, EffectOperator.SET, 1))
+				{
+					IsOneTurnEffect = true
+				}
+			}));
+
+			cards.Add("BT_302e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(5))
+			}));
+
+			cards.Add("BT_306e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_101e", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (s is Minion minion && !c.BoardZone.IsFull)
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, minion.Card), -1, s);
+				})
+			}));
+
+			cards.Add("BT_113e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+			}));
+
+			cards.Add("BT_160e", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("BT_160t", SummonSide.DEATHRATTLE)
 			}));
 
 			cards.Add("BT_715e", new CardDef(new Power
@@ -1223,6 +1894,58 @@ namespace SabberStoneCore.CardSets.Standard
 				if (beasts.Count > 1)
 					g.OnRandomHappened(true);
 			});
+		}
+
+		private static ISimpleTask SummonRandomCostMinion(int cost)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				if (c.BoardZone.IsFull)
+					return;
+				var minions = Cards.AllStandard.Where(card => card.Type == CardType.MINION && card.Cost == cost).ToList();
+				if (minions.Count == 0)
+					return;
+				Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, minions.Choose(g.Random)), -1, s);
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask AddRandomClassCardToHand(CardClass cardClass, CardType cardType)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				var cards = Cards.AllStandard.Where(card => card.Collectible && card.Class == cardClass && card.Type == cardType).ToList();
+				if (cards.Count == 0)
+					return;
+				Generic.DrawCard(c, cards.Choose(g.Random));
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask AddRandomRaceCardToHand(Race race)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				var cards = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.MINION && card.IsRace(race)).ToList();
+				if (cards.Count == 0)
+					return;
+				Generic.DrawCard(c, cards.Choose(g.Random));
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask ReduceLibrams(string enchantmentId)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				foreach (IPlayable card in c.HandZone.GetAll().Concat(c.DeckZone.GetAll()).Where(p => IsLibram(p.Card)))
+					Generic.AddEnchantmentBlock(g, Cards.FromId(enchantmentId), (IPlayable)s, card, 0, 0, 0);
+			});
+		}
+
+		private static bool IsLibram(Card card)
+		{
+			return card.Id == "BT_011" || card.Id == "BT_024" || card.Id == "BT_025";
 		}
 
 		private static ISimpleTask DrawCardTypeFromDeck(CardType cardType)
