@@ -1519,7 +1519,7 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
-			// [BT_801] Eye Beam - Lifesteal. Deal 3 damage to a minion. Outcast: This costs (0).
+			// [BT_801] Eye Beam - Lifesteal. Deal 3 damage to a minion. Outcast: This costs (1).
 			cards.Add("BT_801", new CardDef(
 				new Dictionary<PlayReq, int>
 				{
@@ -1528,7 +1528,7 @@ namespace SabberStoneCore.CardSets.Standard
 				},
 				new Power
 				{
-					Aura = new AdaptiveCostEffect(p => IsOutcastPosition(p) ? p.Card.Cost : 0),
+					Aura = new AdaptiveCostEffect(p => IsOutcastPosition(p) ? p.Card.Cost - 1 : 0),
 					PowerTask = new DamageTask(3, EntityType.TARGET, true)
 				}));
 

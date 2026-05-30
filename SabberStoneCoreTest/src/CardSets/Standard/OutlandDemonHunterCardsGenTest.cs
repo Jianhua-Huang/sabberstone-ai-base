@@ -635,7 +635,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
-		public void EyeBeam_BT_801_ShouldCostZeroOnlyAtOutcastPosition()
+		public void EyeBeam_BT_801_ShouldCostOneOnlyAtOutcastPosition()
 		{
 			Game game = CreateGame();
 			AddHandCard(game, "Wisp");
@@ -647,7 +647,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			EmptyZone(game.CurrentPlayer.HandZone.GetAll());
 			eyeBeam = AddHandCard(game, "Eye Beam");
 
-			Assert.Equal(0, eyeBeam.Cost);
+			Assert.Equal(1, eyeBeam.Cost);
 		}
 
 		[Fact]
