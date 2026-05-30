@@ -40,6 +40,12 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				Generic.RemoveFromZone(card.Controller, card);
 		}
 
+		private static void AddSoulFragments(Game game, int amount)
+		{
+			for (int i = 0; i < amount; i++)
+				game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromId("SCH_307t")));
+		}
+
 		[Fact]
 		public void BonewebEgg_ShouldSummonTwoSpidersOnDeathrattle()
 		{
@@ -227,6 +233,91 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.NotNull(game.Player1.Hero.Weapon);
 			Assert.Equal("SCH_252", game.Player1.Hero.Weapon.Card.Id);
 			Assert.Equal(2, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+		}
+
+		[Fact]
+		public void SchoolSpirits_ShouldDamageAllMinionsWithSpellPowerAndShuffleSoulFragments()
+		{
+			Game game = CreateGame();
+			Minion friendly = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.ProcessCard<Minion>("Kobold Geomancer", asZeroCost: true);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("School Spirits", asZeroCost: true);
+
+			Assert.Equal(3, friendly.Damage);
+			Assert.Equal(3, enemy.Damage);
+			Assert.Equal(2, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+		}
+
+		[Fact]
+		public void VoidDrinker_ShouldConsumeSoulFragmentAndGainStats()
+		{
+			Game game = CreateGame();
+			AddSoulFragments(game, 1);
+
+			Minion voidDrinker = game.ProcessCard<Minion>("Void Drinker", asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+			Assert.Equal(7, voidDrinker.AttackDamage);
+			Assert.Equal(8, voidDrinker.Health);
+		}
+
+		[Fact]
+		public void ShardshatterMystic_ShouldConsumeSoulFragmentAndDamageOtherMinions()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			AddSoulFragments(game, 1);
+			Minion friendly = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion mystic = game.ProcessCard<Minion>("Shardshatter Mystic", asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+			Assert.Equal(3, friendly.Damage);
+			Assert.Equal(0, mystic.Damage);
+			Assert.Equal(3, enemy.Damage);
+		}
+
+		[Fact]
+		public void ShadowlightScholar_ShouldConsumeSoulFragmentAndDealTargetedDamage()
+		{
+			Game game = CreateGame();
+			AddSoulFragments(game, 1);
+
+			game.ProcessCard("Shadowlight Scholar", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+			Assert.Equal(27, game.Player2.Hero.Health);
+		}
+
+		[Fact]
+		public void SoulciologistMalicia_ShouldSummonOneSoulForEachSoulFragmentWithoutConsumingThem()
+		{
+			Game game = CreateGame();
+			AddSoulFragments(game, 3);
+
+			game.ProcessCard("Soulciologist Malicia", asZeroCost: true);
+
+			Minion[] souls = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_703t");
+			Assert.Equal(3, souls.Length);
+			Assert.All(souls, soul => Assert.True(soul.IsRush));
+			Assert.Equal(3, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+		}
+
+		[Fact]
+		public void SoulshardLapidary_ShouldConsumeSoulFragmentAndGiveHeroAttack()
+		{
+			Game game = CreateGame();
+			AddSoulFragments(game, 1);
+
+			game.ProcessCard("Soulshard Lapidary", asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+			Assert.Equal(5, game.Player1.Hero.AttackDamage);
 		}
 	}
 }

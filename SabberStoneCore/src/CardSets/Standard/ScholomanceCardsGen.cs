@@ -32,6 +32,29 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new AddCardTo("SCH_307t", EntityType.DECK, 2)
 			}));
+
+			// [SCH_355] Shardshatter Mystic - Battlecry: Destroy a Soul Fragment in your deck to deal 3 damage to all other minions.
+			cards.Add("SCH_355", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!DestroySoulFragment(c))
+						return;
+
+					foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != s).ToArray())
+						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 3, false);
+				})
+			}));
+
+			// [SCH_704] Soulshard Lapidary - Battlecry: Destroy a Soul Fragment in your deck to give your hero +5 Attack this turn.
+			cards.Add("SCH_704", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (DestroySoulFragment(c))
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_704e"), s as IPlayable, c.Hero, 0, 0, 0);
+				})
+			}));
 		}
 
 		private static void Hunter(IDictionary<string, CardDef> cards)
@@ -163,6 +186,24 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Warlock(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_307] School Spirits - Deal 2 damage to all minions. Shuffle 2 Soul Fragments into your deck.
+			cards.Add("SCH_307", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new DamageTask(2, EntityType.ALLMINIONS, true),
+					new AddCardTo("SCH_307t", EntityType.DECK, 2))
+			}));
+
+			// [SCH_343] Void Drinker - Taunt. Battlecry: Destroy a Soul Fragment in your deck to gain +3/+3.
+			cards.Add("SCH_343", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (DestroySoulFragment(c))
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_343e"), s as IPlayable, s, 0, 0, 0);
+				})
+			}));
+
 			// [SCH_700] Spirit Jailer - Battlecry: Shuffle 2 Soul Fragments into your deck.
 			cards.Add("SCH_700", new CardDef(new Power
 			{
@@ -179,6 +220,30 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = ComplexTask.Create(
 					new DamageTask(3, EntityType.TARGET, true),
 					new AddCardTo("SCH_307t", EntityType.DECK, 2))
+			}));
+
+			// [SCH_517] Shadowlight Scholar - Battlecry: Destroy a Soul Fragment in your deck to deal 3 damage.
+			cards.Add("SCH_517", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_IF_AVAILABLE, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (t is ICharacter target && DestroySoulFragment(c))
+						Generic.DamageCharFunc.Invoke(s as IPlayable, target, 3, false);
+				})
+			}));
+
+			// [SCH_703] Soulciologist Malicia - Battlecry: For each Soul Fragment in your deck, summon a 3/3 Soul with Rush.
+			cards.Add("SCH_703", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					int count = c.DeckZone.Count(p => p.Card.Id == "SCH_307t");
+					for (int i = 0; i < count && !c.BoardZone.IsFull; i++)
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId("SCH_703t")), -1, s);
+				})
 			}));
 		}
 
@@ -202,6 +267,18 @@ namespace SabberStoneCore.CardSets.Standard
 				Enchant = new Enchant(Effects.Attack_N(3), new Effect(GameTag.DIVINE_SHIELD, EffectOperator.SET, 1))
 			}));
 
+			// [SCH_343e] Soul Powered - +3/+3.
+			cards.Add("SCH_343e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(3))
+			}));
+
+			// [SCH_704e] Soul Rage - +5 Attack this turn.
+			cards.Add("SCH_704e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(5))
+			}));
+
 			// [SCH_231e] Ready for School - +2 Attack.
 			cards.Add("SCH_231e", new CardDef(new Power
 			{
@@ -217,6 +294,16 @@ namespace SabberStoneCore.CardSets.Standard
 				SingleTask = task,
 				RemoveAfterTriggered = true
 			};
+		}
+
+		private static bool DestroySoulFragment(Controller controller)
+		{
+			IPlayable fragment = controller.DeckZone.FirstOrDefault(p => p.Card.Id == "SCH_307t");
+			if (fragment == null)
+				return false;
+
+			controller.SetasideZone.Add(controller.DeckZone.Remove(fragment));
+			return true;
 		}
 	}
 }
