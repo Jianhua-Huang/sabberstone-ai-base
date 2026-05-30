@@ -158,7 +158,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.False(scrapImp.Untouchable);
 			Assert.Equal(3, handMinion.AttackDamage);
-			Assert.Equal(3, handMinion.Health);
+			Assert.Equal(2, handMinion.Health);
 		}
 
 		[Fact]

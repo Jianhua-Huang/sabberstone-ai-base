@@ -173,7 +173,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Blackjack Stunner", target, asZeroCost: true);
 
 			Assert.DoesNotContain(target, game.CurrentOpponent.BoardZone);
-			Assert.Contains(game.CurrentOpponent.HandZone, p => p.Card.Name == "Wisp" && p.Cost == 2);
+			Assert.Contains(game.CurrentOpponent.HandZone, p => p.Card.Name == "Wisp" && p.Cost == 1);
 		}
 
 		[Fact]

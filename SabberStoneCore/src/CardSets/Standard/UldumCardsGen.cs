@@ -2336,7 +2336,7 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 
 			// --------------------------------------- MINION - WARRIOR
-			// [ULD_720] Bloodsworn Mercenary - COST:3 [ATK:3/HP:3]
+			// [ULD_720] Bloodsworn Mercenary - COST:3 [ATK:2/HP:2]
 			// - Set: uldum, Rarity: epic
 			// --------------------------------------------------------
 			// Text: [x]<b>Battlecry</b>: Choose a

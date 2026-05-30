@@ -247,7 +247,7 @@ namespace SabberStoneCore.CardSets.Standard
 				DeathrattleTask = new SummonTask("BT_304t", SummonSide.DEATHRATTLE)
 			}));
 
-			// [BT_305] Imprisoned Scrap Imp - Dormant for 2 turns. When this awakens, give all minions in your hand +2/+2.
+			// [BT_305] Imprisoned Scrap Imp - Dormant for 2 turns. When this awakens, give all minions in your hand +2/+1.
 			cards.Add("BT_305", new CardDef(new Power
 			{
 				PowerTask = StartDormant(2),
@@ -381,7 +381,7 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
-			// [BT_711] Blackjack Stunner - Battlecry: If you control a Secret, return a minion to its owner's hand. It costs (2) more.
+			// [BT_711] Blackjack Stunner - Battlecry: If you control a Secret, return a minion to its owner's hand. It costs (1) more.
 			cards.Add("BT_711", new CardDef(
 				new Dictionary<PlayReq, int>
 				{
@@ -782,7 +782,7 @@ namespace SabberStoneCore.CardSets.Standard
 					})
 				}));
 
-			// [BT_213] Scavenger's Ingenuity - Draw a Beast. Give it +3/+3.
+			// [BT_213] Scavenger's Ingenuity - Draw a Beast. Give it +2/+2.
 			cards.Add("BT_213", new CardDef(new Power
 			{
 				PowerTask = new CustomTask((g, c, s, t, stack) =>
@@ -2241,7 +2241,7 @@ namespace SabberStoneCore.CardSets.Standard
 
 			cards.Add("BT_213e", new CardDef(new Power
 			{
-				Enchant = new Enchant(Effects.Attack_N(3), Effects.Health_N(3))
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
 			}));
 
 			cards.Add("BT_126e", new CardDef(new Power
@@ -2348,7 +2348,7 @@ namespace SabberStoneCore.CardSets.Standard
 
 			cards.Add("BT_305e", new CardDef(new Power
 			{
-				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(2))
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(1))
 			}));
 
 			cards.Add("BT_416e", new CardDef(new Power
@@ -2362,7 +2362,7 @@ namespace SabberStoneCore.CardSets.Standard
 
 			cards.Add("BT_711e", new CardDef(new Power
 			{
-				Enchant = new Enchant(Effects.AddCost(2))
+				Enchant = new Enchant(Effects.AddCost(1))
 			}));
 
 			cards.Add("BT_737e", new CardDef(new Power

@@ -117,7 +117,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
 			game.EndTurn();
 
-			Assert.Equal(2, torrent.Cost);
+			Assert.Equal(1, torrent.Cost);
 			game.ProcessCard(torrent, target, asZeroCost: true);
 
 			Assert.True(target.ToBeDestroyed);

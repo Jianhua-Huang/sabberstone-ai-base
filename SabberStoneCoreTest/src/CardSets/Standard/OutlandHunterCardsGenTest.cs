@@ -181,8 +181,8 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.ProcessCard("Scavenger's Ingenuity", asZeroCost: true);
 
 			Minion beast = Assert.IsType<Minion>(game.CurrentPlayer.HandZone.Single(p => p.Card.Name == "River Crocolisk"));
-			Assert.Equal(5, beast.AttackDamage);
-			Assert.Equal(6, beast.Health);
+			Assert.Equal(4, beast.AttackDamage);
+			Assert.Equal(5, beast.Health);
 		}
 
 		[Fact]
