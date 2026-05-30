@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SabberStoneCore.Actions;
+using SabberStoneCore.Auras;
 using SabberStoneCore.Conditions;
 using SabberStoneCore.Enchants;
 using SabberStoneCore.Enums;
@@ -30,6 +31,16 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void DemonHunter(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_600] Demon Companion - Summon a random Demon Companion.
+			cards.Add("SCH_600", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					string[] companions = {"SCH_600t1", "SCH_600t2", "SCH_600t3"};
+					Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId(companions[g.Random.Next(companions.Length)])), -1, s);
+				})
+			}));
+
 			// [SCH_252] Marrowslicer - Battlecry: Shuffle 2 Soul Fragments into your deck.
 			cards.Add("SCH_252", new CardDef(new Power
 			{
@@ -66,6 +77,20 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_242", new CardDef(new Power
 			{
 				Trigger = Spellburst(new SummonTask("SCH_242", SummonSide.SPELL))
+			}));
+
+			// [SCH_609] Survival of the Fittest - Give +4/+4 to all minions in your hand, deck, and battlefield.
+			cards.Add("SCH_609", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (IPlayable playable in c.HandZone.GetAll()
+						.Concat(c.DeckZone.GetAll())
+						.Concat(c.BoardZone.GetAll())
+						.Where(p => p.Card.Type == CardType.MINION)
+						.ToArray())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_609e"), s as IPlayable, playable, 0, 0, 0);
+				})
 			}));
 		}
 
@@ -502,6 +527,24 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_231e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(2))
+			}));
+
+			// [SCH_600t3] Kolek - Your other minions have +1 Attack.
+			cards.Add("SCH_600t3", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.BOARD_EXCEPT_SOURCE, "SCH_600t3e")
+			}));
+
+			// [SCH_600t3e] Kolek's Call - +1 Attack.
+			cards.Add("SCH_600t3e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1))
+			}));
+
+			// [SCH_609e] Survival of the Fittest - +4/+4.
+			cards.Add("SCH_609e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(4))
 			}));
 		}
 

@@ -422,6 +422,55 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DemonCompanion_ShouldSummonOneDemonCompanion()
+		{
+			Game game = CreateGame();
+			var companionIds = new HashSet<string> {"SCH_600t1", "SCH_600t2", "SCH_600t3"};
+
+			game.ProcessCard("Demon Companion", asZeroCost: true);
+
+			Minion companion = game.Player1.BoardZone.Single();
+			Assert.Contains(companion.Card.Id, companionIds);
+			Assert.Equal(Race.DEMON, companion.Card.GetRawRace());
+
+			if (companion.Card.Id == "SCH_600t1")
+				Assert.True(companion.HasCharge);
+			if (companion.Card.Id == "SCH_600t2")
+				Assert.True(companion.HasTaunt);
+		}
+
+		[Fact]
+		public void Kolek_ShouldGiveOtherFriendlyMinionsOneAttack()
+		{
+			Game game = CreateGame();
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			Generic.SummonBlock.Invoke(game, (Minion)Entity.FromCard(game.Player1, Cards.FromId("SCH_600t3")), -1, null);
+
+			Minion kolek = game.Player1.BoardZone.Single(p => p.Card.Id == "SCH_600t3");
+			Assert.Equal(2, wisp.AttackDamage);
+			Assert.Equal(1, kolek.AttackDamage);
+		}
+
+		[Fact]
+		public void SurvivalOfTheFittest_ShouldBuffMinionsInHandDeckAndBattlefield()
+		{
+			Game game = CreateGame();
+			Minion boardMinion = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			Minion handMinion = Assert.IsType<Minion>(Generic.DrawCard(game.Player1, Cards.FromName("Wisp")));
+			Minion deckMinion = Assert.IsType<Minion>(game.Player1.DeckZone.First(p => p.Card.Name == "Wisp"));
+
+			game.ProcessCard("Survival of the Fittest", asZeroCost: true);
+
+			Assert.Equal(6, boardMinion.AttackDamage);
+			Assert.Equal(7, boardMinion.Health);
+			Assert.Equal(5, handMinion.AttackDamage);
+			Assert.Equal(5, handMinion.Health);
+			Assert.Equal(5, deckMinion.AttackDamage);
+			Assert.Equal(5, deckMinion.Health);
+		}
+
+		[Fact]
 		public void SoulFragment_ShouldHealHeroAndNotRemainInHandWhenDrawn()
 		{
 			Game game = CreateGame();
