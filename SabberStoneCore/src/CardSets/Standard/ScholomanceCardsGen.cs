@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using SabberStoneCore.Actions;
 using SabberStoneCore.Enchants;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
@@ -14,8 +16,41 @@ namespace SabberStoneCore.CardSets.Standard
 	{
 		public static void AddAll(Dictionary<string, CardDef> cards)
 		{
+			Hunter(cards);
 			Neutral(cards);
+			Paladin(cards);
+			Shaman(cards);
 			NonCollect(cards);
+		}
+
+		private static void Hunter(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_604] Overwhelm - Deal 2 damage to a minion, plus one more for each Beast you control.
+			cards.Add("SCH_604", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					int beasts = c.BoardZone.GetAll(p => p.Card.IsRace(Race.BEAST)).Length;
+					Generic.DamageCharFunc.Invoke(s as IPlayable, t as ICharacter, 2 + beasts + c.CurrentSpellPower, false);
+				})
+			}));
+
+			// [SCH_617] Adorable Infestation - Give a minion +1/+1. Summon a 1/1 Cub. Add a Cub to your hand.
+			cards.Add("SCH_617", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_617e", EntityType.TARGET),
+					new SummonTask("SCH_617t", SummonSide.SPELL),
+					new AddCardTo("SCH_617t", EntityType.HAND))
+			}));
 		}
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
@@ -71,10 +106,64 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				DeathrattleTask = new AddCardTo("SCH_709t", EntityType.HAND)
 			}));
+
+			// [SCH_313] Wretched Tutor - Spellburst: Deal 2 damage to all other minions.
+			cards.Add("SCH_313", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != s).ToArray())
+						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 2, false);
+				}))
+			}));
+		}
+
+		private static void Paladin(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_524] Shield of Honor - Give a damaged minion +3 Attack and Divine Shield.
+			cards.Add("SCH_524", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0},
+				{PlayReq.REQ_DAMAGED_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new AddEnchantmentTask("SCH_524e", EntityType.TARGET)
+			}));
+		}
+
+		private static void Shaman(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_271] Molten Blast - Deal 2 damage. Summon that many 1/1 Elementals.
+			cards.Add("SCH_271", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					int amount = 2 + c.CurrentSpellPower;
+					Generic.DamageCharFunc.Invoke(s as IPlayable, t as ICharacter, amount, false);
+					for (int i = 0; i < amount && !c.BoardZone.IsFull; i++)
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId("SCH_271t")), -1, s);
+				})
+			}));
 		}
 
 		private static void NonCollect(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_617e] Adorable - +1/+1.
+			cards.Add("SCH_617e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(1))
+			}));
+
+			// [SCH_524e] Shield of Honor - +3 Attack and Divine Shield.
+			cards.Add("SCH_524e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(3), new Effect(GameTag.DIVINE_SHIELD, EffectOperator.SET, 1))
+			}));
+
 			// [SCH_231e] Ready for School - +2 Attack.
 			cards.Add("SCH_231e", new CardDef(new Power
 			{

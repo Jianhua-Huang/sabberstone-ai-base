@@ -109,5 +109,74 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(stealth, ghost.HasStealth);
 			Assert.Equal(taunt, ghost.HasTaunt);
 		}
+
+		[Fact]
+		public void Overwhelm_ShouldScaleWithFriendlyBeastsAndSpellDamage()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.ProcessCard<Minion>("Kobold Geomancer", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+
+			game.ProcessCard("Overwhelm", target, asZeroCost: true);
+
+			Assert.Equal(4, target.Damage);
+		}
+
+		[Fact]
+		public void MoltenBlast_ShouldDealDamageAndSummonThatManyElementals()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Kobold Geomancer", asZeroCost: true);
+
+			game.ProcessCard("Molten Blast", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(27, game.Player2.Hero.Health);
+			Assert.Equal(3, game.Player1.BoardZone.Count(p => p.Card.Id == "SCH_271t"));
+		}
+
+		[Fact]
+		public void AdorableInfestation_ShouldBuffSummonAndAddCubToHand()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+
+			game.ProcessCard("Adorable Infestation", target, asZeroCost: true);
+
+			Assert.Equal(3, target.AttackDamage);
+			Assert.Equal(4, target.Health);
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Id == "SCH_617t");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Id == "SCH_617t");
+		}
+
+		[Fact]
+		public void ShieldOfHonor_ShouldBuffDamagedMinionAndGiveDivineShield()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			target.Damage = 1;
+
+			game.ProcessCard("Shield of Honor", target, asZeroCost: true);
+
+			Assert.Equal(5, target.AttackDamage);
+			Assert.True(target.HasDivineShield);
+		}
+
+		[Fact]
+		public void WretchedTutor_ShouldDealTwoToAllOtherMinionsOnSpellburst()
+		{
+			Game game = CreateGame();
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion tutor = game.ProcessCard<Minion>("Wretched Tutor", asZeroCost: true);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.True(wisp.ToBeDestroyed);
+			Assert.Equal(0, tutor.Damage);
+			Assert.Equal(2, enemy.Damage);
+		}
 	}
 }
