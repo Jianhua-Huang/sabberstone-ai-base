@@ -16,11 +16,22 @@ namespace SabberStoneCore.CardSets.Standard
 	{
 		public static void AddAll(Dictionary<string, CardDef> cards)
 		{
+			DemonHunter(cards);
 			Hunter(cards);
 			Neutral(cards);
 			Paladin(cards);
 			Shaman(cards);
+			Warlock(cards);
 			NonCollect(cards);
+		}
+
+		private static void DemonHunter(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_252] Marrowslicer - Battlecry: Shuffle 2 Soul Fragments into your deck.
+			cards.Add("SCH_252", new CardDef(new Power
+			{
+				PowerTask = new AddCardTo("SCH_307t", EntityType.DECK, 2)
+			}));
 		}
 
 		private static void Hunter(IDictionary<string, CardDef> cards)
@@ -150,8 +161,35 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 		}
 
+		private static void Warlock(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_700] Spirit Jailer - Battlecry: Shuffle 2 Soul Fragments into your deck.
+			cards.Add("SCH_700", new CardDef(new Power
+			{
+				PowerTask = new AddCardTo("SCH_307t", EntityType.DECK, 2)
+			}));
+
+			// [SCH_701] Soul Shear - Deal 3 damage to a minion. Shuffle 2 Soul Fragments into your deck.
+			cards.Add("SCH_701", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new DamageTask(3, EntityType.TARGET, true),
+					new AddCardTo("SCH_307t", EntityType.DECK, 2))
+			}));
+		}
+
 		private static void NonCollect(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_307t] Soul Fragment - Casts When Drawn: Restore 2 Health to your hero.
+			cards.Add("SCH_307t", new CardDef(new Power
+			{
+				TopdeckTask = new HealTask(2, EntityType.HERO)
+			}));
+
 			// [SCH_617e] Adorable - +1/+1.
 			cards.Add("SCH_617e", new CardDef(new Power
 			{

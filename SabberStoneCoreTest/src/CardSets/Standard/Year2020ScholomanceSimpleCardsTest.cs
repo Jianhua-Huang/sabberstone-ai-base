@@ -178,5 +178,55 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(0, tutor.Damage);
 			Assert.Equal(2, enemy.Damage);
 		}
+
+		[Fact]
+		public void SoulFragment_ShouldHealHeroAndNotRemainInHandWhenDrawn()
+		{
+			Game game = CreateGame();
+			game.Player1.Hero.Damage = 5;
+			IPlayable fragment = Entity.FromCard(game.Player1, Cards.FromId("SCH_307t"));
+			game.Player1.DeckZone.Add(fragment);
+
+			Generic.Draw(game.Player1, fragment);
+
+			Assert.Equal(3, game.Player1.Hero.Damage);
+			Assert.DoesNotContain(game.Player1.HandZone, p => p.Card.Id == "SCH_307t");
+			Assert.Contains(game.Player1.SetasideZone, p => p.Card.Id == "SCH_307t");
+		}
+
+		[Fact]
+		public void SpiritJailer_ShouldShuffleTwoSoulFragmentsIntoDeck()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Spirit Jailer", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+		}
+
+		[Fact]
+		public void SoulShear_ShouldDamageMinionWithSpellPowerAndShuffleSoulFragments()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Kobold Geomancer", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+
+			game.ProcessCard("Soul Shear", target, asZeroCost: true);
+
+			Assert.Equal(4, target.Damage);
+			Assert.Equal(2, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+		}
+
+		[Fact]
+		public void Marrowslicer_ShouldEquipWeaponAndShuffleSoulFragments()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Marrowslicer", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Hero.Weapon);
+			Assert.Equal("SCH_252", game.Player1.Hero.Weapon.Card.Id);
+			Assert.Equal(2, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
+		}
 	}
 }
