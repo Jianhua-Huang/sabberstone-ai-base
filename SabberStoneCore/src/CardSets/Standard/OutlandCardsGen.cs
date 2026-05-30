@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SabberStoneCore.Actions;
@@ -29,6 +30,7 @@ namespace SabberStoneCore.CardSets.Standard
 			Shaman(cards);
 			Warlock(cards);
 			Neutral(cards);
+			TrialByFelfire(cards);
 			NonCollect(cards);
 		}
 
@@ -2181,6 +2183,428 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 		}
 
+		private static void TrialByFelfire(IDictionary<string, CardDef> cards)
+		{
+			cards.Add("BTA_01p", new CardDef(new Power { PowerTask = DiscoverFromOwnDeck() }));
+			cards.Add("BTA_02p", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					Generic.AddEnchantmentBlock(g, Cards.FromId(c.NumFriendlyMinionsThatAttackedThisTurn > 0 ? "BTA_02pe2" : "BTA_02pe"), c.Hero, c.Hero, 0, 0, 0);
+				})
+			}));
+
+			cards.Add("BTA_03", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 },
+				{ PlayReq.REQ_ENEMY_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (t != null)
+						t.ToBeDestroyed = true;
+					if (WasPlayedFromOutcastPosition(s) && s is Minion minion)
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_03e"), minion, minion, 0, 0, 0);
+				})
+			}));
+
+			cards.Add("BTA_05", new CardDef(new Power
+			{
+				Aura = new AdjacentAura("BTA_05e"),
+				PowerTask = OutcastTask(new SummonTask("BTA_BOSS_03t", 2))
+			}));
+			cards.Add("BTA_06", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.BOARD_EXCEPT_SOURCE, "BTA_06e"),
+				PowerTask = OutcastTask(new SummonTask("BT_036t", 3))
+			}));
+			cards.Add("BTA_07", new CardDef(new Power { PowerTask = OutcastTask(new SummonTask("BT_258")) }));
+			cards.Add("BTA_08", new CardDef(new Power { PowerTask = OutcastTask(new SummonTask("BT_934")) }));
+			cards.Add("BTA_09", new CardDef(new Power
+			{
+				PowerTask = OutcastTask(ComplexTask.Create(
+					AddRandomClassCardToHand(CardClass.SHAMAN, CardType.SPELL),
+					AddRandomClassCardToHand(CardClass.SHAMAN, CardType.SPELL),
+					AddRandomClassCardToHand(CardClass.SHAMAN, CardType.SPELL)))
+			}));
+			cards.Add("BTA_10", new CardDef(new Power
+			{
+				PowerTask = OutcastTask(new CustomTask((g, c, s, t, stack) =>
+				{
+					var weapons = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.WEAPON).ToList();
+					if (weapons.Count == 0)
+						return;
+					c.Hero.AddWeapon((Weapon)Entity.FromCard(c, weapons.Choose(g.Random)));
+					for (int i = 0; i < 3; i++)
+						Generic.DrawCard(c, weapons.Choose(g.Random));
+					g.OnRandomHappened(true);
+				}))
+			}));
+			cards.Add("BTA_11", new CardDef(new Power { PowerTask = CorruptOpponentHand("BTA_11e") }));
+			cards.Add("BTA_12", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						var cardsInHand = c.HandZone.GetAll().ToList();
+						if (cardsInHand.Count == 0)
+							return;
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_12e"), (IPlayable)s, cardsInHand.Choose(g.Random), 0, 0, 0);
+						g.OnRandomHappened(true);
+					})
+				}
+			}));
+			cards.Add("BTA_13", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target))
+						return;
+					Generic.DamageCharFunc((IPlayable)s, target, 3, true);
+					if (target.ToBeDestroyed || target.Health <= 0)
+						new SummonTask("BT_305").Process(g, c, s, t, stack);
+				})
+			}));
+			cards.Add("BTA_14", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = DamageRandomEnemy(1)
+				}
+			}));
+			cards.Add("BTA_15", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var drawn = new List<IPlayable>();
+					for (int i = 0; i < 3; i++)
+					{
+						IPlayable card = Generic.Draw(c);
+						if (card != null)
+							drawn.Add(card);
+					}
+					foreach (IPlayable playable in drawn.Where(p => p.Card.Type == CardType.MINION).ToArray())
+					{
+						Generic.RemoveFromZone(c, playable);
+						Generic.SummonBlock(g, (Minion)playable, -1, s);
+					}
+				})
+			}));
+			cards.Add("BTA_16", new CardDef(new Power { DeathrattleTask = SummonRandomRaceMinion(Race.MECHANICAL) }));
+			cards.Add("BTA_17", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = new HealTask(2, EntityType.SOURCE)
+				}
+			}));
+
+			cards.Add("BTA_BOSS_01p", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 },
+				{ PlayReq.REQ_FRIENDLY_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion minion))
+						return;
+					minion.Card.Power?.DeathrattleTask?.Process(g, c, minion, null, stack);
+					minion.Card.Power?.DeathrattleTask?.Process(g, c, minion, null, stack);
+					minion.Destroy();
+				})
+			}));
+			cards.Add("BTA_BOSS_02p", new CardDef(new Power { PowerTask = CorruptOpponentHand("BTA_BOSS_02e") }));
+			cards.Add("BTA_BOSS_03p", new CardDef(new Power { PowerTask = AddHeroAttack("BTA_BOSS_03e") }));
+			cards.Add("BTA_BOSS_04p", new CardDef(PassiveOnDeath(Race.DEMON, null, ComplexTask.Create(new DrawTask(), new HealTask(10, EntityType.HERO)))));
+			cards.Add("BTA_BOSS_05p", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Card card in c.GraveyardZone.GetAll().Where(p => p.Card.Type == CardType.MINION && p.Card.IsRace(Race.DEMON)).Select(p => p.Card).Take(3))
+						new SummonTask(card: card).Process(g, c, s, t, stack);
+					c.BaseMana = Math.Max(0, c.BaseMana - 4);
+				})
+			}));
+			cards.Add("BTA_BOSS_06p", new CardDef(PassiveOnDeath(Race.MECHANICAL, null, new CustomTask((g, c, s, t, stack) =>
+			{
+				Generic.DrawCard(c, Cards.FromId("PART_001"));
+				Generic.DrawCard(c.Opponent, Cards.FromId("PART_001"));
+			}))));
+			cards.Add("BTA_BOSS_07p2", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					for (int i = 0; i < c.HandZone.Count; i++)
+						DamageRandomEnemy(1).Process(g, c, s, t, stack);
+				})
+			}));
+			cards.Add("BTA_BOSS_07s", new CardDef(new Power()));
+			cards.Add("BTA_BOSS_07s2", new CardDef(new Power { PowerTask = new DamageTask(2, EntityType.OP_MINIONS, true) }));
+			cards.Add("BTA_BOSS_07s3", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var enemies = c.Opponent.BoardZone.GetAll().ToList();
+					if (enemies.Count == 0)
+						return;
+					Generic.DamageCharFunc((IPlayable)s, enemies.Choose(g.Random), 8, true);
+					var survivors = enemies.Where(p => !p.ToBeDestroyed).ToList();
+					Minion convert = survivors.Count == 0 ? null : survivors.Choose(g.Random);
+					if (convert != null && !c.BoardZone.IsFull)
+					{
+						Generic.RemoveFromZone(convert.Controller, convert);
+						c.BoardZone.Add(convert);
+					}
+					g.OnRandomHappened(true);
+				})
+			}));
+			cards.Add("BTA_BOSS_07s4", new CardDef(new Power { PowerTask = ComplexTask.Create(new HealTask(5, EntityType.HERO), new ArmorTask(5)) }));
+			cards.Add("BTA_BOSS_07s5", new CardDef(new Power { PowerTask = new DrawTask(3) }));
+			cards.Add("BTA_BOSS_10p", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target))
+						return;
+					Generic.DamageCharFunc((IPlayable)s, target, 2, false);
+					if (target.ToBeDestroyed || target.Health <= 0)
+						new HealTask(4, EntityType.HERO).Process(g, c, s, t, stack);
+				})
+			}));
+			cards.Add("BTA_BOSS_10p2", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 },
+				{ PlayReq.REQ_FRIENDLY_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target) || target.Card.Id != "BTA_BOSS_03t")
+						return;
+					target.Destroy();
+					foreach (Minion minion in c.BoardZone.GetAll())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_BOSS_10e"), c.Hero.HeroPower, minion, 0, 0, 0);
+					Generic.Draw(c);
+				})
+			}));
+			cards.Add("BTA_BOSS_10t", new CardDef(new Power { DeathrattleTask = new AddCardTo("BTA_BOSS_10t", EntityType.DECK) }));
+			cards.Add("BTA_BOSS_11p", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.BOARD, "BTA_BOSS_11e"),
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.BoardZone.GetAll())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_BOSS_11e"), c.Hero.HeroPower, minion, 0, 0, 0);
+				})
+			}));
+			cards.Add("BTA_BOSS_12p", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TAKE_DAMAGE)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new SummonTask("BTA_BOSS_12t")
+				}
+			}));
+			cards.Add("BTA_BOSS_13p", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (g.Random.Next(2) == 0)
+						AddRandomOutlandSpell().Process(g, c, s, t, stack);
+					else
+						SummonRandomRustedLegion().Process(g, c, s, t, stack);
+					g.OnRandomHappened(true);
+				})
+			}));
+			cards.Add("BTA_BOSS_14p", new CardDef(new Power { PowerTask = new SummonTask("EX1_317t") }));
+			cards.Add("BTA_BOSS_14p2", new CardDef(new Power { Aura = new Aura(AuraType.BOARD, "BTA_BOSS_14p2e") }));
+			cards.Add("BTA_BOSS_15p", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_PLAY_MINION)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (t is Minion minion)
+							Generic.AddEnchantmentBlock(g, Cards.FromId(g.Random.Next(2) == 0 ? "BTA_BOSS_15e" : "BTA_BOSS_15e2"), c.Hero.HeroPower, minion, 0, 0, 0);
+					})
+				}
+			}));
+			cards.Add("BTA_BOSS_16p", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						foreach (Minion reactor in c.BoardZone.GetAll().Where(p => p.Card.Id == "BTA_BOSS_16t" || p.Card.Id == "BTA_BOSS_16t2"))
+							Generic.AddEnchantmentBlock(g, Cards.FromId(reactor.Card.Id == "BTA_BOSS_16t" ? "BTA_BOSS_16te" : "BTA_BOSS_16t2e"), c.Hero.HeroPower, reactor, 0, 0, 0);
+					})
+				}
+			}));
+			cards.Add("BTA_BOSS_16s", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var demons = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.MINION && card.IsRace(Race.DEMON) && card.Cost == 1).ToList();
+					for (int i = 0; i < 2 && demons.Count > 0; i++)
+					{
+						var minion = (Minion)Entity.FromCard(c, demons.Choose(g.Random));
+						Generic.SummonBlock(g, minion, -1, s);
+						minion[GameTag.DORMANT] = 2;
+						minion[GameTag.UNTOUCHABLE] = 1;
+					}
+					if (demons.Count > 0)
+						g.OnRandomHappened(true);
+				})
+			}));
+			cards.Add("BTA_BOSS_16t", new CardDef(new Power { DeathrattleTask = StartDormant(3) }));
+			cards.Add("BTA_BOSS_16t2", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_SUMMON)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (t is Minion minion && minion.Card.Id != "BTA_BOSS_16t2")
+							Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_BOSS_16t2e"), (IPlayable)s, minion, 0, 0, 0);
+					})
+				},
+				DeathrattleTask = StartDormant(3)
+			}));
+			cards.Add("BTA_BOSS_17p", new CardDef(AfterHeroAttackDamageEnemies()));
+			cards.Add("BTA_BOSS_18p", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					Condition = SelfCondition.IsMinion,
+					SingleTask = new HealTask(5, EntityType.HERO)
+				}
+			}));
+			cards.Add("BTA_BOSS_19p", new CardDef(new Power { PowerTask = RandomSplitDamage(3) }));
+			cards.Add("BTA_BOSS_19s", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 },
+				{ PlayReq.REQ_ENEMY_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion minion))
+						return;
+					Generic.DamageCharFunc((IPlayable)s, minion, minion.Card.IsRace(Race.DRAGON) ? 12 : 4, true);
+				})
+			}));
+			cards.Add("BTA_BOSS_20p", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.BoardZone.Count(p => p.Card.Id == "BTA_BOSS_20t") >= 3)
+						Generic.DamageCharFunc((IPlayable)s, c.Opponent.Hero, 10, false);
+					else
+						new SummonTask("BTA_BOSS_20t").Process(g, c, s, t, stack);
+				})
+			}));
+			cards.Add("BTA_BOSS_21p", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var enemies = c.Opponent.BoardZone.GetAll().Cast<ICharacter>().Concat(new[] { c.Opponent.Hero }).ToList();
+					foreach (ICharacter enemy in enemies)
+						Generic.DamageCharFunc((IPlayable)s, enemy, 1, false);
+					int dead = c.Opponent.BoardZone.GetAll().Count(p => p.ToBeDestroyed || p.Health <= 0);
+					for (int i = 0; i < dead; i++)
+						new SummonTask("CS2_064").Process(g, c, s, t, stack);
+				})
+			}));
+			cards.Add("BTA_BOSS_22p", new CardDef(new Power { PowerTask = new SummonTask("BTA_BOSS_22t") }));
+			cards.Add("BTA_BOSS_22s", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion construct in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p.Card.Id == "BTA_BOSS_22t").ToArray())
+						construct.Destroy();
+				})
+			}));
+			cards.Add("BTA_BOSS_22t", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					Condition = SelfCondition.IsMinion,
+					SingleTask = new DamageTask(2, EntityType.OP_HERO, false)
+				}
+			}));
+			cards.Add("BTA_BOSS_24p", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{ PlayReq.REQ_TARGET_TO_PLAY, 0 },
+				{ PlayReq.REQ_MINION_TARGET, 0 },
+				{ PlayReq.REQ_ENEMY_TARGET, 0 }
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion minion))
+						return;
+					Generic.DamageCharFunc((IPlayable)s, minion, 3, false);
+					if (!minion.ToBeDestroyed && minion.Health > 0)
+						Generic.Draw(c);
+				})
+			}));
+			cards.Add("BTA_BOSS_25p", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.CAST_SPELL)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						var pyroblast = Entity.FromCard(c, Cards.FromId("EX1_279"));
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_BOSS_25pe"), c.Hero.HeroPower, pyroblast, 0, 0, 0);
+						Generic.ShuffleIntoDeck(c, s, pyroblast);
+					})
+				}
+			}));
+			cards.Add("BTA_BOSS_25p2", new CardDef(new Power { Aura = new Aura(AuraType.HERO, "BTA_Prevent_First_turn_Attack") }));
+			cards.Add("BTA_BOSS_25s", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.Opponent.BoardZone.GetAll().ToArray())
+					{
+						Generic.RemoveFromZone(minion.Controller, minion);
+						Generic.AddHandPhase(c.Opponent, minion);
+						Generic.AddEnchantmentBlock(g, Cards.FromId("BTA_BOSS_25se"), (IPlayable)s, minion, 0, 0, 0);
+					}
+				})
+			}));
+			cards.Add("BTA_BOSS_26p", new CardDef(AfterHeroAttackDamageEnemies()));
+			cards.Add("BTA_BOSS_26s", new CardDef(new Power { PowerTask = AddHeroAttack("BTA_BOSS_26se") }));
+
+			string[] autoEnchantIds =
+			{
+				"BTA_02pe", "BTA_02pe2", "BTA_03e", "BTA_05e", "BTA_06e", "BTA_11e", "BTA_12e",
+				"BTA_BOSS_01e", "BTA_BOSS_02e", "BTA_BOSS_03e", "BTA_BOSS_06te", "BTA_BOSS_07e",
+				"BTA_BOSS_10e", "BTA_BOSS_11e", "BTA_BOSS_11pe", "BTA_BOSS_14p2e", "BTA_BOSS_14p2e2",
+				"BTA_BOSS_15e", "BTA_BOSS_15e2", "BTA_BOSS_16e", "BTA_BOSS_16se", "BTA_BOSS_16t2e",
+				"BTA_BOSS_16t2e2", "BTA_BOSS_16te", "BTA_BOSS_16te2", "BTA_BOSS_16te3", "BTA_BOSS_25pe",
+				"BTA_BOSS_25se", "BTA_BOSS_26se", "BTA_Prevent_First_turn_Attack"
+			};
+			foreach (string id in autoEnchantIds)
+				cards.Add(id, new CardDef(new Power { Enchant = TrialByFelfireEnchant(id) }));
+		}
+
 		private static void NonCollect(IDictionary<string, CardDef> cards)
 		{
 			cards.Add("BT_035e", new CardDef(new Power
@@ -2515,6 +2939,195 @@ namespace SabberStoneCore.CardSets.Standard
 					SingleTask = RemoveEnchantmentTask.Task
 				}
 			}));
+		}
+
+		private static ISimpleTask DiscoverFromOwnDeck()
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				Card[] choices = c.DeckZone.GetAll()
+					.Select(p => p.Card)
+					.GroupBy(card => card.Id)
+					.Select(group => group.First())
+					.Take(3)
+					.ToArray();
+				if (choices.Length == 0)
+					return;
+				Generic.CreateChoiceCards.Invoke(c, s, null, ChoiceType.GENERAL, ChoiceAction.HAND, choices, null);
+			});
+		}
+
+		private static Enchant AutoEnchantOrEmpty(string cardId)
+		{
+			return Cards.FromId(cardId).Text == null ? new Enchant() : Enchants.Enchants.GetAutoEnchantFromText(cardId);
+		}
+
+		private static Enchant TrialByFelfireEnchant(string cardId)
+		{
+			switch (cardId)
+			{
+				case "BTA_02pe":
+					return new Enchant(Effects.Attack_N(1)) { IsOneTurnEffect = true };
+				case "BTA_02pe2":
+					return new Enchant(Effects.Attack_N(2)) { IsOneTurnEffect = true };
+				case "BTA_03e":
+					return new Enchant(Effects.StealthEff, new Effect(GameTag.POISONOUS, EffectOperator.SET, 1));
+				case "BTA_05e":
+					return new Enchant(Effects.Attack_N(1), Effects.TauntEff);
+				case "BTA_06e":
+					return new Enchant(Effects.Attack_N(2));
+				case "BTA_12e":
+					return new Enchant(Effects.ReduceCost(3));
+				case "BTA_BOSS_03e":
+					return new Enchant(Effects.Attack_N(4)) { IsOneTurnEffect = true };
+				case "BTA_BOSS_10e":
+					return new Enchant(Effects.Attack_N(1), Effects.Health_N(1));
+				case "BTA_BOSS_11e":
+				case "BTA_BOSS_11pe":
+					return new Enchant(Effects.Rush, Effects.Windfury);
+				case "BTA_BOSS_14p2e":
+					return new Enchant(Effects.Attack_N(2));
+				case "BTA_BOSS_14p2e2":
+					return new Enchant(Effects.Attack_N(10));
+				case "BTA_BOSS_15e":
+					return new Enchant(Effects.StealthEff);
+				case "BTA_BOSS_15e2":
+					return new Enchant(new Effect(GameTag.POISONOUS, EffectOperator.SET, 1));
+				case "BTA_BOSS_16te":
+				case "BTA_BOSS_16te2":
+				case "BTA_BOSS_16te3":
+					return new Enchant(new Effect(GameTag.SPELLPOWER, EffectOperator.ADD, 1));
+				case "BTA_BOSS_16t2e":
+				case "BTA_BOSS_16t2e2":
+					return new Enchant(Effects.Attack_N(1), Effects.Health_N(1));
+				case "BTA_BOSS_25pe":
+					return new Enchant(Effects.ReduceCost(5));
+				case "BTA_BOSS_25se":
+					return new Enchant(Effects.AddCost(3));
+				case "BTA_BOSS_26se":
+					return new Enchant(Effects.Attack_N(2), Effects.Lifesteal) { IsOneTurnEffect = true };
+				case "BTA_Prevent_First_turn_Attack":
+					return new Enchant(Effects.Immune);
+				default:
+					return AutoEnchantOrEmpty(cardId);
+			}
+		}
+
+		private static ISimpleTask OutcastTask(ISimpleTask task)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				if (WasPlayedFromOutcastPosition(s))
+					task.Process(g, c, s, t, stack);
+			});
+		}
+
+		private static ISimpleTask CorruptOpponentHand(string enchantmentId)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				var playableCards = c.Opponent.HandZone.GetAll().Where(p => p.Card.Type != CardType.HERO).ToList();
+				if (playableCards.Count == 0)
+					return;
+				IPlayable card = playableCards.Choose(g.Random);
+				Generic.AddEnchantmentBlock(g, Cards.FromId(enchantmentId), (IPlayable)s, card, 0, 0, 0);
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask AddHeroAttack(string enchantmentId)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				Generic.AddEnchantmentBlock(g, Cards.FromId(enchantmentId), c.Hero, c.Hero, 0, 0, 0);
+			});
+		}
+
+		private static Power PassiveOnDeath(Race race, string cardId, ISimpleTask task)
+		{
+			return new Power
+			{
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerSource = TriggerSource.ALL,
+					Condition = new SelfCondition(p =>
+						p is Minion minion &&
+						(cardId == null || minion.Card.Id == cardId) &&
+						(race == Race.INVALID || minion.Card.IsRace(race))),
+					SingleTask = task
+				}
+			};
+		}
+
+		private static ISimpleTask DamageRandomEnemy(int amount)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				var enemies = c.Opponent.BoardZone.GetAll().Cast<ICharacter>().Concat(new[] { c.Opponent.Hero }).ToList();
+				if (enemies.Count == 0)
+					return;
+				Generic.DamageCharFunc((IPlayable)s, enemies.Choose(g.Random), amount, false);
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask SummonRandomRaceMinion(Race race)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				if (c.BoardZone.IsFull)
+					return;
+				var minions = Cards.AllStandard.Where(card => card.Collectible && card.Type == CardType.MINION && card.IsRace(race)).ToList();
+				if (minions.Count == 0)
+					return;
+				Generic.SummonBlock(g, (Minion)Entity.FromCard(c, minions.Choose(g.Random)), -1, s);
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask AddRandomOutlandSpell()
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				var spells = Cards.AllStandard.Where(card => card.Collectible && card.Set == CardSet.BLACK_TEMPLE && card.Type == CardType.SPELL).ToList();
+				if (spells.Count == 0)
+					return;
+				Generic.DrawCard(c, spells.Choose(g.Random));
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static ISimpleTask SummonRandomRustedLegion()
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				if (c.BoardZone.IsFull)
+					return;
+				string[] ids = { "BTA_11", "BTA_12", "BTA_14", "BTA_16", "BTA_17" };
+				Generic.SummonBlock(g, (Minion)Entity.FromCard(c, Cards.FromId(ids.Choose(g.Random))), -1, s);
+				g.OnRandomHappened(true);
+			});
+		}
+
+		private static Power AfterHeroAttackDamageEnemies()
+		{
+			return new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new DamageTask(1, EntityType.ENEMIES, false)
+				}
+			};
+		}
+
+		private static ISimpleTask RandomSplitDamage(int amount)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				for (int i = 0; i < amount; i++)
+					DamageRandomEnemy(1).Process(g, c, s, t, stack);
+			});
 		}
 
 		private static ISimpleTask BuffRandomBeastInHand(string enchantmentId)
