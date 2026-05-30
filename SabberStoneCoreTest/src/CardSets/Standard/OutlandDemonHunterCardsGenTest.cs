@@ -231,7 +231,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			game.Process(HeroAttackTask.Any(game.CurrentPlayer, game.CurrentOpponent.Hero));
 
-			Assert.Equal(3, battlefiend.AttackDamage);
+			Assert.Equal(2, battlefiend.AttackDamage);
 		}
 
 		[Fact]

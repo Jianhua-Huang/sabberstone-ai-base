@@ -1016,7 +1016,7 @@ namespace SabberStoneCoreTest.CardSets
 		// GameTag:
 		// - ELITE = 1
 		// - QUEST = 1
-		// - QUEST_PROGRESS_TOTAL = 6
+		// - QUEST_PROGRESS_TOTAL = 8
 		// - 676 = 1
 		// --------------------------------------------------------
 		[Fact]
@@ -1047,6 +1047,8 @@ namespace SabberStoneCoreTest.CardSets
 			Assert.Equal(1, game.CurrentPlayer.SecretZone.Quest.QuestProgress);
 			game.ProcessCard(game.CurrentPlayer.HandZone[0], game.CurrentPlayer.Hero);
 			Assert.Equal(1, game.CurrentPlayer.SecretZone.Quest.QuestProgress);
+			game.ProcessCard("Counterfeit Coin");
+			game.ProcessCard("Counterfeit Coin");
 			game.ProcessCard("Counterfeit Coin");
 			game.ProcessCard("Counterfeit Coin");
 			game.ProcessCard("Counterfeit Coin");

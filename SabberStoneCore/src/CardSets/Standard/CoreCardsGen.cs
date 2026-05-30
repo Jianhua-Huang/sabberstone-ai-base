@@ -1955,13 +1955,14 @@ namespace SabberStoneCore.CardSets.Standard
 			// [NEW1_003] Sacrificial Pact - COST:0
 			// - Set: core, Rarity: free
 			// --------------------------------------------------------
-			// Text: Destroy a Demon. Restore #5 Health to your hero.
+			// Text: Destroy a friendly Demon. Restore #5 Health to your hero.
 			// --------------------------------------------------------
 			// PlayReq:
 			// - REQ_TARGET_TO_PLAY = 0
 			// - REQ_TARGET_WITH_RACE = 15
+			// - REQ_FRIENDLY_TARGET = 0
 			// --------------------------------------------------------
-			cards.Add("NEW1_003", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 }, { PlayReq.REQ_TARGET_WITH_RACE, 15 } }, new Power
+			cards.Add("NEW1_003", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 }, { PlayReq.REQ_TARGET_WITH_RACE, 15 }, { PlayReq.REQ_FRIENDLY_TARGET, 0 } }, new Power
 			{
 				PowerTask = ComplexTask.Create(
 					new DestroyTask(EntityType.TARGET),

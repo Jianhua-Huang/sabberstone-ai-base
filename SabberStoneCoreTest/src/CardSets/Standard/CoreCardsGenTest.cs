@@ -3923,11 +3923,12 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		// [NEW1_003] Sacrificial Pact - COST:0 
 		// - Set: core, Rarity: common
 		// --------------------------------------------------------
-		// Text: Destroy a Demon. Restore #5 Health to your hero.
+		// Text: Destroy a friendly Demon. Restore #5 Health to your hero.
 		// --------------------------------------------------------
 		// PlayReq:
 		// - REQ_TARGET_WITH_RACE = 15
 		// - REQ_TARGET_TO_PLAY = 0
+		// - REQ_FRIENDLY_TARGET = 0
 		// --------------------------------------------------------
 		[Fact]
 		public void SacrificialPact_NEW1_003()
@@ -3943,49 +3944,40 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.StartGame();
 			game.Player1.BaseMana = 10;
 			game.Player2.BaseMana = 10;
-			game.Player2.Hero.Damage = 10;
+			game.Player1.Hero.Damage = 10;
 
-			// Player 1 plays Northshire Cleric (not demon) and Imp Gang Boss (demon)
+			// Player 1 plays Northshire Cleric (not demon) and Imp Gang Boss (friendly demon).
 			IPlayable cleric = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Northshire Cleric"));
-			IPlayable impgangboss = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Imp Gang Boss"));
+			IPlayable friendlyImp = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Imp Gang Boss"));
 			Generic.PlayCard(game.CurrentPlayer, cleric);
-			Generic.PlayCard(game.CurrentPlayer, impgangboss);
+			Generic.PlayCard(game.CurrentPlayer, friendlyImp);
 			Assert.Equal(2, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
 
-			// end turn
+			game.Process(EndTurnTask.Any(game.CurrentPlayer));
+
+			IPlayable enemyImp = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Imp Gang Boss"));
+			Generic.PlayCard(game.CurrentPlayer, enemyImp);
+			Assert.Equal(1, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
+
 			game.Process(EndTurnTask.Any(game.CurrentPlayer));
 
 			IPlayable spell = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Sacrificial Pact"));
-			// this should fail as target is not demon
+
+			// Enemy demons are no longer valid targets.
+			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell, (ICharacter) enemyImp));
+			Assert.Equal(0, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
+			Assert.Contains(enemyImp, game.CurrentPlayer.Opponent.BoardZone);
+
+			// Friendly non-demons are still invalid.
 			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell, (ICharacter) cleric));
 			Assert.Equal(0, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
+			Assert.Contains(cleric, game.CurrentPlayer.BoardZone);
 
-			// now kill the Imp Gang Boss
-			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell, (ICharacter) impgangboss));
+			game.Process(PlayCardTask.Any(game.CurrentPlayer, spell, (ICharacter) friendlyImp));
 			Assert.Equal(1, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
-
-			Assert.Equal(0, game.CurrentPlayer.BoardZone.Count);
-			Assert.Equal(1, game.CurrentPlayer.GraveyardZone.Count);
-			Assert.Equal(1, game.CurrentPlayer.Opponent.GraveyardZone.Count);
+			Assert.Contains(friendlyImp, game.CurrentPlayer.GraveyardZone);
+			Assert.Contains(enemyImp, game.CurrentPlayer.Opponent.BoardZone);
 			Assert.Equal(25, game.CurrentPlayer.Hero.Health);
-
-			// end turn
-			game.Process(EndTurnTask.Any(game.CurrentPlayer));
-
-			// player 1 plays Lord Jaraxxus
-			IPlayable jaraxxus = Generic.DrawCard(game.CurrentPlayer, Cards.FromId("EX1_323"));
-			Generic.PlayCard(game.CurrentPlayer, jaraxxus);
-			Assert.Equal(1, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
-
-			// end turn
-			game.Process(EndTurnTask.Any(game.CurrentPlayer));
-
-			// player 2 kills opponent with Sacrificial Pact
-			spell = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Sacrificial Pact"));
-			game.Process(PlayCardTask.SpellTarget(game.CurrentPlayer, spell, game.CurrentPlayer.Opponent.Hero));
-
-			Assert.Equal(1, game.CurrentPlayer[GameTag.NUM_CARDS_PLAYED_THIS_TURN]);
-			Assert.Equal(State.COMPLETE, game.State);
 		}
 
 		// --------------------------------------- MINION - WARLOCK

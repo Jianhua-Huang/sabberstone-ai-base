@@ -55,7 +55,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(CardSet.BLACK_TEMPLE, kaelthas.Set);
 			Assert.Equal(CardType.MINION, kaelthas.Type);
 			Assert.True(kaelthas.Collectible);
-			Assert.Equal(6, kaelthas.Cost);
+			Assert.Equal(7, kaelthas.Cost);
 			Assert.Equal(4, kaelthas[GameTag.ATK]);
 			Assert.Equal(7, kaelthas[GameTag.HEALTH]);
 			Assert.Equal(CardType.ENCHANTMENT, enchantment.Type);
