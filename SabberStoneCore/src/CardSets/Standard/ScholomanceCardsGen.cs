@@ -20,6 +20,7 @@ namespace SabberStoneCore.CardSets.Standard
 			Hunter(cards);
 			Neutral(cards);
 			Paladin(cards);
+			Priest(cards);
 			Shaman(cards);
 			Warlock(cards);
 			NonCollect(cards);
@@ -89,6 +90,12 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_133] Wolpertinger - Battlecry: Summon a copy of this.
+			cards.Add("SCH_133", new CardDef(new Power
+			{
+				PowerTask = new SummonCopyTask(EntityType.SOURCE)
+			}));
+
 			// [SCH_147] Boneweb Egg - Deathrattle: Summon two 2/1 Spiders. If discarded, trigger its Deathrattle.
 			cards.Add("SCH_147", new CardDef(new Power
 			{
@@ -150,10 +157,32 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 2, false);
 				}))
 			}));
+
+			// [SCH_283] Manafeeder Panthara - Battlecry: If you've used your Hero Power this turn, draw a card.
+			cards.Add("SCH_283", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.HeroPowerActivationsThisTurn > 0)
+						Generic.Draw(c);
+				})
+			}));
 		}
 
 		private static void Paladin(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_138] Blessing of Authority - Give a minion +8/+8. It can't attack heroes this turn.
+			cards.Add("SCH_138", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_138e", EntityType.TARGET),
+					new AddEnchantmentTask("SCH_138e2", EntityType.TARGET))
+			}));
+
 			// [SCH_524] Shield of Honor - Give a damaged minion +3 Attack and Divine Shield.
 			cards.Add("SCH_524", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -163,6 +192,27 @@ namespace SabberStoneCore.CardSets.Standard
 			}, new Power
 			{
 				PowerTask = new AddEnchantmentTask("SCH_524e", EntityType.TARGET)
+			}));
+		}
+
+		private static void Priest(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_512] Initiation - Deal 4 damage to a minion. If that kills it, summon a new copy.
+			cards.Add("SCH_512", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target))
+						return;
+
+					Generic.DamageCharFunc.Invoke(s as IPlayable, target, 4, true);
+					if (target.ToBeDestroyed)
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, target.Card), -1, s);
+				})
 			}));
 		}
 
@@ -259,6 +309,23 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_617e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(1))
+			}));
+
+			// [SCH_138e] Blessing of Authority - +8/+8.
+			cards.Add("SCH_138e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(8))
+			}));
+
+			// [SCH_138e2] Honorable Intentions - Can't attack heroes this turn.
+			cards.Add("SCH_138e2", new CardDef(new Power
+			{
+				Enchant = new Enchant(new Effect(GameTag.CANNOT_ATTACK_HEROES, EffectOperator.SET, 1)),
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new SetGameTagTask(GameTag.CANNOT_ATTACK_HEROES, 0, EntityType.TARGET),
+					RemoveAfterTriggered = true
+				}
 			}));
 
 			// [SCH_524e] Shield of Honor - +3 Attack and Divine Shield.

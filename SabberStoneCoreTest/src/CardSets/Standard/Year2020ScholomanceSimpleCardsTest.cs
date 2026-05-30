@@ -47,6 +47,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Wolpertinger_ShouldSummonCopyOfItself()
+		{
+			Game game = CreateGame();
+
+			Minion wolpertinger = game.ProcessCard<Minion>("Wolpertinger", asZeroCost: true);
+
+			Minion[] copies = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_133");
+			Assert.Equal(2, copies.Length);
+			Assert.Contains(wolpertinger, copies);
+			Assert.All(copies, copy =>
+			{
+				Assert.Equal(1, copy.AttackDamage);
+				Assert.Equal(1, copy.Health);
+			});
+		}
+
+		[Fact]
 		public void BonewebEgg_ShouldSummonTwoSpidersOnDeathrattle()
 		{
 			Game game = CreateGame();
@@ -142,6 +159,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ManafeederPanthara_ShouldDrawOnlyAfterHeroPowerWasUsedThisTurn()
+		{
+			Game inactiveGame = CreateGame();
+
+			inactiveGame.ProcessCard("Manafeeder Panthara", asZeroCost: true);
+
+			Assert.Empty(inactiveGame.Player1.HandZone);
+
+			Game activeGame = CreateGame();
+			activeGame.PlayHeroPower(asZeroCost: true);
+
+			activeGame.ProcessCard("Manafeeder Panthara", asZeroCost: true);
+
+			Assert.Single(activeGame.Player1.HandZone);
+		}
+
+		[Fact]
 		public void AdorableInfestation_ShouldBuffSummonAndAddCubToHand()
 		{
 			Game game = CreateGame();
@@ -153,6 +187,51 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(4, target.Health);
 			Assert.Contains(game.Player1.BoardZone, p => p.Card.Id == "SCH_617t");
 			Assert.Contains(game.Player1.HandZone, p => p.Card.Id == "SCH_617t");
+		}
+
+		[Fact]
+		public void BlessingOfAuthority_ShouldBuffAndPreventHeroAttacksThisTurn()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Stonetusk Boar", asZeroCost: true);
+
+			game.ProcessCard("Blessing of Authority", target, asZeroCost: true);
+
+			Assert.Equal(9, target.AttackDamage);
+			Assert.Equal(9, target.Health);
+			Assert.True(target.CantAttackHeroes);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.False(target.CantAttackHeroes);
+		}
+
+		[Fact]
+		public void Initiation_ShouldDamageOnlyWhenTargetSurvives()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+
+			game.ProcessCard("Initiation", target, asZeroCost: true);
+
+			Assert.Equal(4, target.Damage);
+			Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Name == "Boulderfist Ogre"));
+		}
+
+		[Fact]
+		public void Initiation_ShouldSummonFreshCopyWhenDamageKillsTarget()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+
+			game.ProcessCard("Initiation", target, asZeroCost: true);
+
+			Minion copy = game.Player1.BoardZone.Single(p => p.Card.Name == "River Crocolisk");
+			Assert.NotSame(target, copy);
+			Assert.Equal(0, copy.Damage);
+			Assert.Equal(2, copy.AttackDamage);
+			Assert.Equal(3, copy.Health);
 		}
 
 		[Fact]
