@@ -378,6 +378,50 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Gibberling_ShouldSummonAnotherGibberlingForEachUnusedSpellburst()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Gibberling", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+			Assert.Equal(2, game.Player1.BoardZone.Count(p => p.Card.Id == "SCH_242"));
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+			Assert.Equal(3, game.Player1.BoardZone.Count(p => p.Card.Id == "SCH_242"));
+		}
+
+		[Fact]
+		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion pet = game.ProcessCard<Minion>("Teacher's Pet", asZeroCost: true);
+
+			Assert.True(pet.HasTaunt);
+
+			pet.Kill();
+
+			Minion beast = game.Player1.BoardZone.Single();
+			Assert.Equal(3, beast.Card.Cost);
+			Assert.True(beast.Card.IsRace(Race.BEAST));
+		}
+
+		[Fact]
+		public void PenFlinger_ShouldDamageTargetAndReturnToHandOnSpellburst()
+		{
+			Game game = CreateGame();
+
+			Minion penFlinger = game.ProcessCard<Minion>("Pen Flinger", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(29, game.Player2.Hero.Health);
+			Assert.Contains(penFlinger, game.Player1.BoardZone);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.DoesNotContain(penFlinger, game.Player1.BoardZone);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Id == "SCH_248");
+		}
+
+		[Fact]
 		public void SoulFragment_ShouldHealHeroAndNotRemainInHandWhenDrawn()
 		{
 			Game game = CreateGame();

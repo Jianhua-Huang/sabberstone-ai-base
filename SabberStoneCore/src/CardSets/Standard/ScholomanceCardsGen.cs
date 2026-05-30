@@ -18,6 +18,7 @@ namespace SabberStoneCore.CardSets.Standard
 		public static void AddAll(Dictionary<string, CardDef> cards)
 		{
 			DemonHunter(cards);
+			Druid(cards);
 			Hunter(cards);
 			Neutral(cards);
 			Paladin(cards);
@@ -56,6 +57,15 @@ namespace SabberStoneCore.CardSets.Standard
 					if (DestroySoulFragment(c))
 						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_704e"), s as IPlayable, c.Hero, 0, 0, 0);
 				})
+			}));
+		}
+
+		private static void Druid(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_242] Gibberling - Spellburst: Summon a Gibberling.
+			cards.Add("SCH_242", new CardDef(new Power
+			{
+				Trigger = Spellburst(new SummonTask("SCH_242", SummonSide.SPELL))
 			}));
 		}
 
@@ -196,6 +206,36 @@ namespace SabberStoneCore.CardSets.Standard
 							Generic.DamageCharFunc.Invoke(attacker, adjacent, attacker.AttackDamage, false);
 					})
 				}
+			}));
+
+			// [SCH_244] Teacher's Pet - Taunt. Deathrattle: Summon a random 3-Cost Beast.
+			cards.Add("SCH_244", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					List<Card> beasts = Cards.FormatTypeCards(g.FormatType)
+						.Where(card => card.Collectible && card.Type == CardType.MINION && card.Cost == 3 && card.IsRace(Race.BEAST))
+						.ToList();
+
+					if (beasts.Count == 0 || c.BoardZone.IsFull)
+						return;
+
+					Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, beasts.Choose(g.Random)), -1, s);
+				})
+			}));
+
+			// [SCH_248] Pen Flinger - Battlecry: Deal 1 damage. Spellburst: Return this to your hand.
+			cards.Add("SCH_248", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_IF_AVAILABLE, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (t is ICharacter target)
+						Generic.DamageCharFunc.Invoke(s as IPlayable, target, 1, false);
+				}),
+				Trigger = Spellburst(new ReturnHandTask(EntityType.SOURCE))
 			}));
 		}
 
