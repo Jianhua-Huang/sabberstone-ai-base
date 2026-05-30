@@ -12,6 +12,7 @@
 // GNU Affero General Public License for more details.
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SabberStoneCore.Model;
 using SabberStoneCore.Enums;
@@ -500,13 +501,41 @@ namespace SabberStoneCore.Actions
 					if (playable.Cost >= playedCost)
 						continue;
 
-					Card corrupted = Cards.FromAssetId(playable.Card[GameTag.COLLECTION_RELATED_CARD_DATABASE_ID]);
-					if (corrupted == null || corrupted[GameTag.CORRUPTEDCARD] != 1)
+					Card corrupted = FindCorruptedCard(playable.Card);
+					if (corrupted == null)
 						continue;
 
 					Generic.ChangeEntityBlock.Invoke(c, playable, corrupted, false);
 				}
 			};
+
+		private static Card FindCorruptedCard(Card card)
+		{
+			Card corrupted = Cards.FromAssetId(card[GameTag.COLLECTION_RELATED_CARD_DATABASE_ID]);
+			if (corrupted != null && corrupted[GameTag.CORRUPTEDCARD] == 1)
+				return corrupted;
+
+			foreach (string suffix in new[] {"t", "a"})
+			{
+				corrupted = FromIdOrNull(card.Id + suffix);
+				if (corrupted != null && corrupted[GameTag.CORRUPTEDCARD] == 1)
+					return corrupted;
+			}
+
+			return null;
+		}
+
+		private static Card FromIdOrNull(string cardId)
+		{
+			try
+			{
+				return Cards.FromId(cardId);
+			}
+			catch (KeyNotFoundException)
+			{
+				return null;
+			}
+		}
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

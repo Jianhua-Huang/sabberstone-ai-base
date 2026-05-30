@@ -14,11 +14,90 @@ namespace SabberStoneCore.CardSets.Standard
 	{
 		public static void AddAll(Dictionary<string, CardDef> cards)
 		{
+			DemonHunter(cards);
+			Druid(cards);
+			Mage(cards);
 			Neutral(cards);
 			Paladin(cards);
+			Shaman(cards);
 			Warlock(cards);
 			Warrior(cards);
 			NonCollect(cards);
+		}
+
+		private static void DemonHunter(IDictionary<string, CardDef> cards)
+		{
+			// [DMF_219] Relentless Pursuit - Give your hero +4 Attack and Immune this turn.
+			cards.Add("DMF_219", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("DMF_219e", EntityType.HERO)
+			}));
+
+			// [DMF_221] Felscream Blast - Lifesteal. Deal 1 damage to a minion and its neighbors.
+			cards.Add("DMF_221", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new IncludeAdjacentTask(EntityType.TARGET, true),
+					new DamageTask(1, EntityType.STACK, true))
+			}));
+
+			// [DMF_223] Renowned Performer - Rush. Deathrattle: Summon two 1/1 Assistants with Taunt.
+			cards.Add("DMF_223", new CardDef(new Power
+			{
+				DeathrattleTask = new SummonTask("DMF_223t", 2, SummonSide.DEATHRATTLE)
+			}));
+		}
+
+		private static void Druid(IDictionary<string, CardDef> cards)
+		{
+			// [DMF_730] Moontouched Amulet - Give your hero +4 Attack this turn. Corrupt: And gain 6 Armor.
+			cards.Add("DMF_730", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("DMF_730e", EntityType.HERO)
+			}));
+
+			// [DMF_730t] Moontouched Amulet - Corrupted. Give +4 Attack and gain 6 Armor.
+			cards.Add("DMF_730t", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("DMF_730e", EntityType.HERO),
+					new ArmorTask(6))
+			}));
+
+			// [DMF_733] Kiri, Chosen of Elune - Add a Solar Eclipse and Lunar Eclipse to your hand.
+			cards.Add("DMF_733", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddCardTo("DMF_058", EntityType.HAND),
+					new AddCardTo("DMF_057", EntityType.HAND))
+			}));
+		}
+
+		private static void Mage(IDictionary<string, CardDef> cards)
+		{
+			// [DMF_101] Firework Elemental - Battlecry: Deal 3 damage to a minion.
+			cards.Add("DMF_101", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new DamageTask(3, EntityType.TARGET, false)
+			}));
+
+			// [DMF_101t] Firework Elemental - Corrupted. Battlecry: Deal 12 damage to a minion.
+			cards.Add("DMF_101t", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new DamageTask(12, EntityType.TARGET, false)
+			}));
 		}
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
@@ -84,10 +163,93 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new SummonTask("DMF_238t")
 			}));
+
+			// [DMF_244] Day at the Faire - Summon 3 Silver Hand Recruits. Corrupt: Summon 5.
+			cards.Add("DMF_244", new CardDef(new Power
+			{
+				PowerTask = new SummonTask("CS2_101t", 3, SummonSide.SPELL)
+			}));
+
+			// [DMF_244t] Day at the Faire - Corrupted. Summon 5 Silver Hand Recruits.
+			cards.Add("DMF_244t", new CardDef(new Power
+			{
+				PowerTask = new SummonTask("CS2_101t", 5, SummonSide.SPELL)
+			}));
+		}
+
+		private static void Shaman(IDictionary<string, CardDef> cards)
+		{
+			// [DMF_701] Dunk Tank - Deal 4 damage. Corrupt: Then deal 2 damage to all enemy minions.
+			cards.Add("DMF_701", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0}
+			}, new Power
+			{
+				PowerTask = new DamageTask(4, EntityType.TARGET, true)
+			}));
+
+			// [DMF_701t] Dunk Tank - Corrupted. Deal 4 damage, then 2 to all enemy minions.
+			cards.Add("DMF_701t", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new DamageTask(4, EntityType.TARGET, true),
+					new DamageTask(2, EntityType.OP_MINIONS, true))
+			}));
+
+			// [DMF_702] Stormstrike - Deal 3 damage to a minion. Give your hero +3 Attack this turn.
+			cards.Add("DMF_702", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new DamageTask(3, EntityType.TARGET, true),
+					new AddEnchantmentTask("DMF_702e", EntityType.HERO))
+			}));
+
+			// [DMF_703] Pit Master - Battlecry: Summon a 3/2 Duelist. Corrupt: Summon two.
+			cards.Add("DMF_703", new CardDef(new Power
+			{
+				PowerTask = new SummonTask("DMF_703t2")
+			}));
+
+			// [DMF_703t] Pit Master - Corrupted. Battlecry: Summon two 3/2 Duelists.
+			cards.Add("DMF_703t", new CardDef(new Power
+			{
+				PowerTask = new SummonTask("DMF_703t2", 2, SummonSide.ALTERNATE)
+			}));
+
+			// [DMF_704] Cagematch Custodian - Battlecry: Draw a weapon.
+			cards.Add("DMF_704", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.DrawFromDeck(1, SelfCondition.IsWeapon)
+			}));
 		}
 
 		private static void Warlock(IDictionary<string, CardDef> cards)
 		{
+			// [DMF_174] Circus Medic - Battlecry: Restore 4 Health. Corrupt: Deal 4 damage instead.
+			cards.Add("DMF_174", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_IF_AVAILABLE, 0}
+			}, new Power
+			{
+				PowerTask = new HealTask(4, EntityType.TARGET)
+			}));
+
+			// [DMF_174t] Circus Medic - Corrupted. Battlecry: Deal 4 damage.
+			cards.Add("DMF_174t", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0}
+			}, new Power
+			{
+				PowerTask = new DamageTask(4, EntityType.TARGET)
+			}));
+
 			// [DMF_115] Revenant Rascal - Battlecry: Destroy a Mana Crystal for both players.
 			cards.Add("DMF_115", new CardDef(new Power
 			{
@@ -146,6 +308,24 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("DMF_189e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(2))
+			}));
+
+			// [DMF_219e] Out for Blood - +4 Attack and Immune this turn.
+			cards.Add("DMF_219e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(4), Effects.Immune)
+			}));
+
+			// [DMF_702e] Stormstrike - +3 Attack this turn.
+			cards.Add("DMF_702e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(3))
+			}));
+
+			// [DMF_730e] Moontouched Amulet - +4 Attack this turn.
+			cards.Add("DMF_730e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(4))
 			}));
 		}
 	}
