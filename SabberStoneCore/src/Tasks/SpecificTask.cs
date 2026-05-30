@@ -100,24 +100,24 @@ namespace SabberStoneCore.Tasks
 					Controller controller = p[0].Controller;
 					switch (controller.Hero.HeroPower.Card.Id)
 					{
-						case "CS1h_001":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_PRIEST")) };
-						case "CS2_017":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_DRUID")) };
-						case "CS2_034":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_MAGE")) };
-						case "CS2_049":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_SHAMAN")) };
-						case "CS2_056":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_WARLOCK")) };
-						case "CS2_083b":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_ROGUE")) };
-						case "CS2_101":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_PALADIN")) };
-						case "CS2_102":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_WARRIOR")) };
-						case "DS1h_292":
-							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("AT_132_HUNTER")) };
+						case "HERO_09bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_09bp2")) };
+						case "HERO_06bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_06bp2")) };
+						case "HERO_08bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_08bp2")) };
+						case "HERO_02bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_02bp2")) };
+						case "HERO_07bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_07bp2")) };
+						case "HERO_03bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_03bp2")) };
+						case "HERO_04bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_04bp2")) };
+						case "HERO_01bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_01bp2")) };
+						case "HERO_05bp":
+							return new List<IPlayable> { Entity.FromCard(controller, Cards.FromId("HERO_05bp2")) };
 					}
 					return new List<IPlayable>();
 				}),
@@ -1082,28 +1082,28 @@ namespace SabberStoneCore.Tasks
 				switch (randClass)
 				{
 					case CardClass.DRUID:
-						heroPowerCard = Cards.FromId("CS2_017");
+						heroPowerCard = Cards.FromId("HERO_06bp");
 						break;
 					case CardClass.HUNTER:
-						heroPowerCard = Cards.FromId("DS1h_292");
+						heroPowerCard = Cards.FromId("HERO_05bp");
 						break;
 					case CardClass.MAGE:
-						heroPowerCard = Cards.FromId("CS2_034");
+						heroPowerCard = Cards.FromId("HERO_08bp");
 						break;
 					case CardClass.PALADIN:
-						heroPowerCard = Cards.FromId("CS2_101");
+						heroPowerCard = Cards.FromId("HERO_04bp");
 						break;
 					case CardClass.PRIEST:
-						heroPowerCard = Cards.FromId("CS1h_001");
+						heroPowerCard = Cards.FromId("HERO_09bp");
 						break;
 					case CardClass.ROGUE:
-						heroPowerCard = Cards.FromId("CS2_083b");
+						heroPowerCard = Cards.FromId("HERO_03bp");
 						break;
 					case CardClass.SHAMAN:
-						heroPowerCard = Cards.FromId("CS2_049");
+						heroPowerCard = Cards.FromId("HERO_02bp");
 						break;
 					case CardClass.WARRIOR:
-						heroPowerCard = Cards.FromId("CS2_102");
+						heroPowerCard = Cards.FromId("HERO_01bp");
 						break;
 				}
 				HeroPower heroPower =

@@ -147,6 +147,9 @@ namespace SabberStoneCore.Enchants
 				case EffectOperator.SUB:
 					target += value;
 					break;
+				case EffectOperator.SET:
+					target = null;
+					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
 			}

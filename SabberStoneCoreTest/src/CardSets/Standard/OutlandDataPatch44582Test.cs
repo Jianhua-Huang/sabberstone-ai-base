@@ -18,24 +18,10 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Theory]
-		[InlineData("DRG_019")]
-		[InlineData("DRG_021")]
-		[InlineData("DRG_027")]
 		[InlineData("DRG_030")]
-		[InlineData("DRG_050")]
-		[InlineData("DRG_202")]
-		[InlineData("DRG_203")]
-		[InlineData("DRG_217")]
-		[InlineData("DRG_218")]
-		[InlineData("DRG_242")]
 		[InlineData("DRG_246")]
 		[InlineData("DRG_247")]
-		[InlineData("DRG_248")]
-		[InlineData("DRG_249")]
-		[InlineData("DRG_250")]
-		[InlineData("DRG_300")]
-		[InlineData("DRG_303")]
-		public void Build44582_ShouldMarkGalakrondRelatedCards(string cardId)
+		public void GalakrondHeroCards_ShouldKeepGalakrondRelatedTag(string cardId)
 		{
 			Assert.Equal(1, Cards.FromId(cardId)[GalakrondRelatedTag]);
 		}

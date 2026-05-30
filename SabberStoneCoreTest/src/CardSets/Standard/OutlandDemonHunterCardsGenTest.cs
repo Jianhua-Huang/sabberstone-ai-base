@@ -184,7 +184,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.PlayHeroPower(game.CurrentOpponent.Hero, asZeroCost: true);
 
 			Assert.Equal(10, game.CurrentOpponent.Hero.Damage);
-			Assert.Equal("HERO_10p", game.CurrentPlayer.Hero.HeroPower.Card.Id);
+			Assert.Equal("HERO_10bp", game.CurrentPlayer.Hero.HeroPower.Card.Id);
 		}
 
 		[Fact]

@@ -316,7 +316,7 @@ namespace SabberStoneCore.Model
 				case 56075:
 					return FromId("YOD_009h");
 				case 56550:
-					return FromId("HERO_10p");
+					return FromId("HERO_10bp");
 				default:
 					throw new NotImplementedException();
 			}

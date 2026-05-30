@@ -55,7 +55,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
-		public void DemonClaws_HERO_10p_ShouldGiveHeroOneAttackThisTurn()
+		public void DemonClaws_HERO_10bp_ShouldGiveHeroOneAttackThisTurn()
 		{
 			Game game = CreateGame(CardClass.DEMONHUNTER);
 

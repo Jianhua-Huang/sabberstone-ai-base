@@ -1267,7 +1267,7 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					PowerTask = ComplexTask.Create(
 						new DamageTask(5, EntityType.TARGET, false),
-						new ReplaceHeroPower(Cards.FromId("HERO_10p")))
+						new ReplaceHeroPower(Cards.FromId("HERO_10bp")))
 				}));
 
 			// [BT_423] Ashtongue Battlelord - Taunt. Lifesteal.

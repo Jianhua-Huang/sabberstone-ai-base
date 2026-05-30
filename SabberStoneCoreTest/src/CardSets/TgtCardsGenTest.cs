@@ -4769,7 +4769,7 @@ namespace SabberStoneCoreTest.CardSets
 			game.Player2.BaseMana = 10;
 			IPlayable testCard = Generic.DrawCard(game.CurrentPlayer, Cards.FromName("Justicar Trueheart"));
 			game.Process(PlayCardTask.Minion(game.CurrentPlayer, testCard));
-			Assert.StartsWith("AT_132", game.CurrentPlayer.Hero.HeroPower.Card.Id);
+			Assert.Equal("HERO_08bp2", game.CurrentPlayer.Hero.HeroPower.Card.Id);
 		}
 
 		// --------------------------------------- MINION - NEUTRAL

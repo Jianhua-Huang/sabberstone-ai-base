@@ -131,7 +131,7 @@ namespace SabberStoneCore.CardSets.Standard
 		private static void HeroPowers(IDictionary<string, CardDef> cards)
 		{
 			// ------------------------------------ HERO_POWER - PRIEST
-			// [CS1h_001] Lesser Heal (*) - COST:2
+			// [HERO_09bp] Lesser Heal (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
@@ -140,19 +140,19 @@ namespace SabberStoneCore.CardSets.Standard
 			// PlayReq:
 			// - REQ_TARGET_TO_PLAY = 0
 			// --------------------------------------------------------
-			cards.Add("CS1h_001", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
+			cards.Add("HERO_09bp", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
 			{
 				PowerTask = new HealTask(2, EntityType.TARGET)
 			}));
 
 			// ------------------------------------- HERO_POWER - DRUID
-			// [CS2_017] Shapeshift (*) - COST:2
+			// [HERO_06bp] Shapeshift (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
 			//       +1 Attack this turn.    +1 Armor.
 			// --------------------------------------------------------
-			cards.Add("CS2_017", new CardDef(new Power
+			cards.Add("HERO_06bp", new CardDef(new Power
 			{
 				PowerTask = ComplexTask.Create(
 					new ArmorTask(1),
@@ -160,7 +160,7 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 
 			// -------------------------------------- HERO_POWER - MAGE
-			// [CS2_034] Fireblast (*) - COST:2
+			// [HERO_08bp] Fireblast (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
@@ -169,13 +169,13 @@ namespace SabberStoneCore.CardSets.Standard
 			// PlayReq:
 			// - REQ_TARGET_TO_PLAY = 0
 			// --------------------------------------------------------
-			cards.Add("CS2_034", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
+			cards.Add("HERO_08bp", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
 			{
 				PowerTask = new DamageTask(1, EntityType.TARGET)
 			}));
 
 			// ------------------------------------ HERO_POWER - SHAMAN
-			// [CS2_049] Totemic Call (*) - COST:2
+			// [HERO_02bp] Totemic Call (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
@@ -187,19 +187,19 @@ namespace SabberStoneCore.CardSets.Standard
 			// - REQ_NUM_MINION_SLOTS = 1
 			// - REQ_ENTIRE_ENTOURAGE_NOT_IN_PLAY = 0
 			// --------------------------------------------------------
-			cards.Add("CS2_049", new CardDef(new[] { "CS2_050", "CS2_051", "CS2_052", "NEW1_009" }, new Dictionary<PlayReq, int>() { { PlayReq.REQ_NUM_MINION_SLOTS, 1 }, { PlayReq.REQ_ENTIRE_ENTOURAGE_NOT_IN_PLAY, 0 } }, new Power
+			cards.Add("HERO_02bp", new CardDef(new[] { "CS2_050", "CS2_051", "CS2_052", "NEW1_009" }, new Dictionary<PlayReq, int>() { { PlayReq.REQ_NUM_MINION_SLOTS, 1 }, { PlayReq.REQ_ENTIRE_ENTOURAGE_NOT_IN_PLAY, 0 } }, new Power
 			{
 				PowerTask = SpecificTask.TotemicCall
 			}));
 
 			// ----------------------------------- HERO_POWER - WARLOCK
-			// [CS2_056] Life Tap (*) - COST:2
+			// [HERO_07bp] Life Tap (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
 			//       Draw a card and take $2 damage. @spelldmg
 			// --------------------------------------------------------
-			cards.Add("CS2_056", new CardDef(new Power
+			cards.Add("HERO_07bp", new CardDef(new Power
 			{
 				PowerTask = ComplexTask.Create(
 					new DamageTask(2, EntityType.HERO),
@@ -207,19 +207,19 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 
 			// ------------------------------------- HERO_POWER - ROGUE
-			// [CS2_083b] Dagger Mastery (*) - COST:2
+			// [HERO_03bp] Dagger Mastery (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
 			//       Equip a 1/2 Dagger.
 			// --------------------------------------------------------
-			cards.Add("CS2_083b", new CardDef(new Power
+			cards.Add("HERO_03bp", new CardDef(new Power
 			{
 				PowerTask = new WeaponTask("CS2_082")
 			}));
 
 			// ----------------------------------- HERO_POWER - PALADIN
-			// [CS2_101] Reinforce (*) - COST:2
+			// [HERO_04bp] Reinforce (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
@@ -228,25 +228,25 @@ namespace SabberStoneCore.CardSets.Standard
 			// PlayReq:
 			// - REQ_NUM_MINION_SLOTS = 1
 			// --------------------------------------------------------
-			cards.Add("CS2_101", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_NUM_MINION_SLOTS, 1 } }, new Power
+			cards.Add("HERO_04bp", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_NUM_MINION_SLOTS, 1 } }, new Power
 			{
 				PowerTask = new SummonTask("CS2_101t")
 			}));
 
 			// ----------------------------------- HERO_POWER - WARRIOR
-			// [CS2_102] Armor Up! (*) - COST:2
+			// [HERO_01bp] Armor Up! (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
 			//       Gain 2 Armor.
 			// --------------------------------------------------------
-			cards.Add("CS2_102", new CardDef(new Power
+			cards.Add("HERO_01bp", new CardDef(new Power
 			{
 				PowerTask = new ArmorTask(2)
 			}));
 
 			// ------------------------------------ HERO_POWER - HUNTER
-			// [DS1h_292] Steady Shot (*) - COST:2
+			// [HERO_05bp] Steady Shot (*) - COST:2
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
@@ -256,21 +256,73 @@ namespace SabberStoneCore.CardSets.Standard
 			// - REQ_STEADY_SHOT = 0
 			// - REQ_MINION_OR_ENEMY_HERO = 0
 			// --------------------------------------------------------
-			cards.Add("DS1h_292", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_STEADY_SHOT, 0 }, { PlayReq.REQ_MINION_OR_ENEMY_HERO, 0 } }, new Power
+			cards.Add("HERO_05bp", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_STEADY_SHOT, 0 }, { PlayReq.REQ_MINION_OR_ENEMY_HERO, 0 } }, new Power
 			{
 				PowerTask = new DamageTask(2, EntityType.OP_HERO)
 			}));
 
 			// ----------------------------- HERO_POWER - DEMONHUNTER
-			// [HERO_10p] Demon Claws (*) - COST:1
+			// [HERO_10bp] Demon Claws (*) - COST:1
 			// - Fac: neutral, Set: core, Rarity: free
 			// --------------------------------------------------------
 			// Text: <b>Hero Power</b>
 			//       +1 Attack this turn.
 			// --------------------------------------------------------
-			cards.Add("HERO_10p", new CardDef(new Power
+			cards.Add("HERO_10bp", new CardDef(new Power
 			{
-				PowerTask = new AddEnchantmentTask("HERO_10pe", EntityType.HERO)
+				PowerTask = new AddEnchantmentTask("HERO_10bpe", EntityType.HERO)
+			}));
+
+			cards.Add("HERO_06bp2", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new ArmorTask(2),
+					new AddEnchantmentTask("AT_132_DRUIDe", EntityType.HERO))
+			}));
+
+			cards.Add("HERO_05bp2", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_STEADY_SHOT, 0 }, { PlayReq.REQ_MINION_OR_ENEMY_HERO, 0 } }, new Power
+			{
+				PowerTask = new DamageTask(3, EntityType.OP_HERO)
+			}));
+
+			cards.Add("HERO_08bp2", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
+			{
+				PowerTask = new DamageTask(2, EntityType.TARGET)
+			}));
+
+			cards.Add("HERO_04bp2", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_NUM_MINION_SLOTS, 1 } }, new Power
+			{
+				PowerTask = new SummonTask("CS2_101t", 2)
+			}));
+
+			cards.Add("HERO_09bp2", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_TARGET_TO_PLAY, 0 } }, new Power
+			{
+				PowerTask = new HealTask(4, EntityType.TARGET)
+			}));
+
+			cards.Add("HERO_03bp2", new CardDef(new Power
+			{
+				PowerTask = new WeaponTask("AT_132_ROGUEt")
+			}));
+
+			cards.Add("HERO_02bp2", new CardDef(new Dictionary<PlayReq, int>() { { PlayReq.REQ_NUM_MINION_SLOTS, 1 } }, new Power
+			{
+				PowerTask = new DiscoverTask(DiscoverType.BASIC_TOTEM)
+			}));
+
+			cards.Add("HERO_07bp2", new CardDef(new Power
+			{
+				PowerTask = new DrawTask()
+			}));
+
+			cards.Add("HERO_01bp2", new CardDef(new Power
+			{
+				PowerTask = new ArmorTask(4)
+			}));
+
+			cards.Add("HERO_10bp2", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("HERO_10pe2", EntityType.HERO)
 			}));
 		}
 
@@ -474,14 +526,19 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 
 			// ---------------------------- ENCHANTMENT - DEMONHUNTER
-			// [HERO_10pe] Demon Claws (*) - COST:0
+			// [HERO_10bpe] Demon Claws (*) - COST:0
 			// - Set: core,
 			// --------------------------------------------------------
 			// Text: Your hero has +1 Attack this turn.
 			// --------------------------------------------------------
-			cards.Add("HERO_10pe", new CardDef(new Power
+			cards.Add("HERO_10bpe", new CardDef(new Power
 			{
-				Enchant = GetAutoEnchantFromText("HERO_10pe")
+				Enchant = GetAutoEnchantFromText("HERO_10bpe")
+			}));
+
+			cards.Add("HERO_10pe2", new CardDef(new Power
+			{
+				Enchant = GetAutoEnchantFromText("HERO_10pe2")
 			}));
 
 			// ------------------------------------------ SPELL - DRUID

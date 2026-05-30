@@ -534,7 +534,8 @@ namespace SabberStoneCore.Model.Entities
 									}
 								case PlayReq.REQ_STEADY_SHOT:
 									{
-										if (!Controller.Hero.HeroPower.Card.Id.Equals("DS1h_292"))
+										if (Controller.Hero.HeroPower.Card.Id != "HERO_05bp" &&
+											Controller.Hero.HeroPower.Card.Id != "HERO_05bp2")
 										{
 											Game.Log(LogLevel.VERBOSE, BlockType.PLAY, "Playable", !Game.Logging ? "" : $"Need steady shoot to be used.");
 											return false;
