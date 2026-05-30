@@ -110,9 +110,9 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		[InlineData("DRG_250")]
 		[InlineData("DRG_300")]
 		[InlineData("DRG_303")]
-		public void Build47374_ShouldRemoveGalakrondRelatedTagFromInvokeCards(string cardId)
+		public void Build68600_ShouldKeepGalakrondRelatedTagOnInvokeCards(string cardId)
 		{
-			Assert.Equal(0, Cards.FromId(cardId)[GalakrondRelatedTag]);
+			Assert.Equal(1, Cards.FromId(cardId)[GalakrondRelatedTag]);
 		}
 	}
 }

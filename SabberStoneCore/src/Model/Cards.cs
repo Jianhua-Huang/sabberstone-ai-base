@@ -49,7 +49,9 @@ namespace SabberStoneCore.Model
 			CardSet.DRAGONS, // 2019 Descent of Dragons
 			CardSet.GALAKRONDS_AWAKENING, // 2020 Galakrond's Awakening
 			CardSet.BLACK_TEMPLE, // 2020 Ashes of Outland
-			CardSet.DEMON_HUNTER_INITIATE // 2020 Demon Hunter Initiate
+			CardSet.DEMON_HUNTER_INITIATE, // 2020 Demon Hunter Initiate
+			CardSet.SCHOLOMANCE, // 2020 Scholomance Academy
+			CardSet.DARKMOON_FAIRE // 2020 Madness at the Darkmoon Faire
 		};
 
 		/// <summary>
@@ -70,6 +72,8 @@ namespace SabberStoneCore.Model
 			CardSet.GALAKRONDS_AWAKENING,
 			CardSet.BLACK_TEMPLE,
 			CardSet.DEMON_HUNTER_INITIATE,
+			CardSet.SCHOLOMANCE,
+			CardSet.DARKMOON_FAIRE,
 
 			// wild
 			CardSet.BRM,
@@ -416,6 +420,16 @@ namespace SabberStoneCore.Model
 					return "Saviors of Uldum";
 				case CardSet.DRAGONS:
 					return "Descent of Dragons";
+				case CardSet.GALAKRONDS_AWAKENING:
+					return "Galakrond's Awakening";
+				case CardSet.BLACK_TEMPLE:
+					return "Ashes of Outland";
+				case CardSet.DEMON_HUNTER_INITIATE:
+					return "Demon Hunter Initiate";
+				case CardSet.SCHOLOMANCE:
+					return "Scholomance Academy";
+				case CardSet.DARKMOON_FAIRE:
+					return "Madness at the Darkmoon Faire";
 				default:
 					throw new ArgumentOutOfRangeException(nameof(cardSet), cardSet, null);
 			}

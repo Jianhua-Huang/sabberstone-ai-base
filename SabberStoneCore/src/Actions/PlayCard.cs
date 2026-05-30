@@ -12,6 +12,7 @@
 // GNU Affero General Public License for more details.
 #endregion
 using System;
+using System.Linq;
 using SabberStoneCore.Model;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Kettle;
@@ -50,6 +51,7 @@ namespace SabberStoneCore.Actions
 				game.CurrentEventData = new EventMetaData(source, target);
 
 				// Pay Phase
+				int playedCost = source.Cost;
 				if (!PayPhase.Invoke(c, source))
 					return false;
 
@@ -58,6 +60,8 @@ namespace SabberStoneCore.Actions
 				// remove from hand zone
 				if (!RemoveFromZone.Invoke(c, source))
 					return false;
+
+				CorruptCardsInHand.Invoke(c, playedCost);
 
 				c.NumCardsPlayedThisTurn++;
 				c.LastCardPlayed = source.Id;
@@ -481,6 +485,27 @@ namespace SabberStoneCore.Actions
 				game.TaskQueue.EndEvent();
 
 				game.DeathProcessingAndAuraUpdate();
+			};
+
+		private static Action<Controller, int> CorruptCardsInHand
+			=> delegate(Controller c, int playedCost)
+			{
+				if (playedCost <= 0)
+					return;
+
+				foreach (IPlayable playable in c.HandZone.GetAll().ToArray())
+				{
+					if (playable.Card[GameTag.CORRUPT] != 1 || playable.Card[GameTag.CORRUPTEDCARD] == 1)
+						continue;
+					if (playable.Cost >= playedCost)
+						continue;
+
+					Card corrupted = Cards.FromAssetId(playable.Card[GameTag.COLLECTION_RELATED_CARD_DATABASE_ID]);
+					if (corrupted == null || corrupted[GameTag.CORRUPTEDCARD] != 1)
+						continue;
+
+					Generic.ChangeEntityBlock.Invoke(c, playable, corrupted, false);
+				}
 			};
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

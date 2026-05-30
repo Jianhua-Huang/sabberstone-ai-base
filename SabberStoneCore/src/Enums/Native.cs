@@ -202,8 +202,10 @@ namespace SabberStoneCore.Enums
 		GALAKRONDS_AWAKENING = 1403,
 		BLACK_TEMPLE = 1414,
 		WILD_EVENT = 1439,
+		SCHOLOMANCE = 1443,
 		BATTLEGROUNDS = 1453,
-		DEMON_HUNTER_INITIATE = 1463
+		DEMON_HUNTER_INITIATE = 1463,
+		DARKMOON_FAIRE = 1466
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -851,6 +853,7 @@ namespace SabberStoneCore.Enums
 		BACON_ODD_PLAYER_OUT = 1415,
 		BACON_IS_KEL_THUZAD = 1423,
 		BACON_HIGHLIGHT_ATTACKING_MINION_DURING_COMBAT = 1424,
+		SPELLBURST = 1427,
 		RULEBOOK = 1430,
 		FX_DATANUM_1 = 1436,
 		BACON_ACTION_CARD = 1437,
@@ -869,7 +872,9 @@ namespace SabberStoneCore.Enums
 		BACON_COIN_ON_ENEMY_MINIONS = 1467,
 		ALWAYS_USE_FAST_ACTOR_TRIGGERS = 1473,
 		BACON_HERO_CAN_BE_DRAFTED = 1491,
-		ALLOW_GAME_SPEEDUP = 1526
+		CORRUPT = 1524,
+		ALLOW_GAME_SPEEDUP = 1526,
+		CORRUPTEDCARD = 1551
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
