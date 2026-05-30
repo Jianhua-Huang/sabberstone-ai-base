@@ -5,6 +5,7 @@ using SabberStoneCore.Config;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
 using SabberStoneCore.Model.Entities;
+using SabberStoneCore.Tasks.PlayerTasks;
 using Xunit;
 
 namespace SabberStoneCoreTest.CardSets.Standard
@@ -176,6 +177,44 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TuralyonTheTenured_ShouldSetDefenderToThreeThreeWhenAttackingMinion()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion defender = game.ProcessCard<Minion>("War Golem", asZeroCost: true);
+			game.EndTurn();
+			Minion turalyon = game.ProcessCard<Minion>("Turalyon, the Tenured", asZeroCost: true);
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, turalyon, defender));
+
+			Assert.Equal(3, defender.AttackDamage);
+			Assert.Equal(0, defender.Health);
+			Assert.True(defender.ToBeDestroyed);
+			Assert.Equal(3, turalyon.Damage);
+		}
+
+		[Fact]
+		public void LakeThresher_ShouldDamageAdjacentMinionsWhenAttacking()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion left = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion defender = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion right = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			Minion thresher = game.ProcessCard<Minion>("Lake Thresher", asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, thresher, defender));
+
+			Assert.Equal(4, left.Damage);
+			Assert.Equal(4, defender.Damage);
+			Assert.Equal(4, right.Damage);
+			Assert.Equal(6, thresher.Damage);
+		}
+
+		[Fact]
 		public void AdorableInfestation_ShouldBuffSummonAndAddCubToHand()
 		{
 			Game game = CreateGame();
@@ -205,6 +244,25 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.EndTurn();
 
 			Assert.False(target.CantAttackHeroes);
+		}
+
+		[Fact]
+		public void WaveOfApathy_ShouldSetEnemyMinionAttackToOneUntilNextTurn()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Wave of Apathy", asZeroCost: true);
+
+			Assert.Equal(1, enemy.AttackDamage);
+
+			game.EndTurn();
+			Assert.Equal(1, enemy.AttackDamage);
+
+			game.EndTurn();
+			Assert.Equal(6, enemy.AttackDamage);
 		}
 
 		[Fact]

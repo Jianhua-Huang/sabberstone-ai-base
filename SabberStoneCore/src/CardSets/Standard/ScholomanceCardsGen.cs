@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SabberStoneCore.Actions;
+using SabberStoneCore.Conditions;
 using SabberStoneCore.Enchants;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
@@ -90,6 +91,17 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_135] Turalyon, the Tenured - Rush. Whenever this attacks a minion, set the defender's Attack and Health to 3.
+			cards.Add("SCH_135", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.ATTACK)
+				{
+					TriggerSource = TriggerSource.SELF,
+					Condition = SelfCondition.IsEventTargetIs(CardType.MINION),
+					SingleTask = new AddEnchantmentTask("SCH_135e", EntityType.EVENT_TARGET)
+				}
+			}));
+
 			// [SCH_133] Wolpertinger - Battlecry: Summon a copy of this.
 			cards.Add("SCH_133", new CardDef(new Power
 			{
@@ -167,6 +179,24 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.Draw(c);
 				})
 			}));
+
+			// [SCH_605] Lake Thresher - Also damages the minions next to whomever this attacks.
+			cards.Add("SCH_605", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.SELF,
+					Condition = SelfCondition.IsEventTargetIs(CardType.MINION),
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion attacker) || !(g.CurrentEventData?.EventTarget is Minion target))
+							return;
+
+						foreach (Minion adjacent in target.GetAdjacentMinions().ToArray())
+							Generic.DamageCharFunc.Invoke(attacker, adjacent, attacker.AttackDamage, false);
+					})
+				}
+			}));
 		}
 
 		private static void Paladin(IDictionary<string, CardDef> cards)
@@ -181,6 +211,12 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = ComplexTask.Create(
 					new AddEnchantmentTask("SCH_138e", EntityType.TARGET),
 					new AddEnchantmentTask("SCH_138e2", EntityType.TARGET))
+			}));
+
+			// [SCH_250] Wave of Apathy - Set the Attack of all enemy minions to 1 until your next turn.
+			cards.Add("SCH_250", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("SCH_250e", EntityType.OP_MINIONS)
 			}));
 
 			// [SCH_149] Argent Braggart - Battlecry: Gain Attack and Health to match the highest in the battlefield.
@@ -348,6 +384,12 @@ namespace SabberStoneCore.CardSets.Standard
 				Enchant = new Enchant(Effects.AttackHealth_N(1))
 			}));
 
+			// [SCH_135e] Schooled - 3/3.
+			cards.Add("SCH_135e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.SetAttackHealth(3))
+			}));
+
 			// [SCH_136e] Power Word: Feast - +2/+2 and fully heal at the end of this turn.
 			cards.Add("SCH_136e", new CardDef(new Power
 			{
@@ -373,6 +415,16 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					SingleTask = new SetGameTagTask(GameTag.CANNOT_ATTACK_HEROES, 0, EntityType.TARGET),
 					RemoveAfterTriggered = true
+				}
+			}));
+
+			// [SCH_250e] Apathetic - Attack reduced to 1 until next turn.
+			cards.Add("SCH_250e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.SetAttack(1)),
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = RemoveEnchantmentTask.Task
 				}
 			}));
 
