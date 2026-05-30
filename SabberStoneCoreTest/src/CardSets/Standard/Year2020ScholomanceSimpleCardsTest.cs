@@ -208,6 +208,61 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void PowerWordFeast_ShouldBuffAndHealTargetAtEndOfTurn()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			target.Damage = 2;
+
+			game.ProcessCard("Power Word: Feast", target, asZeroCost: true);
+
+			Assert.Equal(4, target.AttackDamage);
+			Assert.Equal(3, target.Health);
+			Assert.Equal(2, target.Damage);
+
+			game.EndTurn();
+
+			Assert.Equal(0, target.Damage);
+			Assert.Equal(5, target.Health);
+		}
+
+		[Fact]
+		public void ArgentBraggart_ShouldMatchHighestAttackAndHealthOnBattlefield()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard<Minion>("War Golem", asZeroCost: true);
+			game.EndTurn();
+
+			Minion braggart = game.ProcessCard<Minion>("Argent Braggart", asZeroCost: true);
+
+			Assert.Equal(7, braggart.AttackDamage);
+			Assert.Equal(7, braggart.Health);
+		}
+
+		[Fact]
+		public void LordBarov_ShouldSetOtherMinionsToOneHealthAndDeathrattleDamageAllMinions()
+		{
+			Game game = CreateGame();
+			Minion friendly = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+
+			Minion barov = game.ProcessCard<Minion>("Lord Barov", asZeroCost: true);
+
+			Assert.Equal(1, friendly.Health);
+			Assert.Equal(1, enemy.Health);
+			Assert.Equal(2, barov.Health);
+
+			barov.Kill();
+
+			Assert.True(friendly.ToBeDestroyed);
+			Assert.True(enemy.ToBeDestroyed);
+		}
+
+		[Fact]
 		public void Initiation_ShouldDamageOnlyWhenTargetSurvives()
 		{
 			Game game = CreateGame();

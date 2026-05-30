@@ -183,6 +183,33 @@ namespace SabberStoneCore.CardSets.Standard
 					new AddEnchantmentTask("SCH_138e2", EntityType.TARGET))
 			}));
 
+			// [SCH_149] Argent Braggart - Battlecry: Gain Attack and Health to match the highest in the battlefield.
+			cards.Add("SCH_149", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion braggart))
+						return;
+
+					Minion[] minions = c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).ToArray();
+					int maxAttack = minions.Max(p => p.AttackDamage);
+					int maxHealth = minions.Max(p => p.Health);
+					Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_149e"), braggart, braggart,
+						maxAttack - braggart.AttackDamage, maxHealth - braggart.Health, 0);
+				})
+			}));
+
+			// [SCH_526] Lord Barov - Battlecry: Set the Health of all other minions to 1. Deathrattle: Deal 1 damage to all minions.
+			cards.Add("SCH_526", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).Where(p => p != s).ToArray())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_526e"), s as IPlayable, minion, 0, 0, 0);
+				}),
+				DeathrattleTask = new DamageTask(1, EntityType.ALLMINIONS, false)
+			}));
+
 			// [SCH_524] Shield of Honor - Give a damaged minion +3 Attack and Divine Shield.
 			cards.Add("SCH_524", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -197,6 +224,16 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Priest(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_136] Power Word: Feast - Give a minion +2/+2. Restore it to full Health at the end of this turn.
+			cards.Add("SCH_136", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new AddEnchantmentTask("SCH_136e", EntityType.TARGET)
+			}));
+
 			// [SCH_512] Initiation - Deal 4 damage to a minion. If that kills it, summon a new copy.
 			cards.Add("SCH_512", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -311,6 +348,17 @@ namespace SabberStoneCore.CardSets.Standard
 				Enchant = new Enchant(Effects.AttackHealth_N(1))
 			}));
 
+			// [SCH_136e] Power Word: Feast - +2/+2 and fully heal at the end of this turn.
+			cards.Add("SCH_136e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(2)),
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new HealTask(999, EntityType.TARGET),
+					RemoveAfterTriggered = true
+				}
+			}));
+
 			// [SCH_138e] Blessing of Authority - +8/+8.
 			cards.Add("SCH_138e", new CardDef(new Power
 			{
@@ -326,6 +374,18 @@ namespace SabberStoneCore.CardSets.Standard
 					SingleTask = new SetGameTagTask(GameTag.CANNOT_ATTACK_HEROES, 0, EntityType.TARGET),
 					RemoveAfterTriggered = true
 				}
+			}));
+
+			// [SCH_149e] Boastful - Increased Attack and Health.
+			cards.Add("SCH_149e", new CardDef(new Power
+			{
+				Enchant = Enchants.Enchants.AddAttackHealthScriptTag
+			}));
+
+			// [SCH_526e] Humility - Health set to 1.
+			cards.Add("SCH_526e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.SetMaxHealth(1))
 			}));
 
 			// [SCH_524e] Shield of Honor - +3 Attack and Divine Shield.
