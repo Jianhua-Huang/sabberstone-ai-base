@@ -76,6 +76,42 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(2, herald.Health);
 		}
 
+		[Theory]
+		[InlineData("Frazzled Freshman", 1, 4, false, false)]
+		[InlineData("Divine Rager", 5, 1, true, false)]
+		[InlineData("Desk Imp", 1, 1, false, false)]
+		[InlineData("Judicious Junior", 4, 9, false, true)]
+		public void StaticScholomanceMinions_ShouldExposePrintedStatsAndKeywords(string cardName, int attack,
+			int health, bool divineShield, bool lifesteal)
+		{
+			Game game = CreateGame();
+
+			Minion minion = game.ProcessCard<Minion>(cardName, asZeroCost: true);
+
+			Assert.Equal(cardName, minion.Card.Name);
+			Assert.Equal(attack, minion.AttackDamage);
+			Assert.Equal(health, minion.Health);
+			Assert.Equal(divineShield, minion.HasDivineShield);
+			Assert.Equal(lifesteal ? 1 : 0, minion[GameTag.LIFESTEAL]);
+		}
+
+		[Fact]
+		public void IntrepidInitiate_ShouldGainAttackOnFirstSpellburstOnly()
+		{
+			Game game = CreateGame();
+			Minion initiate = game.ProcessCard<Minion>("Intrepid Initiate", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(3, initiate.AttackDamage);
+			Assert.Equal(2, initiate.Health);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(3, initiate.AttackDamage);
+			Assert.Equal(2, initiate.Health);
+		}
+
 		[Fact]
 		public void TransferStudent_ShouldUseScholomanceBoardEffectAndAddDualClassCard()
 		{
