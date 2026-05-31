@@ -1945,6 +1945,38 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TrickTotem_ShouldCastRandomCheapSpellAtEndOfYourTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+			game.ProcessCard<Minion>("Trick Totem", asZeroCost: true);
+
+			game.EndTurn();
+
+			Spell castSpell = game.Player1.GraveyardZone
+				.OfType<Spell>()
+				.Concat(game.Player1.SecretZone.OfType<Spell>())
+				.Single();
+			Assert.True(castSpell.Card.Cost <= 3);
+			Assert.Equal(CardType.SPELL, castSpell.Card.Type);
+		}
+
+		[Fact]
+		public void TrickTotem_ShouldNotCastSpellAtOpponentEndOfTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+			game.ProcessCard<Minion>("Trick Totem", asZeroCost: true);
+			game.EndTurn();
+			int spellsAfterOwnTurn = game.Player1.GraveyardZone.OfType<Spell>().Count()
+				+ game.Player1.SecretZone.OfType<Spell>().Count();
+
+			game.EndTurn();
+
+			int spellsAfterOpponentTurn = game.Player1.GraveyardZone.OfType<Spell>().Count()
+				+ game.Player1.SecretZone.OfType<Spell>().Count();
+			Assert.Equal(spellsAfterOwnTurn, spellsAfterOpponentTurn);
+		}
+
+		[Fact]
 		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
 		{
 			Game game = CreateGame();

@@ -693,6 +693,16 @@ namespace SabberStoneCore.CardSets.Standard
 				}))
 			}));
 
+			// [SCH_537] Trick Totem - At the end of your turn, cast a random spell that costs (3) or less.
+			cards.Add("SCH_537", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+						CastRandomSpellMatching(g, c, card => card.Cost <= 3 && !card.IsQuest))
+				}
+			}));
+
 			// [SCH_230] Onyx Magescribe - Spellburst: Add 2 random spells from your class to your hand.
 			cards.Add("SCH_230", new CardDef(new Power
 			{
@@ -2297,9 +2307,14 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void CastRandomSpellOfCost(Game game, Controller controller, int cost)
 		{
+			CastRandomSpellMatching(game, controller, card => card.Cost == cost);
+		}
+
+		private static void CastRandomSpellMatching(Game game, Controller controller, System.Func<Card, bool> predicate)
+		{
 			List<Card> spells = Cards.FormatTypeCards(game.FormatType)
 				.Where(card => card.Type == CardType.SPELL
-				               && card.Cost == cost
+				               && predicate(card)
 				               && card.Implemented
 				               && !card.HideStat
 				               && card.IsPlayableByCardReq(in controller))
