@@ -292,6 +292,19 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_142] Voracious Reader - At the end of your turn, draw until you have 3 cards.
+			cards.Add("SCH_142", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						while (c.HandZone.Count < 3 && !c.DeckZone.IsEmpty)
+							Generic.Draw(c);
+					})
+				}
+			}));
+
 			// [SCH_231] Intrepid Initiate - Spellburst: Gain +2 Attack.
 			cards.Add("SCH_231", new CardDef(new Power
 			{

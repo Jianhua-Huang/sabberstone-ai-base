@@ -663,6 +663,25 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void VoraciousReader_ShouldDrawUntilThreeCardsAtEndOfTurn()
+		{
+			Game game = CreateGame();
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Bloodfen Raptor")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk")));
+			game.ProcessCard<Minion>("Voracious Reader", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Equal(3, game.Player1.HandZone.Count);
+			Assert.Equal(0, game.Player1.DeckZone.Count);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Bloodfen Raptor");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "River Crocolisk");
+		}
+
+		[Fact]
 		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
 		{
 			Game game = CreateGame();
