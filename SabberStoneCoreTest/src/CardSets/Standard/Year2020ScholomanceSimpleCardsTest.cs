@@ -536,6 +536,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TrueaimCrescent_ShouldMakeFriendlyMinionsAttackHeroAttackTarget()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion crocolisk = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Trueaim Crescent", asZeroCost: true);
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, target));
+
+			Assert.Equal(4, target.Damage);
+			Assert.Equal(2, game.Player1.Hero.Damage);
+			Assert.DoesNotContain(wisp, game.Player1.BoardZone);
+			Assert.Contains(crocolisk, game.Player1.BoardZone);
+			Assert.Equal(2, crocolisk.Damage);
+		}
+
+		[Fact]
 		public void ReapersScythe_ShouldDamageAdjacentMinionsAfterSpellburst()
 		{
 			Game game = CreateGame();

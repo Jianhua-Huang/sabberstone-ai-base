@@ -64,6 +64,33 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new AddCardTo("SCH_307t", EntityType.DECK, 2)
 			}));
 
+			// [SCH_279] Trueaim Crescent - After your Hero attacks a minion, your minions attack it too.
+			cards.Add("SCH_279", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					Condition = SelfCondition.IsEventTargetIs(CardType.MINION),
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(g.CurrentEventData?.EventTarget is Minion target))
+							return;
+
+						foreach (Minion minion in c.BoardZone.GetAll().ToArray())
+						{
+							if (target.ToBeDestroyed || target.Zone != c.Opponent.BoardZone)
+								break;
+							if (!minion.ToBeDestroyed && minion.Zone == c.BoardZone)
+							{
+								EventMetaData currentEvent = g.CurrentEventData;
+								Generic.AttackBlock.Invoke(c, minion, target, true, false);
+								g.CurrentEventData = currentEvent;
+							}
+						}
+					})
+				}
+			}));
+
 			// [SCH_253] Cycle of Hatred - Deal 3 damage to all minions. Summon a 3/3 Spirit for every minion killed.
 			cards.Add("SCH_253", new CardDef(new Power
 			{
