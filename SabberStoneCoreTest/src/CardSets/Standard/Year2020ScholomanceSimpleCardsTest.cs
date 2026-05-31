@@ -437,6 +437,33 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void WandThief_ShouldNotDiscoverWithoutCombo()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+
+			game.ProcessCard<Minion>("Wand Thief", asZeroCost: true);
+
+			Assert.Null(game.Player1.Choice);
+		}
+
+		[Fact]
+		public void WandThief_ShouldDiscoverMageSpellWithCombo()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard<Minion>("Wand Thief", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+			{
+				Card card = game.IdEntityDic[choice].Card;
+				Assert.Equal(CardType.SPELL, card.Type);
+				Assert.Equal(CardClass.MAGE, card.Class);
+			});
+		}
+
+		[Fact]
 		public void DevolvingMissiles_ShouldTransformRandomEnemyMinionsIntoLowerCostMinions()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);

@@ -564,6 +564,12 @@ namespace SabberStoneCore.CardSets.Standard
 				DeathrattleTask = new SummonTask("SCH_340t", SummonSide.DEATHRATTLE)
 			}));
 
+			// [SCH_350] Wand Thief - Combo: Discover a Mage spell.
+			cards.Add("SCH_350", new CardDef(new Power
+			{
+				ComboTask = new DiscoverTask(CardType.SPELL, CardClass.MAGE)
+			}));
+
 			// [SCH_707] Fishy Flyer - Rush. Deathrattle: Add a 4/3 Ghost with Rush to your hand.
 			cards.Add("SCH_707", new CardDef(new Power
 			{
