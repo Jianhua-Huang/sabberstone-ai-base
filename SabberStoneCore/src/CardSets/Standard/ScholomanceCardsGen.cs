@@ -335,6 +335,15 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_400] Mozaki, Master Duelist - After you cast a spell, gain Spell Damage +1.
+			cards.Add("SCH_400", new CardDef(new Power
+			{
+				Trigger = TriggerBuilder.Type(TriggerType.AFTER_CAST)
+					.SetTask(new AddEnchantmentTask("SCH_400e2", EntityType.SOURCE))
+					.SetSource(TriggerSource.FRIENDLY)
+					.SetCondition(SelfCondition.IsSpell)
+			}));
+
 			// [SCH_509] Brain Freeze - Freeze a minion. Combo: Also deal 3 damage to it.
 			cards.Add("SCH_509", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -1300,6 +1309,12 @@ namespace SabberStoneCore.CardSets.Standard
 					}),
 					RemoveAfterTriggered = true
 				}
+			}));
+
+			// [SCH_400e2] Magic Master - Spell Damage +1.
+			cards.Add("SCH_400e2", new CardDef(new Power
+			{
+				Enchant = new Enchant(GameTag.SPELLPOWER, EffectOperator.ADD, 1)
 			}));
 
 			// [SCH_333e] Nature Studies - Your next spell costs (1) less.

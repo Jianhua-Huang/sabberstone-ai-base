@@ -463,6 +463,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void MozakiMasterDuelist_ShouldGainSpellDamageAfterEachFriendlySpell()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			Minion mozaki = game.ProcessCard<Minion>("Mozaki, Master Duelist", asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.CurrentSpellPower);
+			Assert.Equal(0, mozaki[GameTag.SPELLPOWER]);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(1, game.Player2.Hero.Damage);
+			Assert.Equal(1, game.Player1.CurrentSpellPower);
+			Assert.Equal(1, mozaki[GameTag.SPELLPOWER]);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(3, game.Player2.Hero.Damage);
+			Assert.Equal(2, game.Player1.CurrentSpellPower);
+			Assert.Equal(2, mozaki[GameTag.SPELLPOWER]);
+		}
+
+		[Fact]
 		public void KroluskBarkstripper_ShouldDestroyRandomEnemyMinionOnSpellburst()
 		{
 			Game game = CreateGame();
