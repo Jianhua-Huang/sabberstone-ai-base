@@ -591,6 +591,9 @@ namespace SabberStoneCore.Actions
 			if (source.Card.Id == "SCH_612" && source[GameTag.TAG_SCRIPT_DATA_NUM_1] == 1)
 				return;
 
+			if (source.Card.Id == "YOP_024" && source[GameTag.TAG_SCRIPT_DATA_NUM_1] == 1)
+				return;
+
 			if (source is Spell s && s.IsCountered)
 				return;
 

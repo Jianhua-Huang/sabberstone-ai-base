@@ -33,6 +33,15 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void DemonHunter(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_001] Illidari Studies - Discover an Outcast card. Your next one costs (1) less.
+			cards.Add("YOP_001", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("YOP_001e", EntityType.CONTROLLER),
+					new CustomTask((g, c, s, t, stack) => DiscoverCards(g, c, s,
+						card => card.Collectible && card[GameTag.OUTCAST] == 1)))
+			}));
+
 			// [YOP_002] Felsaber - Can only attack if your hero attacked this turn.
 			cards.Add("YOP_002", new CardDef(new Power
 			{
@@ -200,6 +209,38 @@ namespace SabberStoneCore.CardSets.Standard
 							g.CurrentEventData.EventNumber = 1;
 					})
 				}
+			}));
+
+			// [YOP_018] Keywarden Ivory - Battlecry: Discover a dual-class spell from any class. Spellburst: Get another copy.
+			cards.Add("YOP_018", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) => DiscoverCards(g, c, s,
+					card => card.Collectible && card.Type == CardType.SPELL && card.MultiClassGroup != 0,
+					new CustomTask((game, controller, source, target, choiceStack) =>
+					{
+						if (target is IPlayable spell)
+							source[GameTag.TAG_SCRIPT_DATA_NUM_1] = spell.Card.AssetId;
+					}))),
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					int assetId = s[GameTag.TAG_SCRIPT_DATA_NUM_1];
+					if (assetId <= 0)
+						return;
+
+					Card card = Cards.FromAssetId(assetId);
+					if (card != null)
+						AddCardToHand(c, card, s);
+				}))
+			}));
+
+			// [YOP_029] Resizing Pouch - Discover a card with Cost equal to your remaining Mana Crystals.
+			cards.Add("YOP_029", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					int remainingMana = c.RemainingMana;
+					DiscoverCards(g, c, s, card => card.Collectible && !card.HideStat && card.Cost == remainingMana);
+				})
 			}));
 		}
 
@@ -401,6 +442,12 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new AddEnchantmentTask("YOP_022e", EntityType.TARGET)
 			}));
+
+			// [YOP_024] Guidance - Look at two spells. Add one to your hand or Overload: (1) to get both.
+			cards.Add("YOP_024", new CardDef(new Power
+			{
+				PowerTask = new CustomTask(Guidance)
+			}));
 		}
 
 		private static void Warlock(System.Collections.Generic.IDictionary<string, CardDef> cards)
@@ -519,6 +566,16 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				Enchant = new Enchant(Effects.Health_N(2))
 			}));
+
+			// [YOP_001e] Loner - Your next Outcast card costs (1) less.
+			cards.Add("YOP_001e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsTagValue(GameTag.OUTCAST, 1, RelaSign.GEQ),
+					RemoveTrigger = (TriggerType.AFTER_PLAY_CARD, SelfCondition.IsTagValue(GameTag.OUTCAST, 1, RelaSign.GEQ))
+				}
+			}));
 		}
 
 		private static Trigger Spellburst(ISimpleTask task)
@@ -614,6 +671,75 @@ namespace SabberStoneCore.CardSets.Standard
 				return;
 
 			IPlayable entity = Entity.FromCard(controller, cards.Choose(game.Random));
+			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
+			Generic.AddHandPhase.Invoke(controller, entity);
+		}
+
+		private static void DiscoverCards(Game game, Controller controller, IEntity source,
+			System.Func<Card, bool> predicate, ISimpleTask afterChooseTask = null, int numberOfChoices = 3)
+		{
+			Card[] cards = Cards.FormatTypeCards(game.FormatType)
+				.Where(predicate)
+				.Distinct()
+				.ToArray();
+
+			if (cards.Length == 0)
+				return;
+
+			Card[] choices = DiscoverTask.GetChoices(new[] {cards}, System.Math.Min(numberOfChoices, cards.Length), game.Random);
+			Generic.CreateChoiceCards(controller, source, null, ChoiceType.GENERAL, ChoiceAction.HAND, choices, afterChooseTask);
+		}
+
+		private static void Guidance(Game game, Controller controller, IEntity source, IPlayable target, TaskStack stack)
+		{
+			source[GameTag.TAG_SCRIPT_DATA_NUM_1] = 1;
+
+			Card[] spells = Cards.FormatTypeCards(game.FormatType)
+				.Where(card => card.Collectible && card.Type == CardType.SPELL && !card.IsQuest)
+				.Distinct()
+				.ToArray();
+
+			if (spells.Length == 0)
+				return;
+
+			Card[] choices = DiscoverTask.GetChoices(new[] {spells}, System.Math.Min(2, spells.Length), game.Random);
+			var spellEntities = choices
+				.Select(card => Entity.FromCard(controller, card, zone: controller.SetasideZone))
+				.ToList();
+			Card[] choiceCards = choices.Concat(new[] {Cards.FromId("YOP_024t")}).ToArray();
+
+			Generic.CreateChoiceCards(controller, source, spellEntities, ChoiceType.GENERAL, ChoiceAction.STACK,
+				choiceCards, new CustomTask((g, c, s, t, choiceStack) =>
+				{
+					IPlayable[] lookedAt = choiceStack?.Playables?.Take(2).ToArray() ?? new IPlayable[0];
+					foreach (IPlayable looked in lookedAt)
+						if (looked.Zone == c.SetasideZone)
+							c.SetasideZone.Remove(looked);
+
+					if (!(t is IPlayable picked))
+						return;
+
+					if (picked.Card.Id == "YOP_024t")
+					{
+						foreach (IPlayable looked in lookedAt)
+							AddCardToHand(c, looked.Card, s);
+						c.OverloadOwed += 1;
+						c.OverloadThisGame += 1;
+						g.TriggerManager.OnOverloadTrigger(s as IPlayable, 1);
+					}
+					else
+					{
+						AddCardToHand(c, picked.Card, s);
+					}
+				}));
+		}
+
+		private static void AddCardToHand(Controller controller, Card card, IEntity source)
+		{
+			if (controller.HandZone.IsFull)
+				return;
+
+			IPlayable entity = Entity.FromCard(controller, card);
 			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
 			Generic.AddHandPhase.Invoke(controller, entity);
 		}

@@ -232,6 +232,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void IllidariStudies_ShouldDiscoverOutcastCardAndDiscountNextOutcastCard()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			IPlayable firstOutcast = Generic.DrawCard(game.Player1, Cards.FromId("BT_491"));
+			IPlayable secondOutcast = Generic.DrawCard(game.Player1, Cards.FromId("BT_491"));
+			int originalCost = firstOutcast.Card.Cost;
+
+			game.ProcessCard("Illidari Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.Equal(1, game.IdEntityDic[choice].Card[GameTag.OUTCAST]));
+			Assert.Equal(originalCost - 1, firstOutcast.Cost);
+			Assert.Equal(originalCost - 1, secondOutcast.Cost);
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices.First()));
+			game.ProcessCard(firstOutcast, asZeroCost: true);
+
+			Assert.Equal(originalCost, secondOutcast.Cost);
+		}
+
+		[Fact]
 		public void RunawayBlackwing_ShouldDealNineToRandomEnemyMinionAtEndOfTurn()
 		{
 			Game game = CreateGame();
@@ -412,6 +434,53 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void KeywardenIvory_ShouldDiscoverDualClassSpellAndSpellburstAnotherCopy()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			game.ProcessCard("Keywarden Ivory", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+			{
+				Card card = game.IdEntityDic[choice].Card;
+				Assert.Equal(CardType.SPELL, card.Type);
+				Assert.True(card.MultiClassGroup != 0);
+			});
+
+			int choiceId = game.Player1.Choice.Choices.First();
+			string discoveredCardId = game.IdEntityDic[choiceId].Card.Id;
+			game.Process(ChooseTask.Pick(game.Player1, choiceId));
+
+			Assert.Single(game.Player1.HandZone.Where(p => p.Card.Id == discoveredCardId));
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count(p => p.Card.Id == discoveredCardId));
+		}
+
+		[Fact]
+		public void ResizingPouch_ShouldDiscoverCardWithCostEqualToRemainingMana()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			game.Player1.UsedMana = 4;
+
+			game.ProcessCard("Resizing Pouch", asZeroCost: true);
+
+			Assert.Equal(6, game.Player1.RemainingMana);
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.Equal(6, game.IdEntityDic[choice].Card.Cost));
+
+			int choiceId = game.Player1.Choice.Choices.First();
+			string chosenCardId = game.IdEntityDic[choiceId].Card.Id;
+			game.Process(ChooseTask.Pick(game.Player1, choiceId));
+
+			IPlayable added = Assert.Single(game.Player1.HandZone);
+			Assert.Equal(chosenCardId, added.Card.Id);
+			Assert.Equal(6, added.Card.Cost);
+		}
+
+		[Fact]
 		public void DarkInquisitorXanesh_ShouldReduceCorruptCardsInHandAndDeck()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
@@ -573,6 +642,51 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			nonBeastGame.ProcessCard("Murloc Raider", asZeroCost: true);
 
 			Assert.Empty(nonBeastGame.Player1.HandZone);
+		}
+
+		[Fact]
+		public void Guidance_ShouldAddOneLookedAtSpellWithoutOverload()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+
+			game.ProcessCard("Guidance", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.Equal(3, game.Player1.Choice.Choices.Count);
+			int singleSpellChoice = game.Player1.Choice.Choices
+				.First(choice => game.IdEntityDic[choice].Card.Id != "YOP_024t");
+			string chosenCardId = game.IdEntityDic[singleSpellChoice].Card.Id;
+
+			game.Process(ChooseTask.Pick(game.Player1, singleSpellChoice));
+
+			IPlayable added = Assert.Single(game.Player1.HandZone);
+			Assert.Equal(chosenCardId, added.Card.Id);
+			Assert.Equal(CardType.SPELL, added.Card.Type);
+			Assert.Equal(0, game.Player1.OverloadOwed);
+		}
+
+		[Fact]
+		public void Guidance_ShouldAddBothLookedAtSpellsAndOverloadWhenSpiritPathChosen()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+
+			game.ProcessCard("Guidance", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			string[] lookedAtSpellIds = game.Player1.Choice.Choices
+				.Select(choice => game.IdEntityDic[choice].Card)
+				.Where(card => card.Id != "YOP_024t")
+				.Select(card => card.Id)
+				.ToArray();
+			int spiritPathChoice = game.Player1.Choice.Choices
+				.Single(choice => game.IdEntityDic[choice].Card.Id == "YOP_024t");
+
+			game.Process(ChooseTask.Pick(game.Player1, spiritPathChoice));
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+			foreach (string cardId in lookedAtSpellIds)
+				Assert.Contains(game.Player1.HandZone, p => p.Card.Id == cardId);
+			Assert.Equal(1, game.Player1.OverloadOwed);
 		}
 
 		[Fact]
