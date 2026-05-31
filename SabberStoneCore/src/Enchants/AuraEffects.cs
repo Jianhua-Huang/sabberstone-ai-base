@@ -28,7 +28,7 @@ namespace SabberStoneCore.Enchants
 	public class AuraEffects : IEquatable<AuraEffects>
 	{
 		private const int PlayableLength = 2;
-		private const int WeaponLength = PlayableLength + 1;
+		private const int WeaponLength = PlayableLength + 2;
 		private const int CharacterLength = PlayableLength + 2;
 		private const int HeroLength = CharacterLength + 3;
 		private const int MinionLength = CharacterLength + 7;
@@ -207,7 +207,7 @@ namespace SabberStoneCore.Enchants
 			{
 				switch (t)
 				{
-					case GameTag.ATK when Type != CardType.MINION:
+					case GameTag.ATK when Type != CardType.MINION && Type != CardType.WEAPON:
 						return 0;
 					case GameTag.ATK:
 						return ATK;

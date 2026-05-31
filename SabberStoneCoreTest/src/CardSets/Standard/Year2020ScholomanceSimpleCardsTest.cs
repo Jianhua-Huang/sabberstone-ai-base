@@ -541,6 +541,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void VulperaToxinblade_ShouldGiveWeaponTwoAttackWhileAlive()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			game.ProcessCard("Fiery War Axe", asZeroCost: true);
+
+			Assert.Equal(3, game.Player1.Hero.Weapon.AttackDamage);
+
+			Minion toxinblade = game.ProcessCard<Minion>("Vulpera Toxinblade", asZeroCost: true);
+
+			Assert.Equal(5, game.Player1.Hero.Weapon.AttackDamage);
+
+			toxinblade.Kill();
+			game.DeathProcessingAndAuraUpdate();
+
+			Assert.Equal(3, game.Player1.Hero.Weapon.AttackDamage);
+		}
+
+		[Fact]
 		public void RuneDagger_ShouldGrantSpellDamageAfterHeroAttacksForThisTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);

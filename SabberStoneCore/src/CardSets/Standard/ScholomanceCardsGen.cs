@@ -919,6 +919,12 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new CustomTask((g, c, s, t, stack) => SecretPassage(g, c, s as IPlayable))
 			}));
 
+			// [SCH_519] Vulpera Toxinblade - Your weapon has +2 Attack.
+			cards.Add("SCH_519", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.WEAPON, "SCH_519e")
+			}));
+
 			// [SCH_521] Coerce - Destroy a damaged minion. Combo: Destroy any minion.
 			cards.Add("SCH_521", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -1420,6 +1426,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_425e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(1), new Effect(GameTag.DURABILITY, EffectOperator.ADD, 1))
+			}));
+
+			// [SCH_519e] Akunda's Bite - +2 Attack.
+			cards.Add("SCH_519e", new CardDef(new Power
+			{
+				Enchant = new Enchant(new Effect(GameTag.ATK, EffectOperator.ADD, 2))
 			}));
 
 			// [SCH_162e] Experimental Plague - Copied Deathrattle from a friendly minion that died this game.
