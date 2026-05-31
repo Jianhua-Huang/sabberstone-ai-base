@@ -682,6 +682,21 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void EnchantedCauldron_ShouldCastRandomSpellWithSameCostOnSpellburst()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Enchanted Cauldron", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Spell randomSpell = game.Player1.GraveyardZone
+				.OfType<Spell>()
+				.Single(p => p.Card.Name != "Moonfire");
+			Assert.Equal(0, randomSpell.Card.Cost);
+			Assert.Equal(CardType.SPELL, randomSpell.Card.Type);
+		}
+
+		[Fact]
 		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
 		{
 			Game game = CreateGame();

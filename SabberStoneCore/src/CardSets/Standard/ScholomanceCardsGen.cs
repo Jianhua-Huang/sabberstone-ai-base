@@ -305,6 +305,16 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_157] Enchanted Cauldron - Spellburst: Cast a random spell of the same Cost.
+			cards.Add("SCH_157", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					if (t is Spell spell)
+						CastRandomSpellOfCost(g, c, spell.Card.Cost);
+				}))
+			}));
+
 			// [SCH_231] Intrepid Initiate - Spellburst: Gain +2 Attack.
 			cards.Add("SCH_231", new CardDef(new Power
 			{
@@ -1046,6 +1056,36 @@ namespace SabberStoneCore.CardSets.Standard
 
 			if (spells.Count > 1 || spell.Card.ChooseOne)
 				game.OnRandomHappened(true);
+		}
+
+		private static void CastRandomSpellOfCost(Game game, Controller controller, int cost)
+		{
+			List<Card> spells = Cards.FormatTypeCards(game.FormatType)
+				.Where(card => card.Type == CardType.SPELL
+				               && card.Cost == cost
+				               && card.Implemented
+				               && !card.HideStat
+				               && card.IsPlayableByCardReq(in controller))
+				.ToList();
+			if (spells.Count == 0)
+				return;
+
+			Card card = spells.Choose(game.Random);
+			var spell = (Spell)Entity.FromCard(controller, card);
+			ICharacter target = spell.GetRandomValidTarget();
+			if (spell.Card.MustHaveTargetToPlay && target == null)
+			{
+				controller.GraveyardZone.Add(spell);
+				return;
+			}
+
+			int chooseOne = spell.Card.ChooseOne ? game.Random.Next(1, 3) : -1;
+			Generic.CastSpell.Invoke(controller, game, spell, target, chooseOne);
+
+			while (controller.Choice != null)
+				Generic.ChoicePick.Invoke(controller, game, controller.Choice.Choices.Choose(game.Random));
+
+			game.OnRandomHappened(true);
 		}
 
 		private static void AddRandomMinionToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)
