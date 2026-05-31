@@ -346,6 +346,24 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_352] Potion of Illusion - Add 1/1 copies of your minions to your hand. They cost (1).
+			cards.Add("SCH_352", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.BoardZone.GetAll().ToArray())
+					{
+						if (c.HandZone.IsFull)
+							return;
+
+						IPlayable copy = Entity.FromCard(c, minion.Card, zone: c.HandZone);
+						copy[GameTag.ATK] = 1;
+						copy[GameTag.HEALTH] = 1;
+						copy[GameTag.COST] = 1;
+					}
+				})
+			}));
+
 			// [SCH_400] Mozaki, Master Duelist - After you cast a spell, gain Spell Damage +1.
 			cards.Add("SCH_400", new CardDef(new Power
 			{
@@ -1530,6 +1548,18 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_302e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.SetAttackHealth(1))
+			}));
+
+			// [SCH_352e] Potion of Illusion - Set Attack and Health to 1.
+			cards.Add("SCH_352e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.SetAttackHealth(1))
+			}));
+
+			// [SCH_352e2] Potion of Illusion - Costs (1).
+			cards.Add("SCH_352e2", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.SetCost(1))
 			}));
 
 			// [SCH_609e] Survival of the Fittest - +4/+4.

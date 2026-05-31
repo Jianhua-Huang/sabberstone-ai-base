@@ -505,6 +505,30 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void PotionOfIllusion_ShouldAddOneOneCopiesThatCostOne()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion yeti = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+
+			game.ProcessCard("Potion of Illusion", asZeroCost: true);
+
+			Assert.Contains(wisp, game.Player1.BoardZone);
+			Assert.Contains(yeti, game.Player1.BoardZone);
+			Assert.Equal(2, game.Player1.HandZone.Count);
+
+			IPlayable wispCopy = Assert.Single(game.Player1.HandZone.Where(p => p.Card.Name == "Wisp"));
+			Assert.Equal(1, wispCopy.Cost);
+			Assert.Equal(1, wispCopy[GameTag.ATK]);
+			Assert.Equal(1, wispCopy[GameTag.HEALTH]);
+
+			IPlayable yetiCopy = Assert.Single(game.Player1.HandZone.Where(p => p.Card.Name == "Chillwind Yeti"));
+			Assert.Equal(1, yetiCopy.Cost);
+			Assert.Equal(1, yetiCopy[GameTag.ATK]);
+			Assert.Equal(1, yetiCopy[GameTag.HEALTH]);
+		}
+
+		[Fact]
 		public void MozakiMasterDuelist_ShouldGainSpellDamageAfterEachFriendlySpell()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
