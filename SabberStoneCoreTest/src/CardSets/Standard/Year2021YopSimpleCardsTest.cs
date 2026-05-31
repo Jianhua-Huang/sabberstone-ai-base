@@ -326,6 +326,39 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void SparkjoyCheat_ShouldCastSecretFromHandAndDraw()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE,
+				playerDeck: Enumerable.Repeat(Cards.FromName("Wisp"), 30));
+			Generic.DrawCard(game.Player1, Cards.FromId("YOP_017"));
+
+			game.ProcessCard("Sparkjoy Cheat", asZeroCost: true);
+
+			Assert.Contains(game.Player1.SecretZone, p => p.Card.Id == "YOP_017");
+			Assert.DoesNotContain(game.Player1.HandZone, p => p.Card.Id == "YOP_017");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Equal(25, game.Player1.DeckZone.Count);
+		}
+
+		[Fact]
+		public void Shenanigans_ShouldReplaceOpponentsSecondDrawWithBanana()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE,
+				opponentDeck: Enumerable.Repeat(Cards.FromName("Wisp"), 30));
+			game.ProcessCard("Shenanigans", asZeroCost: true);
+			game.Player1.SecretZone.Single(p => p.Card.Id == "YOP_017").IsExhausted = false;
+
+			Generic.Draw(game.Player2);
+			Generic.Draw(game.Player2);
+
+			Assert.DoesNotContain(game.Player1.SecretZone, p => p.Card.Id == "YOP_017");
+			Assert.Contains(game.Player1.GraveyardZone, p => p.Card.Id == "YOP_017");
+			Assert.Single(game.Player2.HandZone.Where(p => p.Card.Name == "Wisp"));
+			Assert.Single(game.Player2.HandZone.Where(p => p.Card.Id == "EX1_014t"));
+			Assert.Equal(25, game.Player2.DeckZone.Count);
+		}
+
+		[Fact]
 		public void DreamingDrake_ShouldUseCorruptedTauntStats()
 		{
 			Game normal = CreateGame(player1HeroClass: CardClass.DRUID);

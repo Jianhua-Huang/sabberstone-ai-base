@@ -302,6 +302,50 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Rogue(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_016] Sparkjoy Cheat - Battlecry: If you're holding a Secret, cast it and draw a card.
+			cards.Add("YOP_016", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					Spell[] secrets = c.HandZone
+						.OfType<Spell>()
+						.Where(p => p.Card.IsSecret && !c.SecretZone.Any(active => active.Card.AssetId == p.Card.AssetId))
+						.ToArray();
+
+					if (secrets.Length == 0 || c.SecretZone.IsFull)
+						return;
+
+					Spell secret = secrets.Choose(g.Random);
+					if (secrets.Length > 1)
+						g.OnRandomHappened(true);
+
+					c.HandZone.Remove(secret);
+					Generic.CastSpell.Invoke(c, g, secret, null, 0);
+					c.NumSpellsPlayedThisGame++;
+					c.NumSecretsPlayedThisGame++;
+					Generic.Draw(c);
+				})
+			}));
+
+			// [YOP_017] Shenanigans - Secret: When your opponent draws their second card in a turn, they draw a Banana instead.
+			cards.Add("YOP_017", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.DRAW)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					Condition = new SelfCondition(p => p.Controller.NumCardsDrawnThisTurn == 2),
+					SingleTask = ComplexTask.Secret(new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(t is IPlayable drawn) || drawn.Zone?.Type != Zone.HAND)
+							return;
+
+						drawn.Controller.HandZone.Remove(drawn);
+						drawn.Controller.DeckZone.Add(drawn);
+						Generic.DrawCard(drawn.Controller, Cards.FromId("EX1_014t"));
+					}))
+				}
+			}));
+
 			// [YOP_015] Nitroboost Poison - Give a minion +2 Attack. Corrupt: And your weapon.
 			cards.Add("YOP_015", new CardDef(new System.Collections.Generic.Dictionary<PlayReq, int>
 			{
