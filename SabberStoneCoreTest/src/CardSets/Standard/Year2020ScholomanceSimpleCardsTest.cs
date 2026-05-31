@@ -811,7 +811,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.All(wyrms, wyrm =>
 			{
 				Assert.Equal(1, wyrm.AttackDamage);
-				Assert.Equal(3, wyrm.Health);
+				Assert.Equal(2, wyrm.Health);
 			});
 		}
 

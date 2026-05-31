@@ -875,7 +875,9 @@ namespace SabberStoneCore.Enums
 		BACON_HERO_CAN_BE_DRAFTED = 1491,
 		CORRUPT = 1524,
 		ALLOW_GAME_SPEEDUP = 1526,
-		CORRUPTEDCARD = 1551
+		CORRUPTEDCARD = 1551,
+		SPELL_SCHOOL = 1635,
+		FRENZY = 1637
 	}
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 

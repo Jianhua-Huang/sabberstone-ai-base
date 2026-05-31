@@ -92,6 +92,19 @@ namespace SabberStoneCore.Loader
 				cards[i] = new Card(card.Id, Int32.Parse(card.AssetId), card.Tags,
 						card.Requirements, card.Entourage, card.ReferenzTag);
 			}
+
+			var cardsById = cards.ToDictionary(card => card.Id);
+			foreach (Card card in cards.Where(card => card.Id.StartsWith("CORE_", StringComparison.Ordinal)))
+			{
+				string baseId = card.Id.Substring("CORE_".Length);
+				if (card.PlayRequirements.Count == 0 &&
+				    cardsById.TryGetValue(baseId, out Card baseCard) &&
+				    baseCard.PlayRequirements.Count > 0)
+				{
+					card.SetPlayRequirements(new Dictionary<PlayReq, int>(baseCard.PlayRequirements));
+				}
+			}
+
 			return cards;
 		}
 	}
