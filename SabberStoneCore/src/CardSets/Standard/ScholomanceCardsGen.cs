@@ -1208,6 +1208,34 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_337] Troublemaker - At the end of your turn, summon two 3/3 Ruffians that attack random enemies.
+			cards.Add("SCH_337", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						var ruffians = new List<Minion>();
+						for (int i = 0; i < 2 && !c.BoardZone.IsFull; i++)
+						{
+							var ruffian = (Minion)Entity.FromCard(c, Cards.FromId("SCH_337t"));
+							Generic.SummonBlock.Invoke(g, ruffian, -1, s);
+							ruffians.Add(ruffian);
+						}
+
+						foreach (Minion ruffian in ruffians)
+						{
+							if (ruffian.Zone != c.BoardZone)
+								continue;
+
+							List<ICharacter> enemies = c.Opponent.BoardZone.GetAll().Cast<ICharacter>().ToList();
+							enemies.Add(c.Opponent.Hero);
+							Generic.AttackBlock.Invoke(c, ruffian, enemies.Choose(g.Random), true, false);
+						}
+					})
+				}
+			}));
+
 			// [SCH_525] In Formation! - Add 2 random Taunt minions to your hand.
 			cards.Add("SCH_525", new CardDef(new Power
 			{

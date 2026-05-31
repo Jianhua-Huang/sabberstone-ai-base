@@ -2059,6 +2059,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Troublemaker_ShouldSummonTwoRuffiansThatAttackRandomEnemiesAtEndOfTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
+			game.ProcessCard<Minion>("Troublemaker", asZeroCost: true);
+
+			game.EndTurn();
+
+			Minion[] ruffians = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_337t");
+			Assert.Equal(2, ruffians.Length);
+			Assert.All(ruffians, ruffian =>
+			{
+				Assert.Equal(3, ruffian.AttackDamage);
+				Assert.Equal(3, ruffian.Health);
+			});
+			Assert.Equal(24, game.Player2.Hero.Health);
+		}
+
+		[Fact]
 		public void PrimordialStudies_ShouldDiscoverSpellDamageMinionAndDiscountNextSpellDamageMinion()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
