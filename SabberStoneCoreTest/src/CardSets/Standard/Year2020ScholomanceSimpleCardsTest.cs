@@ -424,6 +424,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CrimsonHothead_ShouldGainAttackAndTauntOnSpellburstOnlyOnce()
+		{
+			Game game = CreateGame();
+			Minion hothead = game.ProcessCard<Minion>("Crimson Hothead", asZeroCost: true);
+
+			Assert.Equal(3, hothead.AttackDamage);
+			Assert.False(hothead.HasTaunt);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(4, hothead.AttackDamage);
+			Assert.True(hothead.HasTaunt);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(4, hothead.AttackDamage);
+			Assert.True(hothead.HasTaunt);
+		}
+
+		[Fact]
 		public void TwilightRunner_ShouldDrawTwoCardsWhenItAttacks()
 		{
 			Game game = CreateGame();

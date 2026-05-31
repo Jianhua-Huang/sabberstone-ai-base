@@ -347,6 +347,12 @@ namespace SabberStoneCore.CardSets.Standard
 				Trigger = Spellburst(new AddEnchantmentTask("SCH_231e", EntityType.SOURCE))
 			}));
 
+			// [SCH_232] Crimson Hothead - Spellburst: Gain +1 Attack and Taunt.
+			cards.Add("SCH_232", new CardDef(new Power
+			{
+				Trigger = Spellburst(new AddEnchantmentTask("SCH_232e", EntityType.SOURCE))
+			}));
+
 			// [SCH_311] Animated Broomstick - Rush. Battlecry: Give your other minions Rush.
 			cards.Add("SCH_311", new CardDef(new Power
 			{
@@ -987,6 +993,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_231e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(2))
+			}));
+
+			// [SCH_232e] Fired Up - +1 Attack and Taunt.
+			cards.Add("SCH_232e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1), new Effect(GameTag.TAUNT, EffectOperator.SET, 1))
 			}));
 
 			// [SCH_312e] School Tour - Your Hero Power costs (0).
