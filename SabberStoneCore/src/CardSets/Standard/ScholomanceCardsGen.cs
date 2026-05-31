@@ -394,6 +394,16 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_425] Doctor Krastinov - Rush. Whenever this attacks, give your weapon +1/+1.
+			cards.Add("SCH_425", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.ATTACK)
+				{
+					TriggerSource = TriggerSource.SELF,
+					SingleTask = new AddEnchantmentTask("SCH_425e", EntityType.WEAPON)
+				}
+			}));
+
 			// [SCH_133] Wolpertinger - Battlecry: Summon a copy of this.
 			cards.Add("SCH_133", new CardDef(new Power
 			{
@@ -1404,6 +1414,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_622e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(1))
+			}));
+
+			// [SCH_425e] Sharpened - +1/+1.
+			cards.Add("SCH_425e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1), new Effect(GameTag.DURABILITY, EffectOperator.ADD, 1))
 			}));
 
 			// [SCH_162e] Experimental Plague - Copied Deathrattle from a friendly minion that died this game.

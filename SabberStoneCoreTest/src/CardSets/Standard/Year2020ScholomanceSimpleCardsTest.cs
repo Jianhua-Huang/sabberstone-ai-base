@@ -524,6 +524,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DoctorKrastinov_ShouldGiveWeaponAttackAndDurabilityWhenItAttacks()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
+			game.ProcessCard("Fiery War Axe", asZeroCost: true);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			game.EndTurn();
+			Minion doctor = game.ProcessCard<Minion>("Doctor Krastinov", asZeroCost: true);
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, doctor, target));
+
+			Assert.NotNull(game.Player1.Hero.Weapon);
+			Assert.Equal(4, game.Player1.Hero.Weapon.AttackDamage);
+			Assert.Equal(3, game.Player1.Hero.Weapon.Durability);
+		}
+
+		[Fact]
 		public void RuneDagger_ShouldGrantSpellDamageAfterHeroAttacksForThisTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
