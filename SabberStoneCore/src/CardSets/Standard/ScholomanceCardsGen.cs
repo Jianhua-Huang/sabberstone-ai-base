@@ -342,6 +342,12 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_614] Forest Warden Omu - Spellburst: Refresh your Mana Crystals.
+			cards.Add("SCH_614", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) => c.UsedMana = 0))
+			}));
+
 			// [SCH_606] Partner Assignment - Add a random 2-Cost and 3-Cost Beast to your hand.
 			cards.Add("SCH_606", new CardDef(new Power
 			{

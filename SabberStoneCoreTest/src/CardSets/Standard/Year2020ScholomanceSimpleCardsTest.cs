@@ -183,6 +183,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ForestWardenOmu_ShouldRefreshManaCrystalsOnceOnSpellburst()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			game.ProcessCard<Minion>("Forest Warden Omu", asZeroCost: true);
+			game.Player1.UsedMana = 7;
+			game.Player1.OverloadLocked = 2;
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.UsedMana);
+			Assert.Equal(8, game.Player1.RemainingMana);
+
+			game.Player1.UsedMana = 5;
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(5, game.Player1.UsedMana);
+			Assert.Equal(3, game.Player1.RemainingMana);
+		}
+
+		[Fact]
 		public void FelGuardians_ShouldCostLessInHandWhenFriendlyMinionDies()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
