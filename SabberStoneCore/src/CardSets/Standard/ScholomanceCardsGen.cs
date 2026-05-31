@@ -1034,6 +1034,12 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new TempManaTask(2)
 			}));
 
+			// [SCH_535] Tidal Wave - Lifesteal. Deal 3 damage to all minions.
+			cards.Add("SCH_535", new CardDef(new Power
+			{
+				PowerTask = new DamageTask(3, EntityType.ALLMINIONS, true)
+			}));
+
 			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
 			cards.Add("SCH_615", new CardDef(new Power
 			{

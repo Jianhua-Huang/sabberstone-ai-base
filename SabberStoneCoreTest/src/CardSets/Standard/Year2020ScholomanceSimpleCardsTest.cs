@@ -649,6 +649,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TidalWave_ShouldDamageAllMinionsAndHealFromLifesteal()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+			game.Player1.Hero.Damage = 10;
+			Minion friendly = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Tidal Wave", asZeroCost: true);
+
+			Assert.Equal(3, friendly.Damage);
+			Assert.Equal(3, enemy.Damage);
+			Assert.Equal(4, game.Player1.Hero.Damage);
+		}
+
+		[Fact]
 		public void SorcerousSubstitute_ShouldSummonCopyOnlyWithSpellDamage()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
