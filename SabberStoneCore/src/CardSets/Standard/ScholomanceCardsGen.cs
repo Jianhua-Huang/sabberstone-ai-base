@@ -1012,6 +1012,12 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_427] Lightning Bloom - Gain 2 Mana Crystals this turn only. Overload: (2)
+			cards.Add("SCH_427", new CardDef(new Power
+			{
+				PowerTask = new TempManaTask(2)
+			}));
+
 			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
 			cards.Add("SCH_615", new CardDef(new Power
 			{

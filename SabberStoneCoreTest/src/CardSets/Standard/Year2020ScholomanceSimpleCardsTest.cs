@@ -583,6 +583,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void LightningBloom_ShouldGainTemporaryManaAndOverloadNextTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+			game.Player1.BaseMana = 5;
+			game.Player1.UsedMana = 5;
+
+			game.ProcessCard("Lightning Bloom", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.RemainingMana);
+			Assert.Equal(2, game.Player1.TemporaryMana);
+			Assert.Equal(2, game.Player1.OverloadOwed);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Equal(0, game.Player1.TemporaryMana);
+			Assert.Equal(2, game.Player1.OverloadLocked);
+		}
+
+		[Fact]
 		public void SorcerousSubstitute_ShouldSummonCopyOnlyWithSpellDamage()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
