@@ -487,6 +487,47 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ReapersScythe_ShouldDamageAdjacentMinionsAfterSpellburst()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion left = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion defender = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion right = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Reaper's Scythe", asZeroCost: true);
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, defender));
+
+			Assert.Equal(4, left.Damage);
+			Assert.Equal(4, defender.Damage);
+			Assert.Equal(4, right.Damage);
+			Assert.Equal(6, game.Player1.Hero.Damage);
+		}
+
+		[Fact]
+		public void ReapersScythe_ShouldOnlyDamageAdjacentMinionsThisTurn()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion left = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion defender = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion right = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Reaper's Scythe", asZeroCost: true);
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, defender));
+
+			Assert.Equal(0, left.Damage);
+			Assert.Equal(4, defender.Damage);
+			Assert.Equal(0, right.Damage);
+		}
+
+		[Fact]
 		public void ManafeederPanthara_ShouldDrawOnlyAfterHeroPowerWasUsedThisTurn()
 		{
 			Game inactiveGame = CreateGame();

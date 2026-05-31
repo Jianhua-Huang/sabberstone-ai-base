@@ -830,6 +830,12 @@ namespace SabberStoneCore.CardSets.Standard
 					new DiscoverTask(CardType.MINION, tagValueCriteria: (GameTag.RUSH, RelaSign.GEQ, 1)))
 			}));
 
+			// [SCH_238] Reaper's Scythe - Spellburst: Also damages adjacent minions this turn.
+			cards.Add("SCH_238", new CardDef(new Power
+			{
+				Trigger = Spellburst(new AddEnchantmentTask("SCH_238e", EntityType.CONTROLLER))
+			}));
+
 			// [SCH_525] In Formation! - Add 2 random Taunt minions to your hand.
 			cards.Add("SCH_525", new CardDef(new Power
 			{
@@ -994,6 +1000,25 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsTagValue(GameTag.RUSH, 1, RelaSign.GEQ),
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsTagValue(GameTag.RUSH, 1, RelaSign.GEQ))
+				}
+			}));
+
+			// [SCH_238e] Reaper's Scythe - Damages minions next to whomever your hero attacks.
+			cards.Add("SCH_238e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					Condition = SelfCondition.IsEventTargetIs(CardType.MINION),
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(g.CurrentEventData?.EventTarget is Minion target))
+							return;
+
+						int damage = c.Hero.AttackDamage;
+						foreach (Minion adjacent in target.GetAdjacentMinions().ToArray())
+							Generic.DamageCharFunc.Invoke(c.Hero, adjacent, damage, false);
+					})
 				}
 			}));
 
