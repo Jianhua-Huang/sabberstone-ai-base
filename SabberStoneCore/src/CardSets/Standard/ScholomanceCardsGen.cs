@@ -171,6 +171,14 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_333] Nature Studies - Discover a spell. Your next one costs (1) less.
+			cards.Add("SCH_333", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_333e", EntityType.CONTROLLER),
+					new DiscoverTask(CardType.SPELL))
+			}));
+
 			// [SCH_616] Twilight Runner - Stealth. Whenever this attacks, draw 2 cards.
 			cards.Add("SCH_616", new CardDef(new Power
 			{
@@ -1131,6 +1139,21 @@ namespace SabberStoneCore.CardSets.Standard
 						int spellPower = c.NativeTags.ContainsKey(GameTag.SPELLPOWER) ? c.NativeTags[GameTag.SPELLPOWER] : 0;
 						c.NativeTags[GameTag.SPELLPOWER] = spellPower > 0 ? spellPower - 1 : 0;
 					}),
+					RemoveAfterTriggered = true
+				}
+			}));
+
+			// [SCH_333e] Nature Studies - Your next spell costs (1) less.
+			cards.Add("SCH_333e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsSpell
+				},
+				Trigger = new Trigger(TriggerType.AFTER_CAST)
+				{
+					Condition = SelfCondition.IsSpell,
+					SingleTask = RemoveEnchantmentTask.Task,
 					RemoveAfterTriggered = true
 				}
 			}));

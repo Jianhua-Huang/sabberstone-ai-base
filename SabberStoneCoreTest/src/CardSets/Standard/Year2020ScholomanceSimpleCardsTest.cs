@@ -1546,6 +1546,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void NatureStudies_ShouldDiscoverSpellAndDiscountNextSpell()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			IPlayable firstSpell = Generic.DrawCard(game.Player1, Cards.FromName("Swipe"));
+			IPlayable secondSpell = Generic.DrawCard(game.Player1, Cards.FromName("Starfire"));
+			IPlayable nonSpell = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard("Nature Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.Equal(CardType.SPELL, game.IdEntityDic[choice].Card.Type));
+			Assert.Equal(3, firstSpell.Cost);
+			Assert.Equal(5, secondSpell.Cost);
+			Assert.Equal(2, nonSpell.Cost);
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.Equal(CardType.SPELL, game.Player1.HandZone.Last().Card.Type);
+
+			game.ProcessCard(firstSpell, game.Player2.Hero, asZeroCost: false);
+
+			Assert.DoesNotContain(firstSpell, game.Player1.HandZone);
+			Assert.Equal(6, secondSpell.Cost);
+		}
+
+		[Fact]
 		public void MindrenderIllucia_ShouldSwapHandsAndDecksUntilNextTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PRIEST, player2HeroClass: CardClass.MAGE);
