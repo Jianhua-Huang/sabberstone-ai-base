@@ -56,6 +56,7 @@ namespace SabberStoneCore.Model.Entities
 		{
 			Auras = new List<Aura>(hero.Auras.Count);
 			DamageTakenThisTurn = hero.DamageTakenThisTurn;
+			HealthChangedThisTurn = hero.HealthChangedThisTurn;
 		}
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -176,6 +177,8 @@ namespace SabberStoneCore.Model.Entities
 		}
 
 		public int DamageTakenThisTurn { get; set; }
+
+		public int HealthChangedThisTurn { get; set; }
 
 		public override bool CantAttackHeroes
 		{

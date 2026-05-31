@@ -912,6 +912,7 @@ namespace SabberStoneCore.Model
 			CurrentPlayer.CardsPlayedThisTurn.Clear();
 
 			CurrentPlayer.Hero.DamageTakenThisTurn = 0;
+			CurrentPlayer.Hero.HealthChangedThisTurn = 0;
 
 			if (RushMinions.Count > 0)
 			{

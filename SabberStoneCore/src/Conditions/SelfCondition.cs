@@ -109,6 +109,7 @@ namespace SabberStoneCore.Conditions
 		public static readonly SelfCondition HasMyHeroAttackedThisTurn = new SelfCondition(me => me.Controller.Hero.NumAttacksThisTurn > 0);
 		public static readonly SelfCondition HasMyHeroNotAttackedThisTurn = new SelfCondition(me => me.Controller.Hero.NumAttacksThisTurn == 0);
 		public static readonly SelfCondition IsMyHeroDamagedThisTurn = new SelfCondition(me => me.Controller.Hero.DamageTakenThisTurn > 0);
+		public static readonly SelfCondition HasMyHeroHealthChangedThisTurn = new SelfCondition(me => me.Controller.Hero.HealthChangedThisTurn > 0);
 
 		public static readonly SelfCondition IsDeathrattleCard = new SelfCondition(me => me.Card.Deathrattle);
 		public static readonly SelfCondition IsEchoCard = new SelfCondition(me => me.Card.Echo);

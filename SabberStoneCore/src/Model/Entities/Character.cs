@@ -406,6 +406,7 @@ namespace SabberStoneCore.Model.Entities
 			if (hero != null)
 			{
 				hero.DamageTakenThisTurn += amount;
+				hero.HealthChangedThisTurn += amount;
 				RecordHeroHealthChangeOnOwnTurn(amount);
 			}
 
@@ -472,6 +473,7 @@ namespace SabberStoneCore.Model.Entities
 
 			if (this is Hero)
 			{
+				((Hero)this).HealthChangedThisTurn += amount;
 				Controller.AmountHeroHealedThisTurn += amount;
 				RecordHeroHealthChangeOnOwnTurn(amount);
 			}

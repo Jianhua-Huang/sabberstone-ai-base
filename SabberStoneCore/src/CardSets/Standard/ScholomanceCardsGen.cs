@@ -888,6 +888,20 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_513] Brittlebone Destroyer - Battlecry: If your hero's Health changed this turn, destroy a minion.
+			cards.Add("SCH_513", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_IF_AVAILABLE, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.Hero.HealthChangedThisTurn > 0 && t is Minion target)
+						target.Destroy();
+				})
+			}));
+
 			// [SCH_512] Initiation - Deal 4 damage to a minion. If that kills it, summon a new copy.
 			cards.Add("SCH_512", new CardDef(new Dictionary<PlayReq, int>
 			{

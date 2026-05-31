@@ -212,6 +212,48 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void BrittleboneDestroyer_ShouldDestroyMinionOnlyIfHeroHealthChangedThisTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			Minion unchangedTarget = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+
+			game.ProcessCard<Minion>("Brittlebone Destroyer", unchangedTarget, asZeroCost: true);
+
+			Assert.False(unchangedTarget.ToBeDestroyed);
+
+			EmptyZone(game.Player1.BoardZone.GetAll());
+			game.ProcessCard("Raise Dead", asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+			Minion previousTurnTarget = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+
+			game.ProcessCard<Minion>("Brittlebone Destroyer", previousTurnTarget, asZeroCost: true);
+
+			Assert.False(previousTurnTarget.ToBeDestroyed);
+
+			EmptyZone(game.Player1.BoardZone.GetAll());
+			Minion damagedThisTurnTarget = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			game.ProcessCard("Raise Dead", asZeroCost: true);
+
+			game.ProcessCard<Minion>("Brittlebone Destroyer", damagedThisTurnTarget, asZeroCost: true);
+
+			Assert.True(damagedThisTurnTarget.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void BrittleboneDestroyer_ShouldCountHeroHealingAsHealthChangedThisTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			game.Player1.Hero.Damage = 3;
+			Minion target = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			game.ProcessCard("Holy Light", game.Player1.Hero, asZeroCost: true);
+
+			game.ProcessCard<Minion>("Brittlebone Destroyer", target, asZeroCost: true);
+
+			Assert.True(target.ToBeDestroyed);
+		}
+
+		[Fact]
 		public void Vectus_ShouldGiveWhelpsFriendlyDeathrattlesThatDiedThisGame()
 		{
 			Game game = CreateGame();
