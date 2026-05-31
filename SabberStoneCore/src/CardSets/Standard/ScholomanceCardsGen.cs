@@ -124,6 +124,17 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_356] Glide - Shuffle your hand into your deck. Draw 4 cards. Outcast: Your opponent does the same.
+			cards.Add("SCH_356", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					GlideHandIntoDeck(c, s as IPlayable);
+					if (WasPlayedFromOutcastPosition(s))
+						GlideHandIntoDeck(c.Opponent, s as IPlayable);
+				})
+			}));
+
 			// [SCH_704] Soulshard Lapidary - Battlecry: Destroy a Soul Fragment in your deck to give your hero +5 Attack this turn.
 			cards.Add("SCH_704", new CardDef(new Power
 			{
@@ -1843,6 +1854,15 @@ namespace SabberStoneCore.CardSets.Standard
 		private static bool WasPlayedFromOutcastPosition(IEntity source)
 		{
 			return source is Playable playable && playable.WasPlayedFromOutcastPosition;
+		}
+
+		private static void GlideHandIntoDeck(Controller controller, IPlayable source)
+		{
+			foreach (IPlayable playable in controller.HandZone.GetAll().ToArray())
+				Generic.ShuffleIntoDeck.Invoke(controller, source, controller.HandZone.Remove(playable));
+
+			for (int i = 0; i < 4; i++)
+				Generic.Draw(controller);
 		}
 
 		private static Trigger HeadmasterKelThuzadSpellburst()

@@ -1172,6 +1172,59 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Glide_ShouldShuffleOwnHandIntoDeckAndDrawFourCards()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			EmptyZone(game.Player2.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Chillwind Yeti")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Boulderfist Ogre")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Bloodfen Raptor")));
+			game.Player2.DeckZone.Add(Entity.FromCard(game.Player2, Cards.FromName("Murloc Raider")));
+			IPlayable wisp = AddHandCard(game, "Wisp");
+			IPlayable glide = AddHandCard(game, "Glide");
+			IPlayable murloc = AddHandCard(game, "Murloc Raider");
+			IPlayable opponentCard = Generic.DrawCard(game.Player2, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard(glide, asZeroCost: true);
+
+			Assert.Equal(4, game.Player1.HandZone.Count);
+			Assert.Equal(2, game.Player1.DeckZone.Count);
+			Assert.True(wisp.Zone == game.Player1.HandZone || wisp.Zone == game.Player1.DeckZone);
+			Assert.True(murloc.Zone == game.Player1.HandZone || murloc.Zone == game.Player1.DeckZone);
+			Assert.Contains(opponentCard, game.Player2.HandZone);
+			Assert.Single(game.Player2.HandZone);
+			Assert.Single(game.Player2.DeckZone);
+		}
+
+		[Fact]
+		public void Glide_ShouldAlsoShuffleOpponentHandAndDrawFourWhenOutcast()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			EmptyZone(game.Player2.DeckZone.GetAll());
+			for (int i = 0; i < 4; i++)
+			{
+				game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+				game.Player2.DeckZone.Add(Entity.FromCard(game.Player2, Cards.FromName("Murloc Raider")));
+			}
+
+			IPlayable glide = AddHandCard(game, "Glide");
+			IPlayable opponentWisp = Generic.DrawCard(game.Player2, Cards.FromName("Wisp"));
+			IPlayable opponentRaptor = Generic.DrawCard(game.Player2, Cards.FromName("Bloodfen Raptor"));
+
+			game.ProcessCard(glide, asZeroCost: true);
+
+			Assert.Equal(4, game.Player1.HandZone.Count);
+			Assert.Empty(game.Player1.DeckZone);
+			Assert.Equal(4, game.Player2.HandZone.Count);
+			Assert.Equal(2, game.Player2.DeckZone.Count);
+			Assert.True(opponentWisp.Zone == game.Player2.HandZone || opponentWisp.Zone == game.Player2.DeckZone);
+			Assert.True(opponentRaptor.Zone == game.Player2.HandZone || opponentRaptor.Zone == game.Player2.DeckZone);
+		}
+
+		[Fact]
 		public void VilefiendTrainer_ShouldSummonTwoDemonsOnlyWhenOutcast()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
