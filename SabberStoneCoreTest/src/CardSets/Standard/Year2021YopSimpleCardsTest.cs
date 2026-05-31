@@ -395,6 +395,43 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Hysteria_ShouldForceEnemyMinionToAttackRandomMinionsUntilItDies()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			Minion friendly = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			var enemy = (Minion)Entity.FromCard(game.Player2, Cards.FromName("Magma Rager"));
+			Generic.SummonBlock.Invoke(game, enemy, -1, null);
+
+			game.ProcessCard("Hysteria", enemy, asZeroCost: true);
+
+			Assert.DoesNotContain(friendly, game.Player1.BoardZone);
+			Assert.DoesNotContain(enemy, game.Player2.BoardZone);
+			Assert.Contains(game.Player1.GraveyardZone, p => p.Card.Name == "Wisp");
+			Assert.Contains(game.Player2.GraveyardZone, p => p.Card.Name == "Magma Rager");
+		}
+
+		[Fact]
+		public void Lightsteed_ShouldGiveHealedMinionsTwoHealthFromFriendlyHealing()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			game.ProcessCard("Lightsteed", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			Generic.DamageCharFunc.Invoke(game.Player2.Hero, target, 1, false);
+
+			game.ProcessCard("Flash Heal", target, asZeroCost: true);
+
+			Assert.Equal(5, target.Health);
+
+			Game heroHeal = CreateGame(player1HeroClass: CardClass.PRIEST);
+			Minion lightsteed = heroHeal.ProcessCard<Minion>("Lightsteed", asZeroCost: true);
+			Generic.DamageCharFunc.Invoke(heroHeal.Player2.Hero, heroHeal.Player1.Hero, 3, false);
+
+			heroHeal.ProcessCard("Flash Heal", heroHeal.Player1.Hero, asZeroCost: true);
+
+			Assert.Equal(6, lightsteed.Health);
+		}
+
+		[Fact]
 		public void EnvoyRustwix_ShouldShuffleThreePrimeLegendaryMinionsOnDeathrattle()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);

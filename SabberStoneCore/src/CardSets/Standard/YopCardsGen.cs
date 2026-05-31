@@ -221,6 +221,40 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Priest(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_006] Hysteria - Choose an enemy minion. It attacks random minions until it dies.
+			cards.Add("YOP_006", new CardDef(new System.Collections.Generic.Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0},
+				{PlayReq.REQ_ENEMY_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion attacker))
+						return;
+
+					EventMetaData currentEvent = g.CurrentEventData;
+					while (!attacker.ToBeDestroyed)
+					{
+						Minion[] defenders = c.BoardZone
+							.Concat(c.Opponent.BoardZone)
+							.Where(p => p.Id != attacker.Id && !p.ToBeDestroyed)
+							.ToArray();
+
+						if (defenders.Length == 0)
+							break;
+
+						Generic.AttackBlock.Invoke(attacker.Controller, attacker, defenders.Choose(g.Random), true, true);
+						attacker.Controller.NumOptionsPlayedThisTurn--;
+						g.OnRandomHappened(true);
+					}
+
+					g.DeathProcessingAndAuraUpdate();
+					g.CurrentEventData = currentEvent;
+				})
+			}));
+
 			// [YOP_007] Dark Inquisitor Xanesh - Battlecry: Reduce the Cost of all Corrupt cards in your hand and deck by (2).
 			cards.Add("YOP_007", new CardDef(new Power
 			{
@@ -252,6 +286,17 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, deadMinion.Card), -1, s);
 					}
 				})
+			}));
+
+			// [YOP_008] Lightsteed - Your healing effects also give affected minions +2 Health.
+			cards.Add("YOP_008", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.HEAL)
+				{
+					TriggerSource = TriggerSource.ALL_MINIONS,
+					Condition = SelfCondition.IsEventSourceFriendly,
+					SingleTask = new AddEnchantmentTask("YOP_008e", EntityType.TARGET)
+				}
 			}));
 		}
 
@@ -425,6 +470,11 @@ namespace SabberStoneCore.CardSets.Standard
 				Enchant = new Enchant(Effects.ReduceCost(2))
 			}));
 
+			// [YOP_008e] Illuminated - +2 Health.
+			cards.Add("YOP_008e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Health_N(2))
+			}));
 		}
 
 		private static Trigger Spellburst(ISimpleTask task)
