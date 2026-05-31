@@ -1331,6 +1331,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void AthleticStudies_ShouldDiscoverRushMinionAndDiscountNextRushMinion()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
+			IPlayable firstRush = Generic.DrawCard(game.Player1, Cards.FromName("Rabid Worgen"));
+			IPlayable secondRush = Generic.DrawCard(game.Player1, Cards.FromName("Militia Commander"));
+			IPlayable nonRush = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard("Athletic Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.True(game.IdEntityDic[choice].Card[GameTag.RUSH] >= 1));
+			Assert.Equal(2, firstRush.Cost);
+			Assert.Equal(3, secondRush.Cost);
+			Assert.Equal(2, nonRush.Cost);
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.True(game.Player1.HandZone.Last().Card[GameTag.RUSH] >= 1);
+
+			game.ProcessCard(firstRush, asZeroCost: false);
+
+			Assert.DoesNotContain(firstRush, game.Player1.HandZone);
+			Assert.Equal(4, secondRush.Cost);
+		}
+
+		[Fact]
 		public void MindrenderIllucia_ShouldSwapHandsAndDecksUntilNextTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PRIEST, player2HeroClass: CardClass.MAGE);

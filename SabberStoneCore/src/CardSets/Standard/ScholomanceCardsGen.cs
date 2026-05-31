@@ -822,6 +822,14 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Warrior(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_237] Athletic Studies - Discover a Rush minion. Your next one costs (1) less.
+			cards.Add("SCH_237", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_237e", EntityType.CONTROLLER),
+					new DiscoverTask(CardType.MINION, tagValueCriteria: (GameTag.RUSH, RelaSign.GEQ, 1)))
+			}));
+
 			// [SCH_525] In Formation! - Add 2 random Taunt minions to your hand.
 			cards.Add("SCH_525", new CardDef(new Power
 			{
@@ -976,6 +984,16 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsRace(Race.DRAGON),
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsRace(Race.DRAGON))
+				}
+			}));
+
+			// [SCH_237e] Athletic Studies - Your next Rush minion costs (1) less.
+			cards.Add("SCH_237e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsTagValue(GameTag.RUSH, 1, RelaSign.GEQ),
+					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsTagValue(GameTag.RUSH, 1, RelaSign.GEQ))
 				}
 			}));
 
