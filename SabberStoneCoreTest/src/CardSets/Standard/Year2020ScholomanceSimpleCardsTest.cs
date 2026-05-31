@@ -623,6 +623,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Steeldancer_ShouldSummonRandomMinionWithCostEqualToWeaponAttack()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+
+			game.ProcessCard<Minion>("Steeldancer", asZeroCost: true);
+
+			Assert.Single(game.Player1.BoardZone);
+
+			EmptyZone(game.Player1.BoardZone.GetAll());
+			game.ProcessCard("Fiery War Axe", asZeroCost: true);
+
+			game.ProcessCard<Minion>("Steeldancer", asZeroCost: true);
+
+			Minion summoned = Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id != "SCH_522"));
+			Assert.Equal(3, summoned.Card.Cost);
+		}
+
+		[Fact]
 		public void CuttingClass_ShouldCostLessPerWeaponAttackAndDrawTwoCards()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);

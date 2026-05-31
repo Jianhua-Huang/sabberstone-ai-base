@@ -1009,6 +1009,23 @@ namespace SabberStoneCore.CardSets.Standard
 				ComboTask = new DestroyTask(EntityType.TARGET)
 			}));
 
+			// [SCH_522] Steeldancer - Battlecry: Summon a random minion with Cost equal to your weapon's Attack.
+			cards.Add("SCH_522", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.BoardZone.IsFull || c.Hero.Weapon == null)
+						return;
+
+					if (!Cards.CostMinionCards(g.FormatType).TryGetValue(c.Hero.Weapon.AttackDamage, out List<Card> minions)
+						|| minions.Count == 0)
+						return;
+
+					Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, minions.Choose(g.Random)), -1, s);
+					g.OnRandomHappened(true);
+				})
+			}));
+
 			// [SCH_622] Self-Sharpening Sword - After your hero attacks, gain +1 Attack.
 			cards.Add("SCH_622", new CardDef(new Power
 			{
