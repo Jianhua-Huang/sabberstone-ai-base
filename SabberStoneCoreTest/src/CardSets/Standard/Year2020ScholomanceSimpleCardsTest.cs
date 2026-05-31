@@ -182,6 +182,36 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void FleshGiant_ShouldCostLessWhenOwnHeroHealthChangesDuringOwnTurns()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			IPlayable giantInHand = Generic.DrawCard(game.Player1, Cards.FromId("SCH_140"));
+
+			Assert.Equal(8, giantInHand.Cost);
+
+			game.ProcessCard("Raise Dead", asZeroCost: true);
+
+			Assert.Equal(27, game.Player1.Hero.Health);
+			Assert.Equal(7, giantInHand.Cost);
+
+			game.EndTurn();
+			game.ProcessCard("Moonfire", game.Player1.Hero, asZeroCost: true);
+
+			Assert.Equal(26, game.Player1.Hero.Health);
+			Assert.Equal(7, giantInHand.Cost);
+
+			game.EndTurn();
+			game.ProcessCard("Holy Light", game.Player1.Hero, asZeroCost: true);
+
+			Assert.Equal(30, game.Player1.Hero.Health);
+			Assert.Equal(6, giantInHand.Cost);
+
+			IPlayable laterGiant = Generic.DrawCard(game.Player1, Cards.FromId("SCH_140"));
+
+			Assert.Equal(6, laterGiant.Cost);
+		}
+
+		[Fact]
 		public void Vectus_ShouldGiveWhelpsFriendlyDeathrattlesThatDiedThisGame()
 		{
 			Game game = CreateGame();

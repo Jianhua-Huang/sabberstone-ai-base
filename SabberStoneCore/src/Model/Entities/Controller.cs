@@ -134,6 +134,8 @@ namespace SabberStoneCore.Model.Entities
 
 		public int NumTotemSummonedThisGame { get; set; }
 
+		public int NumHeroHealthChangesOnOwnTurnsThisGame { get; set; }
+
 		public bool TemporusFlag { get; set; }
 
 		/// <summary>
@@ -256,6 +258,7 @@ namespace SabberStoneCore.Model.Entities
 			// non-tag attributes
 			_playerId = controller._playerId;
 			NumTotemSummonedThisGame = controller.NumTotemSummonedThisGame;
+			NumHeroHealthChangesOnOwnTurnsThisGame = controller.NumHeroHealthChangesOnOwnTurnsThisGame;
 			TemporusFlag = controller.TemporusFlag;
 			NumSpellsPlayedLastTurn = controller.NumSpellsPlayedLastTurn;
 		}

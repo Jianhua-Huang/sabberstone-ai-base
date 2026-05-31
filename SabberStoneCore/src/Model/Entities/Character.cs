@@ -404,7 +404,10 @@ namespace SabberStoneCore.Model.Entities
 			}
 
 			if (hero != null)
+			{
 				hero.DamageTakenThisTurn += amount;
+				RecordHeroHealthChangeOnOwnTurn(amount);
+			}
 
 			if (source.Card.Type == CardType.HERO_POWER)
 				source.Controller.NumHeroPowerDamageThisGame += amount;
@@ -468,7 +471,22 @@ namespace SabberStoneCore.Model.Entities
 			Game.CurrentEventData = temp;
 
 			if (this is Hero)
+			{
 				Controller.AmountHeroHealedThisTurn += amount;
+				RecordHeroHealthChangeOnOwnTurn(amount);
+			}
+		}
+
+		private void RecordHeroHealthChangeOnOwnTurn(int amount)
+		{
+			if (amount <= 0 || !(this is Hero) || Game.CurrentPlayer != Controller)
+				return;
+
+			Controller.NumHeroHealthChangesOnOwnTurnsThisGame++;
+
+			foreach (IPlayable playable in Controller.HandZone)
+				if (playable is Playable p)
+					p._costManager?.QueueUpdate();
 		}
 
 		/// <summary>

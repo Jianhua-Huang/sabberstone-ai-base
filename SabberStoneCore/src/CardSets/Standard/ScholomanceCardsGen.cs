@@ -610,6 +610,12 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Priest(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_140] Flesh Giant - Costs (1) less for each time your hero's Health changed during your turns.
+			cards.Add("SCH_140", new CardDef(new Power
+			{
+				Aura = new AdaptiveCostEffect(p => p.Controller.NumHeroHealthChangesOnOwnTurnsThisGame)
+			}));
+
 			// [SCH_136] Power Word: Feast - Give a minion +2/+2. Restore it to full Health at the end of this turn.
 			cards.Add("SCH_136", new CardDef(new Dictionary<PlayReq, int>
 			{
