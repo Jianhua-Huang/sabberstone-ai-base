@@ -846,6 +846,14 @@ namespace SabberStoneCore.CardSets.Standard
 				Trigger = Spellburst(new CopyTask(EntityType.EVENT_SOURCE, Zone.HAND))
 			}));
 
+			// [SCH_270] Primordial Studies - Discover a Spell Damage minion. Your next one costs (1) less.
+			cards.Add("SCH_270", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_270e", EntityType.CONTROLLER),
+					new DiscoverTask(CardType.MINION, tagValueCriteria: (GameTag.SPELLPOWER, RelaSign.GEQ, 1)))
+			}));
+
 			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
 			cards.Add("SCH_615", new CardDef(new Power
 			{
@@ -1067,6 +1075,16 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsTagValue(GameTag.RUSH, 1, RelaSign.GEQ),
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsTagValue(GameTag.RUSH, 1, RelaSign.GEQ))
+				}
+			}));
+
+			// [SCH_270e] Runic Studies - Your next Spell Damage minion costs (1) less.
+			cards.Add("SCH_270e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsTagValue(GameTag.SPELLPOWER, 1, RelaSign.GEQ),
+					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsTagValue(GameTag.SPELLPOWER, 1, RelaSign.GEQ))
 				}
 			}));
 

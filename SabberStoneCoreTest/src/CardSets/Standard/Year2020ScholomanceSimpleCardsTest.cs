@@ -1464,6 +1464,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void PrimordialStudies_ShouldDiscoverSpellDamageMinionAndDiscountNextSpellDamageMinion()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+			IPlayable firstSpellDamage = Generic.DrawCard(game.Player1, Cards.FromName("Kobold Geomancer"));
+			IPlayable secondSpellDamage = Generic.DrawCard(game.Player1, Cards.FromName("Dalaran Mage"));
+			IPlayable nonSpellDamage = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard("Primordial Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.True(game.IdEntityDic[choice].Card[GameTag.SPELLPOWER] >= 1));
+			Assert.Equal(1, firstSpellDamage.Cost);
+			Assert.Equal(2, secondSpellDamage.Cost);
+			Assert.Equal(2, nonSpellDamage.Cost);
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.True(game.Player1.HandZone.Last().Card[GameTag.SPELLPOWER] >= 1);
+
+			game.ProcessCard(firstSpellDamage, asZeroCost: false);
+
+			Assert.DoesNotContain(firstSpellDamage, game.Player1.HandZone);
+			Assert.Equal(3, secondSpellDamage.Cost);
+		}
+
+		[Fact]
 		public void MindrenderIllucia_ShouldSwapHandsAndDecksUntilNextTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PRIEST, player2HeroClass: CardClass.MAGE);
