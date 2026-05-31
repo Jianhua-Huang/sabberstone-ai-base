@@ -979,6 +979,13 @@ namespace SabberStoneCore.CardSets.Standard
 					SingleTask = new AddEnchantmentTask("SCH_622e", EntityType.SOURCE)
 				}
 			}));
+
+			// [SCH_623] Cutting Class - Draw 2 cards. Costs (1) less per Attack of your weapon.
+			cards.Add("SCH_623", new CardDef(new Power
+			{
+				Aura = new AdaptiveCostEffect(p => p.Controller.Hero.Weapon?.AttackDamage ?? 0),
+				PowerTask = new DrawTask(2)
+			}));
 		}
 
 		private static void Shaman(IDictionary<string, CardDef> cards)

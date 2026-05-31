@@ -559,6 +559,30 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CuttingClass_ShouldCostLessPerWeaponAttackAndDrawTwoCards()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			game.Player1.BaseMana = 10;
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Bloodfen Raptor")));
+
+			IPlayable cuttingClass = Generic.DrawCard(game.Player1, Cards.FromName("Cutting Class"));
+			Assert.Equal(5, cuttingClass.Cost);
+
+			game.ProcessCard("Fiery War Axe", asZeroCost: true);
+			Assert.Equal(3, game.Player1.Hero.Weapon.AttackDamage);
+			Assert.Equal(2, cuttingClass.Cost);
+
+			Assert.True(game.Process(PlayCardTask.Any(game.Player1, cuttingClass)));
+
+			Assert.Equal(8, game.Player1.RemainingMana);
+			Assert.Empty(game.Player1.DeckZone);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Bloodfen Raptor");
+		}
+
+		[Fact]
 		public void RuneDagger_ShouldGrantSpellDamageAfterHeroAttacksForThisTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
