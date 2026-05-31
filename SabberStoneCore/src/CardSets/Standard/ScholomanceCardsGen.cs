@@ -592,6 +592,12 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_711] Plagued Protodrake - Deathrattle: Summon a random 7-Cost minion.
+			cards.Add("SCH_711", new CardDef(new Power
+			{
+				DeathrattleTask = ComplexTask.SummonRandomMinion(GameTag.COST, 7)
+			}));
+
 			// [SCH_713] Cult Neophyte - Battlecry: Your opponent's spells cost (1) more next turn.
 			cards.Add("SCH_713", new CardDef(new Power
 			{

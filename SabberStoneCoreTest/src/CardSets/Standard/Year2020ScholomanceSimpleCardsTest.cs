@@ -329,6 +329,19 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(4, handler.Health);
 		}
 
+		[Fact]
+		public void PlaguedProtodrake_ShouldSummonRandomSevenCostMinionOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion protodrake = game.ProcessCard<Minion>("Plagued Protodrake", asZeroCost: true);
+
+			protodrake.Kill();
+
+			Minion summoned = Assert.Single(game.Player1.BoardZone);
+			Assert.NotEqual("SCH_711", summoned.Card.Id);
+			Assert.Equal(7, summoned.Card.Cost);
+		}
+
 		[Theory]
 		[InlineData("Fishy Flyer", "SCH_707t", true, false, false)]
 		[InlineData("Sneaky Delinquent", "SCH_708t", false, true, false)]
