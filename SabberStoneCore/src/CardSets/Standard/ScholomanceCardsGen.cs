@@ -721,6 +721,13 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Rogue(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_234] Shifty Sophomore - Stealth. Spellburst: Add a Combo card to your hand.
+			cards.Add("SCH_234", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+					AddRandomCardToHand(g, c, s, card => card.Combo)))
+			}));
+
 			// [SCH_521] Coerce - Destroy a damaged minion. Combo: Destroy any minion.
 			cards.Add("SCH_521", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -1297,6 +1304,20 @@ namespace SabberStoneCore.CardSets.Standard
 		{
 			List<Card> cards = Cards.FormatTypeCards(game.FormatType)
 				.Where(card => card.Collectible && card.Type == CardType.SPELL && predicate(card))
+				.ToList();
+
+			if (cards.Count == 0)
+				return;
+
+			IPlayable entity = Entity.FromCard(controller, cards.Choose(game.Random));
+			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
+			Generic.AddHandPhase.Invoke(controller, entity);
+		}
+
+		private static void AddRandomCardToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)
+		{
+			List<Card> cards = Cards.FormatTypeCards(game.FormatType)
+				.Where(card => card.Collectible && predicate(card))
 				.ToList();
 
 			if (cards.Count == 0)

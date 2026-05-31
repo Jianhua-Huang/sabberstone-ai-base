@@ -1129,6 +1129,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ShiftySophomore_ShouldAddComboCardToHandOnSpellburstOnlyOnce()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			Minion sophomore = game.ProcessCard<Minion>("Shifty Sophomore", asZeroCost: true);
+
+			Assert.True(sophomore.HasStealth);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Single(game.Player1.HandZone);
+			Assert.True(game.Player1.HandZone[0].Card.Combo);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Single(game.Player1.HandZone);
+		}
+
+		[Fact]
 		public void SoulFragment_ShouldHealHeroAndNotRemainInHandWhenDrawn()
 		{
 			Game game = CreateGame();
