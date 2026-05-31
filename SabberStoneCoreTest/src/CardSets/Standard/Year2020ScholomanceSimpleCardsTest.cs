@@ -558,6 +558,52 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void SecretPassage_ShouldTemporarilyReplaceHandWithFourCardsFromDeckAndSwapBackNextTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			IPlayable originalMinion = Generic.DrawCard(game.Player1, Cards.FromName("Murloc Raider"));
+			IPlayable originalSpell = Generic.DrawCard(game.Player1, Cards.FromName("Backstab"));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Bloodfen Raptor")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Boulderfist Ogre")));
+
+			game.ProcessCard("Secret Passage", asZeroCost: true);
+
+			Assert.DoesNotContain(originalMinion, game.Player1.HandZone);
+			Assert.DoesNotContain(originalSpell, game.Player1.HandZone);
+			Assert.Contains(originalMinion, game.Player1.SetasideZone);
+			Assert.Contains(originalSpell, game.Player1.SetasideZone);
+			Assert.Equal(4, game.Player1.HandZone.Count);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Bloodfen Raptor");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "River Crocolisk");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Boulderfist Ogre");
+			Assert.Empty(game.Player1.DeckZone);
+
+			IPlayable temporaryWisp = game.Player1.HandZone.Single(p => p.Card.Name == "Wisp");
+			game.ProcessCard(temporaryWisp, asZeroCost: true);
+			game.EndTurn();
+
+			Assert.DoesNotContain(originalMinion, game.Player1.HandZone);
+			Assert.DoesNotContain(originalSpell, game.Player1.HandZone);
+
+			game.EndTurn();
+
+			Assert.Contains(originalMinion, game.Player1.HandZone);
+			Assert.Contains(originalSpell, game.Player1.HandZone);
+			Assert.Contains(temporaryWisp, game.Player1.BoardZone);
+			Assert.Equal(3, game.Player1.HandZone
+				.Concat(game.Player1.DeckZone)
+				.Count(p => p.Card.Name == "Bloodfen Raptor" ||
+					p.Card.Name == "River Crocolisk" ||
+					p.Card.Name == "Boulderfist Ogre"));
+			Assert.DoesNotContain(game.Player1.SetasideZone, p => p.Card.Name == "Murloc Raider");
+			Assert.DoesNotContain(game.Player1.SetasideZone, p => p.Card.Name == "Backstab");
+		}
+
+		[Fact]
 		public void Playmaker_ShouldSummonOneHealthCopyAfterRushMinionIsPlayed()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);

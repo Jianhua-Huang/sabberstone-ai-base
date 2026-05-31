@@ -861,6 +861,12 @@ namespace SabberStoneCore.CardSets.Standard
 					AddRandomCardToHand(g, c, s, card => card.Combo)))
 			}));
 
+			// [SCH_305] Secret Passage - Replace your hand with 4 cards from your deck. Swap back next turn.
+			cards.Add("SCH_305", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) => SecretPassage(g, c, s as IPlayable))
+			}));
+
 			// [SCH_521] Coerce - Destroy a damaged minion. Combo: Destroy any minion.
 			cards.Add("SCH_521", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -1374,6 +1380,16 @@ namespace SabberStoneCore.CardSets.Standard
 					UseScriptTag = true
 				}
 			}));
+
+			// [SCH_305e3] Secret Passage Player Enchantment - Swap back next turn.
+			cards.Add("SCH_305e3", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) => RestoreSecretPassage(c, s)),
+					RemoveAfterTriggered = true
+				}
+			}));
 		}
 
 		private static Trigger Spellburst(ISimpleTask task)
@@ -1423,6 +1439,53 @@ namespace SabberStoneCore.CardSets.Standard
 					}),
 					RemoveAfterTriggered = true
 				});
+		}
+
+		private static void SecretPassage(Game game, Controller controller, IPlayable source)
+		{
+			if (source == null)
+				return;
+
+			int passageId = source.Id;
+			foreach (IPlayable playable in controller.HandZone.GetAll().ToArray())
+			{
+				playable[GameTag.TAG_SCRIPT_DATA_NUM_1] = passageId;
+				controller.SetasideZone.Add(controller.HandZone.Remove(playable));
+			}
+
+			for (int i = 0; i < 4 && !controller.DeckZone.IsEmpty && !controller.HandZone.IsFull; i++)
+			{
+				IPlayable playable = controller.DeckZone.Draw();
+				playable[GameTag.TAG_SCRIPT_DATA_NUM_2] = passageId;
+				controller.HandZone.Add(playable);
+			}
+
+			Generic.AddEnchantmentBlock(game, Cards.FromId("SCH_305e3"), source, controller, passageId);
+		}
+
+		private static void RestoreSecretPassage(Controller controller, IEntity source)
+		{
+			int passageId = source[GameTag.TAG_SCRIPT_DATA_NUM_1];
+			foreach (IPlayable playable in controller.HandZone.GetAll()
+				.Where(p => p[GameTag.TAG_SCRIPT_DATA_NUM_2] == passageId)
+				.ToArray())
+			{
+				playable[GameTag.TAG_SCRIPT_DATA_NUM_2] = 0;
+				controller.DeckZone.Add(controller.HandZone.Remove(playable), 0);
+			}
+
+			foreach (IPlayable playable in controller.SetasideZone
+				.Where(p => p[GameTag.TAG_SCRIPT_DATA_NUM_1] == passageId)
+				.ToArray())
+			{
+				if (controller.HandZone.IsFull)
+					break;
+
+				playable[GameTag.TAG_SCRIPT_DATA_NUM_1] = 0;
+				controller.HandZone.Add(controller.SetasideZone.Remove(playable));
+			}
+
+			(source as Enchantment)?.Remove();
 		}
 
 		private static bool DestroySoulFragment(Controller controller)
