@@ -572,6 +572,14 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_199] Transfer Student - This has different effects based on which game board you're on.
+			// SabberStone does not model cosmetic game boards; Scholomance defaults to the Scholomance Academy board effect.
+			cards.Add("SCH_199", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+					AddRandomCardToHand(g, c, s, card => card.MultiClassGroup > 0))
+			}));
+
 			// [SCH_126] Disciplinarian Gandling - After you play a minion, destroy it and summon a 4/4 Failed Student.
 			cards.Add("SCH_126", new CardDef(new Power
 			{

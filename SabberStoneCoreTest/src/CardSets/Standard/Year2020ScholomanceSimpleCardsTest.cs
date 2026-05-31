@@ -77,6 +77,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TransferStudent_ShouldUseScholomanceBoardEffectAndAddDualClassCard()
+		{
+			Game game = CreateGame();
+			IPlayable transferStudent = Generic.DrawCard(game.Player1, Cards.FromId("SCH_199"));
+
+			game.ProcessCard(transferStudent, asZeroCost: true);
+
+			Minion played = Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_199"));
+			Assert.Equal(2, played.AttackDamage);
+			Assert.Equal(2, played.Health);
+
+			IPlayable generated = Assert.Single(game.Player1.HandZone);
+			Assert.True(generated.Card.Collectible);
+			Assert.True(generated.Card.MultiClassGroup > 0);
+			Assert.Equal(transferStudent.Id, generated[GameTag.DISPLAYED_CREATOR]);
+		}
+
+		[Fact]
 		public void GuardianAnimals_ShouldSummonTwoCheapBeastsFromDeckAndGiveRush()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
