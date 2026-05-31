@@ -205,6 +205,23 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Mage(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_235] Devolving Missiles - Shoot three missiles at random enemy minions that transform them into ones that cost (1) less.
+			cards.Add("SCH_235", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						Minion[] enemies = c.Opponent.BoardZone.GetAll();
+						if (enemies.Length == 0)
+							return;
+
+						new TransformMinionTask(EntityType.TARGET, -1)
+							.Process(g, c, s, enemies.Choose(g.Random), stack);
+					}
+				})
+			}));
+
 			// [SCH_241] Firebrand - Spellburst: Deal 4 damage randomly split among all enemy minions.
 			cards.Add("SCH_241", new CardDef(new Power
 			{

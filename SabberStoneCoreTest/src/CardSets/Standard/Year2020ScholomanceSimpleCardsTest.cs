@@ -377,6 +377,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DevolvingMissiles_ShouldTransformRandomEnemyMinionsIntoLowerCostMinions()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			string originalCardId = target.Card.Id;
+			game.EndTurn();
+
+			game.ProcessCard("Devolving Missiles", asZeroCost: true);
+
+			Minion transformed = Assert.Single(game.Player2.BoardZone);
+			Assert.NotEqual(originalCardId, transformed.Card.Id);
+			Assert.Same(game.Player2, transformed.Controller);
+			Assert.Equal(0, transformed.Card.Cost);
+		}
+
+		[Fact]
 		public void Firebrand_ShouldSplitFourDamageAmongEnemyMinionsOnSpellburst()
 		{
 			Game game = CreateGame();
