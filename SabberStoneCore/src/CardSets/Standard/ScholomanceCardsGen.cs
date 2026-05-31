@@ -341,6 +341,12 @@ namespace SabberStoneCore.CardSets.Standard
 					GainControlOfRandomEnemyMinion(g, c, minion => minion.AttackDamage <= 2)))
 			}));
 
+			// [SCH_224] Headmaster Kel'Thuzad - Spellburst: If the spell destroys any minions, summon them.
+			cards.Add("SCH_224", new CardDef(new Power
+			{
+				Trigger = HeadmasterKelThuzadSpellburst()
+			}));
+
 			// [SCH_135] Turalyon, the Tenured - Rush. Whenever this attacks a minion, set the defender's Attack and Health to 3.
 			cards.Add("SCH_135", new CardDef(new Power
 			{
@@ -1378,6 +1384,45 @@ namespace SabberStoneCore.CardSets.Standard
 				SingleTask = task,
 				RemoveAfterTriggered = true
 			};
+		}
+
+		private static Trigger HeadmasterKelThuzadSpellburst()
+		{
+			return new MultiTrigger(
+				new Trigger(TriggerType.CAST_SPELL)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						s[GameTag.TAG_SCRIPT_DATA_NUM_1] = c.GraveyardZone.Count;
+						s[GameTag.TAG_SCRIPT_DATA_NUM_2] = c.Opponent.GraveyardZone.Count;
+					})
+				},
+				new Trigger(TriggerType.AFTER_CAST)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						int friendlyGraveyardCount = s[GameTag.TAG_SCRIPT_DATA_NUM_1];
+						int opponentGraveyardCount = s[GameTag.TAG_SCRIPT_DATA_NUM_2];
+						Minion[] destroyedBySpell = c.GraveyardZone
+							.Skip(friendlyGraveyardCount)
+							.Concat(c.Opponent.GraveyardZone.Skip(opponentGraveyardCount))
+							.OfType<Minion>()
+							.ToArray();
+
+						foreach (Minion minion in destroyedBySpell)
+						{
+							if (c.BoardZone.IsFull)
+								break;
+
+							Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, minion.Card), -1, s);
+						}
+
+						(s as IPlayable)?.ActivatedTrigger?.Remove();
+					}),
+					RemoveAfterTriggered = true
+				});
 		}
 
 		private static bool DestroySoulFragment(Controller controller)

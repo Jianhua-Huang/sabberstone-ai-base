@@ -533,6 +533,31 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void HeadmasterKelThuzad_ShouldSummonMinionsDestroyedBySpellburstSpellOnlyOnce()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
+			Minion earlierDeadMinion = game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+			earlierDeadMinion.Kill();
+			Minion headmaster = game.ProcessCard<Minion>("Headmaster Kel'Thuzad", asZeroCost: true);
+			game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Hellfire", asZeroCost: true);
+
+			Assert.Contains(headmaster, game.Player1.BoardZone);
+			Assert.Equal(3, headmaster.Damage);
+			Assert.Equal(2, game.Player1.BoardZone.GetAll(p => p.Card.Name == "Wisp").Length);
+			Assert.DoesNotContain(game.Player1.BoardZone, p => p.Card.Name == "Murloc Raider");
+			Assert.Empty(game.Player2.BoardZone);
+
+			game.ProcessCard("Hellfire", asZeroCost: true);
+
+			Assert.Empty(game.Player1.BoardZone.GetAll(p => p.Card.Name == "Wisp"));
+		}
+
+		[Fact]
 		public void Playmaker_ShouldSummonOneHealthCopyAfterRushMinionIsPlayed()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
