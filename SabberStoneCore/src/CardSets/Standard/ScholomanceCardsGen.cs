@@ -271,6 +271,12 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_312] Tour Guide - Battlecry: Your next Hero Power costs (0).
+			cards.Add("SCH_312", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("SCH_312e", EntityType.CONTROLLER)
+			}));
+
 			// [SCH_340] Bloated Python - Deathrattle: Summon a 4/4 Hapless Handler.
 			cards.Add("SCH_340", new CardDef(new Power
 			{
@@ -741,6 +747,15 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_231e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(2))
+			}));
+
+			// [SCH_312e] School Tour - Your Hero Power costs (0).
+			cards.Add("SCH_312e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HEROPOWER, Effects.SetCost(0))
+				{
+					RemoveTrigger = (TriggerType.INSPIRE, null)
+				}
 			}));
 
 			// [SCH_618e] Blood of Innocents - +1/+1.

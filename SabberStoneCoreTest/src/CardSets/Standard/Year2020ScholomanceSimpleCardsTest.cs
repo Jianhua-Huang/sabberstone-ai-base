@@ -130,6 +130,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void TourGuide_ShouldMakeNextHeroPowerCostZeroUntilUsed()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE, player2HeroClass: CardClass.WARLOCK);
+
+			game.ProcessCard("Tour Guide", asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.Hero.HeroPower.Cost);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Equal(0, game.Player1.Hero.HeroPower.Cost);
+
+			game.PlayHeroPower(game.Player2.Hero);
+
+			Assert.Equal(2, game.Player1.Hero.HeroPower.Cost);
+			Assert.Equal(29, game.Player2.Hero.Health);
+		}
+
+		[Fact]
 		public void BloatedPython_ShouldSummonHaplessHandlerOnDeathrattle()
 		{
 			Game game = CreateGame();
