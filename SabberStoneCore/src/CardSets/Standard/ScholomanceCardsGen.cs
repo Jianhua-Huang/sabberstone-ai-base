@@ -317,6 +317,18 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new AddEnchantmentTask("SCH_713e", EntityType.OP_CONTROLLER)
 			}));
 
+			// [SCH_717] Keymaster Alabaster - Whenever your opponent draws a card, add a copy to your hand that costs (1).
+			cards.Add("SCH_717", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.DRAW)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					SingleTask = ComplexTask.Create(
+						new CopyTask(EntityType.TARGET, Zone.HAND, addToStack: true),
+						new AddAuraEffect(Effects.SetCost(1), EntityType.STACK))
+				}
+			}));
+
 			// [SCH_313] Wretched Tutor - Spellburst: Deal 2 damage to all other minions.
 			cards.Add("SCH_313", new CardDef(new Power
 			{

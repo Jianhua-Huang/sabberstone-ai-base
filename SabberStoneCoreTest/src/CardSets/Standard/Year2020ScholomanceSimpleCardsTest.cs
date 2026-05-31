@@ -604,6 +604,31 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void KeymasterAlabaster_ShouldCopyOpponentDrawnCardToHandWithCostOne()
+		{
+			Game game = CreateGame();
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			EmptyZone(game.Player2.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk")));
+			game.Player2.DeckZone.Add(Entity.FromCard(game.Player2, Cards.FromName("Boulderfist Ogre")));
+			game.ProcessCard<Minion>("Keymaster Alabaster", asZeroCost: true);
+
+			Generic.Draw(game.Player1);
+
+			Assert.DoesNotContain(game.Player1.HandZone, p => p.Card.Name == "Boulderfist Ogre");
+
+			IPlayable drawn = Generic.Draw(game.Player2);
+
+			Assert.Equal("Boulderfist Ogre", drawn.Card.Name);
+			Assert.Contains(drawn, game.Player2.HandZone);
+
+			IPlayable copied = game.Player1.HandZone.Single(p => p.Card.Name == "Boulderfist Ogre");
+			Assert.Equal(drawn.Card.Id, copied.Card.Id);
+			Assert.Equal(6, copied.Card.Cost);
+			Assert.Equal(1, copied.Cost);
+		}
+
+		[Fact]
 		public void PenFlinger_ShouldDamageTargetAndReturnToHandOnSpellburst()
 		{
 			Game game = CreateGame();
