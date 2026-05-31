@@ -516,6 +516,12 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Shaman(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_236] Diligent Notetaker - Spellburst: Return the spell to your hand.
+			cards.Add("SCH_236", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CopyTask(EntityType.EVENT_SOURCE, Zone.HAND))
+			}));
+
 			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
 			cards.Add("SCH_615", new CardDef(new Power
 			{

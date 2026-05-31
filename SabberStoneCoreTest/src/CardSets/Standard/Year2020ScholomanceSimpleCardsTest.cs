@@ -538,6 +538,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DiligentNotetaker_ShouldReturnFirstSpellToHandOnSpellburstOnlyOnce()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Diligent Notetaker", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(1, game.Player1.HandZone.Count(p => p.Card.Name == "Moonfire"));
+			Assert.Equal(29, game.Player2.Hero.Health);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(1, game.Player1.HandZone.Count(p => p.Card.Name == "Moonfire"));
+			Assert.Equal(28, game.Player2.Hero.Health);
+		}
+
+		[Fact]
 		public void DemonCompanion_ShouldSummonOneDemonCompanion()
 		{
 			Game game = CreateGame();
