@@ -391,6 +391,69 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Deathwarden_ShouldPreventDeathrattlesFromTriggering()
+		{
+			Game withoutDeathwarden = CreateGame();
+			Minion normalLootHoarder = withoutDeathwarden.ProcessCard<Minion>("Loot Hoarder", asZeroCost: true);
+
+			normalLootHoarder.Kill();
+			withoutDeathwarden.DeathProcessingAndAuraUpdate();
+
+			Assert.Single(withoutDeathwarden.Player1.HandZone);
+
+			Game withDeathwarden = CreateGame();
+			withDeathwarden.ProcessCard("Deathwarden", asZeroCost: true);
+			Minion suppressedLootHoarder = withDeathwarden.ProcessCard<Minion>("Loot Hoarder", asZeroCost: true);
+
+			suppressedLootHoarder.Kill();
+			withDeathwarden.DeathProcessingAndAuraUpdate();
+
+			Assert.Empty(withDeathwarden.Player1.HandZone);
+			Assert.Contains(withDeathwarden.Player1.GraveyardZone, p => p.Card.Name == "Loot Hoarder");
+		}
+
+		[Fact]
+		public void Rally_ShouldResurrectFriendlyOneTwoAndThreeCostMinions()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			Minion oneCost = game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+			Minion twoCost = game.ProcessCard<Minion>("Loot Hoarder", asZeroCost: true);
+			Minion threeCost = game.ProcessCard<Minion>("Ironfur Grizzly", asZeroCost: true);
+
+			oneCost.Kill();
+			twoCost.Kill();
+			threeCost.Kill();
+			game.DeathProcessingAndAuraUpdate();
+			EmptyZone(game.Player1.HandZone.GetAll());
+
+			game.ProcessCard("Rally!", asZeroCost: true);
+
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Name == "Murloc Raider");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Name == "Loot Hoarder");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Name == "Ironfur Grizzly");
+		}
+
+		[Fact]
+		public void Saddlemaster_ShouldAddRandomBeastAfterFriendlyBeastIsPlayed()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.HUNTER);
+			game.ProcessCard("Saddlemaster", asZeroCost: true);
+
+			game.ProcessCard("Bloodfen Raptor", asZeroCost: true);
+
+			IPlayable added = Assert.Single(game.Player1.HandZone);
+			Assert.Equal(CardType.MINION, added.Card.Type);
+			Assert.True(added.Card.IsRace(Race.BEAST));
+
+			Game nonBeastGame = CreateGame(player1HeroClass: CardClass.HUNTER);
+			nonBeastGame.ProcessCard("Saddlemaster", asZeroCost: true);
+
+			nonBeastGame.ProcessCard("Murloc Raider", asZeroCost: true);
+
+			Assert.Empty(nonBeastGame.Player1.HandZone);
+		}
+
+		[Fact]
 		public void GlacierRacer_ShouldDamageOnlyFrozenEnemiesOnSpellburst()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);

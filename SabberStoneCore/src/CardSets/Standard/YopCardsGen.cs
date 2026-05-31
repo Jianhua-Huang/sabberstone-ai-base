@@ -89,6 +89,22 @@ namespace SabberStoneCore.CardSets.Standard
 					Generic.DamageCharFunc.Invoke(s as IPlayable, target, 1, true);
 				})
 			}));
+
+			// [YOP_028] Saddlemaster - After you play a Beast, add a random Beast to your hand.
+			cards.Add("YOP_028", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_PLAY_MINION)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(t is Minion played) || !played.Card.IsRace(Race.BEAST))
+							return;
+
+						AddRandomMinionToHand(g, c, s, card => card.IsRace(Race.BEAST));
+					})
+				}
+			}));
 		}
 
 		private static void Mage(System.Collections.Generic.IDictionary<string, CardDef> cards)
@@ -138,6 +154,10 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [YOP_012] Deathwarden - Deathrattles can't trigger.
+			// Deathrattle suppression is applied from Game.DeathProcessingAndAuraUpdate while this minion is active.
+			cards.Add("YOP_012", new CardDef(new Power()));
+
 			// [YOP_032] Armor Vendor - Battlecry: Give 4 Armor to each hero.
 			cards.Add("YOP_032", new CardDef(new Power
 			{
@@ -180,6 +200,29 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					foreach (IPlayable playable in c.HandZone.GetAll().Concat(c.DeckZone.GetAll()).Where(p => IsCorruptCardDefinition(p.Card)).ToArray())
 						Generic.AddEnchantmentBlock(g, Cards.FromId("YOP_007e"), s as IPlayable, playable, 0, 0, 0);
+				})
+			}));
+
+			// [YOP_009] Rally! - Resurrect a friendly 1-Cost, 2-Cost, and 3-Cost minion.
+			cards.Add("YOP_009", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (int cost in new[] {1, 2, 3})
+					{
+						if (c.BoardZone.IsFull)
+							return;
+
+						IPlayable deadMinion = c.GraveyardZone
+							.Where(p => p.Card.Type == CardType.MINION && p.Card.Cost == cost)
+							.OrderBy(p => p.Id)
+							.FirstOrDefault();
+
+						if (deadMinion == null)
+							continue;
+
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, deadMinion.Card), -1, s);
+					}
 				})
 			}));
 		}
@@ -389,6 +432,20 @@ namespace SabberStoneCore.CardSets.Standard
 		private static bool IsCorruptCardDefinition(Card card)
 		{
 			return card[GameTag.CORRUPT] == 1;
+		}
+
+		private static void AddRandomMinionToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)
+		{
+			var cards = Cards.FormatTypeCards(game.FormatType)
+				.Where(card => card.Collectible && card.Type == CardType.MINION && predicate(card))
+				.ToList();
+
+			if (cards.Count == 0)
+				return;
+
+			IPlayable entity = Entity.FromCard(controller, cards.Choose(game.Random));
+			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
+			Generic.AddHandPhase.Invoke(controller, entity);
 		}
 	}
 }

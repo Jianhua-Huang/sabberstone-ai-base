@@ -1116,7 +1116,7 @@ namespace SabberStoneCore.Model
 					minion.LastBoardPosition = minion.ZonePosition;
 					minion.Zone.Remove(minion);
 
-					if (minion.HasDeathrattle)
+					if (minion.HasDeathrattle && !DeathrattlesSuppressed())
 						minion.ActivateTask(PowerActivation.DEATHRATTLE);
 
 					minion.Controller.GraveyardZone.Add(minion);
@@ -1164,6 +1164,16 @@ namespace SabberStoneCore.Model
 					return;
 				NextStep = Step.FINAL_WRAPUP;
 			}
+		}
+
+		private bool DeathrattlesSuppressed()
+		{
+			return Player1.BoardZone.Any(IsActiveDeathwarden) || Player2.BoardZone.Any(IsActiveDeathwarden);
+		}
+
+		private static bool IsActiveDeathwarden(Minion minion)
+		{
+			return minion.Card.Id == "YOP_012" && !minion.ToBeDestroyed && !minion.IsSilenced;
 		}
 
 		/// <summary>
