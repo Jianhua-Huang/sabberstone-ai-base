@@ -1055,6 +1055,48 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Felosophy_ShouldCopyLowestCostDemonAndBuffBothWhenOutcast()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
+			AddHandCard(game, "Voidwalker");
+			AddHandCard(game, "Dread Infernal");
+			AddHandCard(game, "Wisp");
+			IPlayable felosophy = AddHandCard(game, "Felosophy");
+			AddHandCard(game, "Wisp");
+
+			game.ProcessCard(felosophy, asZeroCost: true);
+
+			Minion[] unbuffedVoidwalkers = game.Player1.HandZone.OfType<Minion>()
+				.Where(p => p.Card.Name == "Voidwalker")
+				.ToArray();
+			Assert.Equal(2, unbuffedVoidwalkers.Length);
+			Assert.All(unbuffedVoidwalkers, voidwalker =>
+			{
+				Assert.Equal(1, voidwalker.AttackDamage);
+				Assert.Equal(3, voidwalker.Health);
+			});
+			Assert.Single(game.Player1.HandZone.OfType<Minion>().Where(p => p.Card.Name == "Dread Infernal"));
+
+			game = CreateGame(player1HeroClass: CardClass.WARLOCK);
+			AddHandCard(game, "Voidwalker");
+			AddHandCard(game, "Dread Infernal");
+			felosophy = AddHandCard(game, "Felosophy");
+
+			game.ProcessCard(felosophy, asZeroCost: true);
+
+			Minion[] buffedVoidwalkers = game.Player1.HandZone.OfType<Minion>()
+				.Where(p => p.Card.Name == "Voidwalker")
+				.ToArray();
+			Assert.Equal(2, buffedVoidwalkers.Length);
+			Assert.All(buffedVoidwalkers, voidwalker =>
+			{
+				Assert.Equal(2, voidwalker.AttackDamage);
+				Assert.Equal(4, voidwalker.Health);
+				Assert.Equal(1, voidwalker.Cost);
+			});
+		}
+
+		[Fact]
 		public void LakeThresher_ShouldDamageAdjacentMinionsWhenAttacking()
 		{
 			Game game = CreateGame();

@@ -1267,6 +1267,34 @@ namespace SabberStoneCore.CardSets.Standard
 					new AddCardTo("SCH_307t", EntityType.DECK, 2))
 			}));
 
+			// [SCH_702] Felosophy - Copy the lowest Cost Demon in your hand. Outcast: Give both +1/+1.
+			cards.Add("SCH_702", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					List<IPlayable> lowestCostDemons = c.HandZone
+						.Where(p => p is Minion && p.Card.IsRace(Race.DEMON))
+						.GroupBy(p => p.Cost)
+						.OrderBy(gp => gp.Key)
+						.FirstOrDefault()
+						?.ToList();
+					if (lowestCostDemons == null || lowestCostDemons.Count == 0)
+						return;
+
+					IPlayable demon = lowestCostDemons.Choose(g.Random);
+					IPlayable copy = Generic.Copy(c, s, demon, Zone.HAND);
+
+					if (lowestCostDemons.Count > 1)
+						g.OnRandomHappened(true);
+
+					if (WasPlayedFromOutcastPosition(s))
+					{
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_702e"), s as IPlayable, demon, 0, 0, 0);
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_702e"), s as IPlayable, copy, 0, 0, 0);
+					}
+				})
+			}));
+
 			// [SCH_517] Shadowlight Scholar - Battlecry: Destroy a Soul Fragment in your deck to deal 3 damage.
 			cards.Add("SCH_517", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -1503,6 +1531,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_704e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(5))
+			}));
+
+			// [SCH_702e] Felosophically Inclined - +1/+1.
+			cards.Add("SCH_702e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(1))
 			}));
 
 			// [SCH_231e] Ready for School - +2 Attack.
