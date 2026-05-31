@@ -249,6 +249,12 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_146] Robes of Protection - Your minions have "Can't be targeted by spells or Hero Powers."
+			cards.Add("SCH_146", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.BOARD, Effects.CantBeTargetedBySpellsAndHeroPowers)
+			}));
+
 			// [SCH_231] Intrepid Initiate - Spellburst: Gain +2 Attack.
 			cards.Add("SCH_231", new CardDef(new Power
 			{

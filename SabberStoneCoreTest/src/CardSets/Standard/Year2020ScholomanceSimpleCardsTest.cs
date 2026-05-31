@@ -12,14 +12,15 @@ namespace SabberStoneCoreTest.CardSets.Standard
 {
 	public class Year2020ScholomanceSimpleCardsTest
 	{
-		private static Game CreateGame(IEnumerable<Card> playerDeck = null, IEnumerable<Card> opponentDeck = null)
+		private static Game CreateGame(IEnumerable<Card> playerDeck = null, IEnumerable<Card> opponentDeck = null,
+			CardClass player1HeroClass = CardClass.WARRIOR, CardClass player2HeroClass = CardClass.WARLOCK)
 		{
 			var defaultDeck = Enumerable.Repeat(Cards.FromName("Wisp"), 30).ToList();
 			var game = new Game(new GameConfig
 			{
 				StartPlayer = 1,
-				Player1HeroClass = CardClass.WARRIOR,
-				Player2HeroClass = CardClass.WARLOCK,
+				Player1HeroClass = player1HeroClass,
+				Player2HeroClass = player2HeroClass,
 				Player1Deck = (playerDeck ?? defaultDeck).ToList(),
 				Player2Deck = (opponentDeck ?? defaultDeck).ToList(),
 				Shuffle = false,
@@ -99,6 +100,21 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.Equal(2, game.Player1.BoardZone.Count(p => p.Card.Id == "SCH_147t"));
 			Assert.DoesNotContain(game.Player1.HandZone, p => p.Card.Id == "SCH_147");
+		}
+
+		[Fact]
+		public void RobesOfProtection_ShouldPreventTargetingFriendlyMinionsWithSpellsAndHeroPowers()
+		{
+			Game game = CreateGame(player2HeroClass: CardClass.MAGE);
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			game.ProcessCard<Minion>("Robes of Protection", asZeroCost: true);
+
+			Assert.True(wisp.CantBeTargetedBySpells);
+			Assert.True(wisp.CantBeTargetedByHeroPowers);
+			Spell moonfire = Assert.IsType<Spell>(Entity.FromCard(game.Player2, Cards.FromName("Moonfire")));
+			Assert.False(moonfire.TargetingRequirements(wisp));
+			Assert.False(game.Player2.Hero.HeroPower.TargetingRequirements(wisp));
 		}
 
 		[Fact]
