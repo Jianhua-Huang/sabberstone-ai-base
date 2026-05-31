@@ -243,6 +243,13 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_120] Cabal Acolyte - Taunt. Spellburst: Gain control of a random enemy minion with 2 or less Attack.
+			cards.Add("SCH_120", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+					GainControlOfRandomEnemyMinion(g, c, minion => minion.AttackDamage <= 2)))
+			}));
+
 			// [SCH_135] Turalyon, the Tenured - Rush. Whenever this attacks a minion, set the defender's Attack and Health to 3.
 			cards.Add("SCH_135", new CardDef(new Power
 			{
@@ -1078,6 +1085,21 @@ namespace SabberStoneCore.CardSets.Standard
 		{
 			playable.Controller = controller;
 			playable[GameTag.CONTROLLER] = controller.PlayerId;
+		}
+
+		private static void GainControlOfRandomEnemyMinion(Game game, Controller controller, System.Predicate<Minion> predicate)
+		{
+			List<Minion> targets = controller.Opponent.BoardZone
+				.Where(minion => predicate(minion))
+				.ToList();
+			if (targets.Count == 0)
+				return;
+
+			Minion target = targets.Choose(game.Random);
+			if (targets.Count > 1)
+				game.OnRandomHappened(true);
+
+			new ControlTask(EntityType.TARGET).Process(game, controller, target, target);
 		}
 
 		private static void SummonRandomDemonFromZone(Game game, Controller controller, IEntity source, IEnumerable<IPlayable> zone)

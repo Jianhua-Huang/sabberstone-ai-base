@@ -118,6 +118,32 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CabalAcolyte_ShouldStealRandomEnemyMinionWithTwoOrLessAttackOnSpellburst()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			game.ProcessCard<Minion>("Cabal Acolyte", asZeroCost: true);
+			game.EndTurn();
+			Minion lowAttack = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			Minion highAttack = game.ProcessCard<Minion>("Chillwind Yeti", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Contains(lowAttack, game.Player1.BoardZone);
+			Assert.DoesNotContain(lowAttack, game.Player2.BoardZone);
+			Assert.Equal(game.Player1, lowAttack.Controller);
+			Assert.Contains(highAttack, game.Player2.BoardZone);
+
+			game.EndTurn();
+			Minion secondLowAttack = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Contains(secondLowAttack, game.Player2.BoardZone);
+			Assert.Equal(game.Player2, secondLowAttack.Controller);
+		}
+
+		[Fact]
 		public void Vectus_ShouldGiveWhelpsFriendlyDeathrattlesThatDiedThisGame()
 		{
 			Game game = CreateGame();
