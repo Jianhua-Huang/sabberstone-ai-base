@@ -5,6 +5,7 @@ using SabberStoneCore.Config;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
 using SabberStoneCore.Model.Entities;
+using SabberStoneCore.Tasks.PlayerTasks;
 using Xunit;
 
 namespace SabberStoneCoreTest.CardSets.Standard
@@ -242,6 +243,135 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			game.EndTurn();
 
 			Assert.True(target.ToBeDestroyed || !game.Player2.BoardZone.Contains(target));
+		}
+
+		[Fact]
+		public void Felsaber_ShouldOnlyAttackAfterHeroAttackedThisTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			Minion felsaber = game.ProcessCard<Minion>("Felsaber", asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+
+			game.Process(MinionAttackTask.Any(game.Player1, felsaber, game.Player2.Hero));
+
+			Assert.Equal(30, game.Player2.Hero.Health);
+
+			game.Process(HeroPowerTask.Any(game.Player1));
+			game.Process(HeroAttackTask.Any(game.Player1, game.Player2.Hero));
+			game.Process(MinionAttackTask.Any(game.Player1, felsaber, game.Player2.Hero));
+
+			Assert.Equal(24, game.Player2.Hero.Health);
+		}
+
+		[Fact]
+		public void LibramOfJudgment_ShouldGainLifestealOnlyWhenCorrupted()
+		{
+			Game normal = CreateGame(player1HeroClass: CardClass.PALADIN);
+
+			normal.ProcessCard("Libram of Judgment", asZeroCost: true);
+
+			Assert.Equal(5, normal.Player1.Hero.Weapon.AttackDamage);
+			Assert.Equal(3, normal.Player1.Hero.Weapon.Durability);
+			Assert.False(normal.Player1.Hero.Weapon.HasLifeSteal);
+
+			Game corrupted = CreateGame(player1HeroClass: CardClass.PALADIN);
+			Generic.DrawCard(corrupted.Player1, Cards.FromId("YOP_011"));
+
+			corrupted.ProcessCard("Burly Shovelfist");
+			corrupted.ProcessCard(corrupted.Player1.HandZone.Single(p => p.Card.Id == "YOP_011t"), asZeroCost: true);
+
+			Assert.True(corrupted.Player1.Hero.Weapon.HasLifeSteal);
+		}
+
+		[Fact]
+		public void SpikedWheel_ShouldHaveAttackOnlyWhileHeroHasArmor()
+		{
+			Game withoutArmor = CreateGame(player1HeroClass: CardClass.WARRIOR);
+
+			withoutArmor.ProcessCard("Spiked Wheel", asZeroCost: true);
+
+			Assert.Equal(0, withoutArmor.Player1.Hero.Weapon.AttackDamage);
+			Assert.Equal(2, withoutArmor.Player1.Hero.Weapon.Durability);
+
+			Game withArmor = CreateGame(player1HeroClass: CardClass.WARRIOR);
+			withArmor.Player1.Hero.Armor = 1;
+
+			withArmor.ProcessCard("Spiked Wheel", asZeroCost: true);
+
+			Assert.Equal(3, withArmor.Player1.Hero.Weapon.AttackDamage);
+		}
+
+		[Fact]
+		public void NitroboostPoison_ShouldBuffMinionAndCorruptedAlsoBuffsWeapon()
+		{
+			Game normal = CreateGame(player1HeroClass: CardClass.ROGUE);
+			Minion normalTarget = normal.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+
+			normal.ProcessCard("Nitroboost Poison", normalTarget, asZeroCost: true);
+
+			Assert.Equal(4, normalTarget.AttackDamage);
+			Assert.Null(normal.Player1.Hero.Weapon);
+
+			Game corrupted = CreateGame(player1HeroClass: CardClass.ROGUE);
+			Minion corruptedTarget = corrupted.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			corrupted.ProcessCard("Fiery War Axe", asZeroCost: true);
+			Generic.DrawCard(corrupted.Player1, Cards.FromId("YOP_015"));
+
+			corrupted.ProcessCard("Boulderfist Ogre");
+			corrupted.ProcessCard(corrupted.Player1.HandZone.Single(p => p.Card.Id == "YOP_015t"), corruptedTarget, asZeroCost: true);
+
+			Assert.Equal(4, corruptedTarget.AttackDamage);
+			Assert.Equal(5, corrupted.Player1.Hero.Weapon.AttackDamage);
+		}
+
+		[Fact]
+		public void DreamingDrake_ShouldUseCorruptedTauntStats()
+		{
+			Game normal = CreateGame(player1HeroClass: CardClass.DRUID);
+
+			Minion normalDrake = normal.ProcessCard<Minion>("Dreaming Drake", asZeroCost: true);
+
+			Assert.Equal(3, normalDrake.AttackDamage);
+			Assert.Equal(4, normalDrake.Health);
+			Assert.True(normalDrake.HasTaunt);
+
+			Game corrupted = CreateGame(player1HeroClass: CardClass.DRUID);
+			Generic.DrawCard(corrupted.Player1, Cards.FromId("YOP_025"));
+
+			corrupted.ProcessCard("Boulderfist Ogre");
+			corrupted.ProcessCard(corrupted.Player1.HandZone.Single(p => p.Card.Id == "YOP_025t"), asZeroCost: true);
+
+			Minion corruptedDrake = corrupted.Player1.BoardZone.Single(p => p.Card.Id == "YOP_025t");
+			Assert.Equal(5, corruptedDrake.AttackDamage);
+			Assert.Equal(6, corruptedDrake.Health);
+			Assert.True(corruptedDrake.HasTaunt);
+		}
+
+		[Fact]
+		public void Crabrider_ShouldHaveRushAndWindfury()
+		{
+			Game game = CreateGame();
+
+			Minion crabrider = game.ProcessCard<Minion>("Crabrider", asZeroCost: true);
+
+			Assert.True(crabrider.IsRush);
+			Assert.True(crabrider.HasWindfury);
+		}
+
+		[Fact]
+		public void Moonfang_ShouldOnlyTakeOneDamageAtATime()
+		{
+			Game game = CreateGame();
+			Minion moonfang = game.ProcessCard<Minion>("Moonfang", asZeroCost: true);
+
+			Generic.DamageCharFunc.Invoke(game.Player2.Hero, moonfang, 5, false);
+
+			Assert.Equal(1, moonfang.Damage);
+
+			Generic.DamageCharFunc.Invoke(game.Player2.Hero, moonfang, 3, false);
+
+			Assert.Equal(2, moonfang.Damage);
 		}
 	}
 }

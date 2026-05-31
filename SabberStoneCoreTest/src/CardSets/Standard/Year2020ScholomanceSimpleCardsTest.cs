@@ -1808,6 +1808,20 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Initiation_ShouldNotSummonCopyWhenBoardIsFull()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			for (int i = 0; i < 6; i++)
+				game.ProcessCard("Murloc Raider", asZeroCost: true);
+
+			game.ProcessCard("Initiation", target, asZeroCost: true);
+
+			Assert.Equal(6, game.Player1.BoardZone.Count);
+			Assert.DoesNotContain(game.Player1.BoardZone, p => p.Card.Name == "River Crocolisk");
+		}
+
+		[Fact]
 		public void ShieldOfHonor_ShouldBuffDamagedMinionAndGiveDivineShield()
 		{
 			Game game = CreateGame();

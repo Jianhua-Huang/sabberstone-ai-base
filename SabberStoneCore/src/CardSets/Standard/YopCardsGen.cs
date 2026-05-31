@@ -1,6 +1,7 @@
 using System.Linq;
 using SabberStoneCore.Actions;
 using SabberStoneCore.Auras;
+using SabberStoneCore.Conditions;
 using SabberStoneCore.Enchants;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
@@ -21,6 +22,7 @@ namespace SabberStoneCore.CardSets.Standard
 			Hunter(cards);
 			Mage(cards);
 			Neutral(cards);
+			Rogue(cards);
 			Shaman(cards);
 			Warlock(cards);
 			Warrior(cards);
@@ -29,6 +31,12 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void DemonHunter(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_002] Felsaber - Can only attack if your hero attacked this turn.
+			cards.Add("YOP_002", new CardDef(new Power
+			{
+				Aura = new AdaptiveEffect(SelfCondition.HasMyHeroNotAttackedThisTurn, GameTag.CANT_ATTACK)
+			}));
+
 			// [YOP_030] Felfire Deadeye - Your Hero Power costs (1) less.
 			cards.Add("YOP_030", new CardDef(new Power
 			{
@@ -38,6 +46,19 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Druid(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_025t] Dreaming Drake - Corrupted. Taunt. Gain +2/+2.
+			cards.Add("YOP_025t", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (s is Minion minion && minion.AttackDamage == 3 && minion.Health == 4)
+					{
+						minion.AttackDamage = 5;
+						minion.Health = 6;
+					}
+				})
+			}));
+
 			// [YOP_026] Arbor Up - Summon two 2/2 Treants. Give your minions +2/+1.
 			cards.Add("YOP_026", new CardDef(new Power
 			{
@@ -108,6 +129,50 @@ namespace SabberStoneCore.CardSets.Standard
 					SingleTask = ComplexTask.DamageRandomTargets(1, EntityType.OP_MINIONS, 9)
 				}
 			}));
+
+			// [YOP_035] Moonfang - Can only take 1 damage at a time.
+			cards.Add("YOP_035", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.PREDAMAGE)
+				{
+					TriggerSource = TriggerSource.SELF,
+					FastExecution = true,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (g.CurrentEventData.EventNumber > 1)
+							g.CurrentEventData.EventNumber = 1;
+					})
+				}
+			}));
+		}
+
+		private static void Rogue(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_015] Nitroboost Poison - Give a minion +2 Attack. Corrupt: And your weapon.
+			cards.Add("YOP_015", new CardDef(new System.Collections.Generic.Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new AddEnchantmentTask("YOP_015e", EntityType.TARGET)
+			}));
+
+			// [YOP_015t] Nitroboost Poison - Corrupted. Give a minion and your weapon +2 Attack.
+			cards.Add("YOP_015t", new CardDef(new System.Collections.Generic.Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("YOP_015e", EntityType.TARGET),
+					new CustomTask((g, c, s, t, stack) =>
+					{
+						if (c.Hero.Weapon != null)
+							Generic.AddEnchantmentBlock(g, Cards.FromId("YOP_015e"), s as IPlayable, c.Hero.Weapon, 0, 0, 0);
+					}))
+			}));
 		}
 
 		private static void Shaman(System.Collections.Generic.IDictionary<string, CardDef> cards)
@@ -165,6 +230,16 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Warrior(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_013] Spiked Wheel - Has +3 Attack while your hero has Armor.
+			cards.Add("YOP_013", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.WEAPON, "YOP_013e")
+				{
+					Condition = new SelfCondition(p => p.Controller.Hero.Armor > 0),
+					Restless = true
+				}
+			}));
+
 			// [YOP_014] Ironclad - Battlecry: If your hero has Armor, gain +2/+2.
 			cards.Add("YOP_014", new CardDef(new Power
 			{
@@ -203,6 +278,18 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("YOP_014e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(2))
+			}));
+
+			// [YOP_013e] Spiked Wheel - +3 Attack.
+			cards.Add("YOP_013e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(3))
+			}));
+
+			// [YOP_015e] Nitroboost Poison - +2 Attack.
+			cards.Add("YOP_015e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2))
 			}));
 		}
 	}

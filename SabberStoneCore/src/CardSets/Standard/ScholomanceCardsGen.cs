@@ -1210,7 +1210,7 @@ namespace SabberStoneCore.CardSets.Standard
 						return;
 
 					Generic.DamageCharFunc.Invoke(s as IPlayable, target, 4, true);
-					if (target.ToBeDestroyed)
+					if (target.ToBeDestroyed && !c.BoardZone.IsFull)
 						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, target.Card), -1, s);
 				})
 			}));
