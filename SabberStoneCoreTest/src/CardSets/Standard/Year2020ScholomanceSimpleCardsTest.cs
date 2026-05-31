@@ -107,6 +107,25 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void AceHunterKreen_ShouldMakeOtherFriendlyCharactersImmuneWhileAttacking()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			game.EndTurn();
+			Minion defender = game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+			game.EndTurn();
+			Minion kreen = game.ProcessCard<Minion>("Ace Hunter Kreen", asZeroCost: true);
+			Minion attacker = game.ProcessCard<Minion>("Stonetusk Boar", asZeroCost: true);
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, attacker, defender));
+
+			Assert.Contains(kreen, game.Player1.BoardZone);
+			Assert.Contains(attacker, game.Player1.BoardZone);
+			Assert.Equal(0, attacker.Damage);
+			Assert.False(attacker.IsImmune);
+			Assert.DoesNotContain(defender, game.Player2.BoardZone);
+		}
+
+		[Fact]
 		public void InfiltratorLilian_ShouldSummonForsakenLilianThatAttacksRandomEnemyOnDeathrattle()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);

@@ -199,6 +199,22 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_538] Ace Hunter Kreen - Your other characters are Immune while attacking.
+			cards.Add("SCH_538", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.ATTACK)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is IPlayable kreen) || !(g.CurrentEventData?.EventSource is ICharacter attacker) || attacker.Id == s.Id)
+							return;
+
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_538e"), kreen, attacker, 0, 0, 0);
+					})
+				}
+			}));
+
 			// [SCH_276] Magehunter - Rush. Whenever this attacks a minion, Silence it.
 			cards.Add("SCH_276", new CardDef(new Power
 			{
@@ -1520,6 +1536,17 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_357e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.ReduceCost(1))
+			}));
+
+			// [SCH_538e] Ace Hunter's Lesson - Immune while attacking.
+			cards.Add("SCH_538e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Immune),
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.ENCHANTMENT_TARGET,
+					SingleTask = RemoveEnchantmentTask.Task
+				}
 			}));
 
 			// [SCH_351e] Illusion - Dies when it takes damage.
