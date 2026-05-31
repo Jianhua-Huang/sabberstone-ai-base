@@ -535,6 +535,21 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Ogremancer_ShouldSummonTauntSkeletonWhenOpponentCastsSpell()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Ogremancer", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Moonfire", game.Player1.Hero, asZeroCost: true);
+
+			Minion skeleton = game.Player1.BoardZone.Single(p => p.Card.Id == "SCH_710t");
+			Assert.Equal(2, skeleton.AttackDamage);
+			Assert.Equal(2, skeleton.Health);
+			Assert.True(skeleton.HasTaunt);
+		}
+
+		[Fact]
 		public void PenFlinger_ShouldDamageTargetAndReturnToHandOnSpellburst()
 		{
 			Game game = CreateGame();

@@ -289,6 +289,16 @@ namespace SabberStoneCore.CardSets.Standard
 				DeathrattleTask = new AddCardTo("SCH_709t", EntityType.HAND)
 			}));
 
+			// [SCH_710] Ogremancer - Whenever your opponent casts a spell, summon a 2/2 Skeleton with Taunt.
+			cards.Add("SCH_710", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_CAST)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					SingleTask = new SummonTask("SCH_710t", SummonSide.SPELL)
+				}
+			}));
+
 			// [SCH_313] Wretched Tutor - Spellburst: Deal 2 damage to all other minions.
 			cards.Add("SCH_313", new CardDef(new Power
 			{
