@@ -839,6 +839,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void OnyxMagescribe_ShouldAddTwoRandomSpellsFromYourClassOnSpellburstOnlyOnce()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			game.ProcessCard<Minion>("Onyx Magescribe", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+			Assert.All(game.Player1.HandZone, spell =>
+			{
+				Assert.Equal(CardType.SPELL, spell.Card.Type);
+				Assert.Equal(CardClass.MAGE, spell.Card.Class);
+			});
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+		}
+
+		[Fact]
 		public void Ogremancer_ShouldSummonTauntSkeletonWhenOpponentCastsSpell()
 		{
 			Game game = CreateGame();

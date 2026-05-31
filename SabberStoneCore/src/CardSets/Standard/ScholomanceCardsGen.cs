@@ -341,6 +341,16 @@ namespace SabberStoneCore.CardSets.Standard
 				}))
 			}));
 
+			// [SCH_230] Onyx Magescribe - Spellburst: Add 2 random spells from your class to your hand.
+			cards.Add("SCH_230", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					AddRandomSpellToHand(g, c, s, card => card.Class == c.HeroClass);
+					AddRandomSpellToHand(g, c, s, card => card.Class == c.HeroClass);
+				}))
+			}));
+
 			// [SCH_231] Intrepid Initiate - Spellburst: Gain +2 Attack.
 			cards.Add("SCH_231", new CardDef(new Power
 			{
