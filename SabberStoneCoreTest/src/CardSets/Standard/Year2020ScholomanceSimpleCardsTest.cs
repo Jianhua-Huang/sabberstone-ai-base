@@ -604,6 +604,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void EducatedElekk_ShouldRememberPlayedSpellsAndShuffleThemOnDeathrattle()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE, player2HeroClass: CardClass.DRUID);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			Minion elekk = game.ProcessCard<Minion>("Educated Elekk", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard("Moonfire", game.Player1.Hero, asZeroCost: true);
+			game.EndTurn();
+
+			elekk.Kill();
+
+			Assert.Equal(2, game.Player1.DeckZone.Count(p => p.Card.Name == "Moonfire"));
+		}
+
+		[Fact]
 		public void KeymasterAlabaster_ShouldCopyOpponentDrawnCardToHandWithCostOne()
 		{
 			Game game = CreateGame();

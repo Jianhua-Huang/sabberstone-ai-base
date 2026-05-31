@@ -16,6 +16,8 @@ namespace SabberStoneCore.CardSets.Standard
 {
 	public class ScholomanceCardsGen
 	{
+		private static readonly Dictionary<int, List<string>> RememberedElekkSpellIds = new Dictionary<int, List<string>>();
+
 		public static void AddAll(Dictionary<string, CardDef> cards)
 		{
 			DemonHunter(cards);
@@ -315,6 +317,28 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_713", new CardDef(new Power
 			{
 				PowerTask = new AddEnchantmentTask("SCH_713e", EntityType.OP_CONTROLLER)
+			}));
+
+			// [SCH_714] Educated Elekk - Whenever a spell is played, this minion remembers it. Deathrattle: Shuffle the spells into your deck.
+			cards.Add("SCH_714", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					RememberedElekkSpellIds[s.Id] = new List<string>();
+				}),
+				Trigger = new Trigger(TriggerType.AFTER_CAST)
+				{
+					TriggerSource = TriggerSource.ALL,
+					Condition = SelfCondition.IsSpell,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						RememberElekkSpell(s, t);
+					})
+				},
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					ShuffleRememberedElekkSpells(c, s);
+				})
 			}));
 
 			// [SCH_717] Keymaster Alabaster - Whenever your opponent draws a card, add a copy to your hand that costs (1).
@@ -869,6 +893,35 @@ namespace SabberStoneCore.CardSets.Standard
 			IPlayable entity = Entity.FromCard(controller, cards.Choose(game.Random));
 			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
 			Generic.AddHandPhase.Invoke(controller, entity);
+		}
+
+		private static void RememberElekkSpell(IEntity source, IPlayable target)
+		{
+			if (!(source is IPlayable elekk) || !(target is Spell spell))
+				return;
+
+			if (!RememberedElekkSpellIds.TryGetValue(elekk.Id, out List<string> remembered))
+			{
+				remembered = new List<string>();
+				RememberedElekkSpellIds[elekk.Id] = remembered;
+			}
+
+			remembered.Add(spell.Card.Id);
+		}
+
+		private static void ShuffleRememberedElekkSpells(Controller controller, IEntity source)
+		{
+			if (!(source is IPlayable elekk) || !RememberedElekkSpellIds.TryGetValue(elekk.Id, out List<string> remembered))
+				return;
+
+			foreach (string cardId in remembered)
+			{
+				IPlayable spell = Entity.FromCard(controller, Cards.FromId(cardId));
+				spell[GameTag.DISPLAYED_CREATOR] = source.Id;
+				Generic.ShuffleIntoDeck.Invoke(controller, source, spell);
+			}
+
+			RememberedElekkSpellIds.Remove(elekk.Id);
 		}
 	}
 }
