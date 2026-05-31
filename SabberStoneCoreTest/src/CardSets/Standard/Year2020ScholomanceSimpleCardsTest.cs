@@ -118,6 +118,32 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Vectus_ShouldGiveWhelpsFriendlyDeathrattlesThatDiedThisGame()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemyPython = game.ProcessCard<Minion>("Bloated Python", asZeroCost: true);
+			enemyPython.Kill();
+			game.EndTurn();
+			Minion friendlyPython = game.ProcessCard<Minion>("Bloated Python", asZeroCost: true);
+			friendlyPython.Kill();
+			Minion existingHandler = game.Player1.BoardZone.Single(p => p.Card.Id == "SCH_340t");
+
+			game.ProcessCard<Minion>("Vectus", asZeroCost: true);
+
+			Minion[] whelps = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_162t");
+			Assert.Equal(2, whelps.Length);
+			Assert.All(whelps, whelp => Assert.True(whelp.HasDeathrattle));
+
+			foreach (Minion whelp in whelps)
+				whelp.Kill();
+
+			Minion[] handlers = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_340t");
+			Assert.Equal(3, handlers.Length);
+			Assert.Contains(existingHandler, handlers);
+		}
+
+		[Fact]
 		public void AnimatedBroomstick_ShouldGiveOtherFriendlyMinionsRush()
 		{
 			Game game = CreateGame();

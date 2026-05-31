@@ -257,6 +257,20 @@ namespace SabberStoneCore.CardSets.Standard
 				Aura = new Aura(AuraType.BOARD, Effects.CantBeTargetedBySpellsAndHeroPowers)
 			}));
 
+			// [SCH_162] Vectus - Battlecry: Summon two 1/1 Whelps. Each gains a Deathrattle from your minions that died this game.
+			cards.Add("SCH_162", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					for (int i = 0; i < 2 && !c.BoardZone.IsFull; i++)
+					{
+						Minion whelp = (Minion)Entity.FromCard(c, Cards.FromId("SCH_162t"));
+						Generic.SummonBlock.Invoke(g, whelp, -1, s);
+						CopyRandomDeadFriendlyDeathrattle(g, c, s, whelp);
+					}
+				})
+			}));
+
 			// [SCH_231] Intrepid Initiate - Spellburst: Gain +2 Attack.
 			cards.Add("SCH_231", new CardDef(new Power
 			{
@@ -845,6 +859,12 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				Enchant = new Enchant(Effects.Attack_N(1))
 			}));
+
+			// [SCH_162e] Experimental Plague - Copied Deathrattle from a friendly minion that died this game.
+			cards.Add("SCH_162e", new CardDef(new Power
+			{
+				DeathrattleTask = ActivateCapturedDeathrattleTask.Task
+			}));
 		}
 
 		private static Trigger Spellburst(ISimpleTask task)
@@ -922,6 +942,19 @@ namespace SabberStoneCore.CardSets.Standard
 			}
 
 			RememberedElekkSpellIds.Remove(elekk.Id);
+		}
+
+		private static void CopyRandomDeadFriendlyDeathrattle(Game game, Controller controller, IEntity source, Minion target)
+		{
+			List<IPlayable> deadDeathrattleMinions = controller.GraveyardZone
+				.Where(p => p is Minion && p.Card.Power?.DeathrattleTask != null)
+				.ToList();
+
+			if (deadDeathrattleMinions.Count == 0)
+				return;
+
+			IPlayable captured = deadDeathrattleMinions.Choose(game.Random);
+			Generic.AddEnchantmentBlock(game, Cards.FromId("SCH_162e"), (IPlayable)source, target, 0, 0, captured.Id);
 		}
 	}
 }
