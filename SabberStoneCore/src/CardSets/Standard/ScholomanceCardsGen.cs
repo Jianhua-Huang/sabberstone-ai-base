@@ -299,6 +299,31 @@ namespace SabberStoneCore.CardSets.Standard
 				Trigger = Spellburst(new SummonTask("NEW1_012", 2, SummonSide.SPELL))
 			}));
 
+			// [SCH_348] Combustion - Deal 4 damage to a minion. Any excess damages both neighbors.
+			cards.Add("SCH_348", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target))
+						return;
+
+					Minion[] neighbors = target.Controller.BoardZone
+						.GetAll(p => p.ZonePosition == target.ZonePosition - 1 || p.ZonePosition == target.ZonePosition + 1);
+					int health = target.Health;
+					int damage = Generic.DamageCharFunc.Invoke(s as IPlayable, target, 4, true);
+					int excess = damage - health;
+					if (excess <= 0)
+						return;
+
+					foreach (Minion neighbor in neighbors)
+						Generic.DamageCharFunc.Invoke(s as IPlayable, neighbor, excess, false);
+				})
+			}));
+
 			// [SCH_509] Brain Freeze - Freeze a minion. Combo: Also deal 3 damage to it.
 			cards.Add("SCH_509", new CardDef(new Dictionary<PlayReq, int>
 			{

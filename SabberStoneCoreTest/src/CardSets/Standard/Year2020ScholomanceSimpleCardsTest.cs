@@ -426,6 +426,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Combustion_ShouldDamageTargetAndBothNeighborsWithExcessIncludingSpellDamage()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			game.ProcessCard<Minion>("Lab Partner", asZeroCost: true);
+			game.EndTurn();
+			Minion left = game.ProcessCard<Minion>("Oasis Snapjaw", asZeroCost: true);
+			Minion target = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion right = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Combustion", target, asZeroCost: true);
+
+			Assert.DoesNotContain(target, game.Player2.BoardZone);
+			Assert.Equal(4, left.Damage);
+			Assert.Equal(4, right.Damage);
+		}
+
+		[Fact]
 		public void KroluskBarkstripper_ShouldDestroyRandomEnemyMinionOnSpellburst()
 		{
 			Game game = CreateGame();
