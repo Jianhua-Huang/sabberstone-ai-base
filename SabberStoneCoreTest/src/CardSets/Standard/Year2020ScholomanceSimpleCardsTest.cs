@@ -1182,6 +1182,38 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Plagiarize_ShouldCopyCardsOpponentPlayedAtEndOfTheirTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			game.ProcessCard("Plagiarize", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+			game.EndTurn();
+
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Murloc Raider");
+			Assert.DoesNotContain(game.Player1.SecretZone, p => p.Card.Id == "SCH_706");
+			Assert.Contains(game.Player1.GraveyardZone, p => p.Card.Id == "SCH_706");
+		}
+
+		[Fact]
+		public void Plagiarize_ShouldRemainSecretIfOpponentPlayedNoCards()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.ProcessCard("Plagiarize", asZeroCost: true);
+			game.EndTurn();
+
+			game.EndTurn();
+
+			Assert.Empty(game.Player1.HandZone);
+			Assert.Contains(game.Player1.SecretZone, p => p.Card.Id == "SCH_706");
+			Assert.DoesNotContain(game.Player1.GraveyardZone, p => p.Card.Id == "SCH_706");
+		}
+
+		[Fact]
 		public void Playmaker_ShouldSummonOneHealthCopyAfterRushMinionIsPlayed()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);

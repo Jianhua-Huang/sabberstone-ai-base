@@ -1265,6 +1265,26 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new CustomTask((g, c, s, t, stack) => SecretPassage(g, c, s as IPlayable))
 			}));
 
+			// [SCH_706] Plagiarize - Secret: At the end of your opponent's turn, add copies of the cards they played to your hand.
+			cards.Add("SCH_706", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					TriggerSource = TriggerSource.ENEMY,
+					EitherTurn = true,
+					Condition = new SelfCondition(p => p.Controller.Opponent.CardsPlayedThisTurn.Count > 0),
+					SingleTask = ComplexTask.Secret(new CustomTask((g, c, s, t, stack) =>
+					{
+						foreach (Card card in c.Opponent.CardsPlayedThisTurn.ToArray())
+						{
+							IPlayable copy = Entity.FromCard(c, card);
+							copy[GameTag.DISPLAYED_CREATOR] = s.Id;
+							Generic.AddHandPhase.Invoke(c, copy);
+						}
+					}))
+				}
+			}));
+
 			// [SCH_519] Vulpera Toxinblade - Your weapon has +2 Attack.
 			cards.Add("SCH_519", new CardDef(new Power
 			{
