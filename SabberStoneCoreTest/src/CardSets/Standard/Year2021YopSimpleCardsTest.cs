@@ -373,5 +373,69 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.Equal(2, moonfang.Damage);
 		}
+
+		[Fact]
+		public void DarkInquisitorXanesh_ShouldReduceCorruptCardsInHandAndDeck()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			IPlayable handCorrupt = Generic.DrawCard(game.Player1, Cards.FromId("YOP_003"));
+			IPlayable nonCorrupt = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+			IPlayable deckCorrupt = Entity.FromCard(game.Player1, Cards.FromId("YOP_025"));
+			game.Player1.DeckZone.Add(deckCorrupt);
+
+			game.ProcessCard("Dark Inquisitor Xanesh", asZeroCost: true);
+
+			Assert.Equal(1, handCorrupt.Cost);
+			Assert.Equal(2, nonCorrupt.Cost);
+			Assert.Equal(1, deckCorrupt.Cost);
+		}
+
+		[Fact]
+		public void GlacierRacer_ShouldDamageOnlyFrozenEnemiesOnSpellburst()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			game.ProcessCard("Glacier Racer", asZeroCost: true);
+			var frozenEnemy = (Minion)Entity.FromCard(game.Player2, Cards.FromName("Boulderfist Ogre"));
+			var unfrozenEnemy = (Minion)Entity.FromCard(game.Player2, Cards.FromName("River Crocolisk"));
+			Generic.SummonBlock.Invoke(game, frozenEnemy, -1, null);
+			Generic.SummonBlock.Invoke(game, unfrozenEnemy, -1, null);
+			Minion frozenFriendly = game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+			frozenEnemy.IsFrozen = true;
+			unfrozenEnemy.IsFrozen = false;
+			frozenFriendly.IsFrozen = true;
+			game.Player2.Hero.IsFrozen = true;
+
+			game.ProcessCard("Arcane Intellect", asZeroCost: true);
+
+			Assert.Equal(3, frozenEnemy.Damage);
+			Assert.Equal(0, unfrozenEnemy.Damage);
+			Assert.Equal(0, frozenFriendly.Damage);
+			Assert.Equal(27, game.Player2.Hero.Health);
+		}
+
+		[Fact]
+		public void ImprisonedPhoenix_ShouldGiveSpellDamageOnlyAfterDormantAwakens()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+
+			Minion phoenix = game.ProcessCard<Minion>("Imprisoned Phoenix", asZeroCost: true);
+
+			Assert.Equal(2, phoenix[GameTag.DORMANT]);
+			Assert.Equal(1, phoenix[GameTag.UNTOUCHABLE]);
+			Assert.Equal(0, game.Player1.CurrentSpellPower);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Equal(1, phoenix[GameTag.DORMANT]);
+			Assert.Equal(0, game.Player1.CurrentSpellPower);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Equal(0, phoenix[GameTag.DORMANT]);
+			Assert.Equal(0, phoenix[GameTag.UNTOUCHABLE]);
+			Assert.Equal(2, game.Player1.CurrentSpellPower);
+		}
 	}
 }

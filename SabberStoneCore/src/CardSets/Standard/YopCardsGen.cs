@@ -22,6 +22,7 @@ namespace SabberStoneCore.CardSets.Standard
 			Hunter(cards);
 			Mage(cards);
 			Neutral(cards);
+			Priest(cards);
 			Rogue(cards);
 			Shaman(cards);
 			Warlock(cards);
@@ -97,6 +98,30 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new AddCardTo("YOP_019t", EntityType.HAND)
 			}));
+
+			// [YOP_020] Glacier Racer - Spellburst: Deal 3 damage to all Frozen enemies.
+			cards.Add("YOP_020", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.Opponent.BoardZone.GetAll().Where(p => p.IsFrozen).ToArray())
+						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 3, false);
+
+					if (c.Opponent.Hero.IsFrozen)
+						Generic.DamageCharFunc.Invoke(s as IPlayable, c.Opponent.Hero, 3, false);
+				}))
+			}));
+
+			// [YOP_021] Imprisoned Phoenix - Dormant for 2 turns. Spell Damage +2.
+			cards.Add("YOP_021", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2, true),
+				Trigger = DormantAwakenTrigger(new CustomTask((g, c, s, t, stack) =>
+				{
+					if (s is Minion minion)
+						minion.SpellPower = minion.Card.SpellPower;
+				}))
+			}));
 		}
 
 		private static void Neutral(System.Collections.Generic.IDictionary<string, CardDef> cards)
@@ -143,6 +168,19 @@ namespace SabberStoneCore.CardSets.Standard
 							g.CurrentEventData.EventNumber = 1;
 					})
 				}
+			}));
+		}
+
+		private static void Priest(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_007] Dark Inquisitor Xanesh - Battlecry: Reduce the Cost of all Corrupt cards in your hand and deck by (2).
+			cards.Add("YOP_007", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (IPlayable playable in c.HandZone.GetAll().Concat(c.DeckZone.GetAll()).Where(p => IsCorruptCardDefinition(p.Card)).ToArray())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("YOP_007e"), s as IPlayable, playable, 0, 0, 0);
+				})
 			}));
 		}
 
@@ -291,6 +329,66 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				Enchant = new Enchant(Effects.Attack_N(2))
 			}));
+
+			// [YOP_007e] Inquisitor's Teachings - Costs (2) less.
+			cards.Add("YOP_007e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(2))
+			}));
+		}
+
+		private static Trigger Spellburst(ISimpleTask task)
+		{
+			return new Trigger(TriggerType.AFTER_CAST)
+			{
+				TriggerSource = TriggerSource.FRIENDLY,
+				SingleTask = task,
+				RemoveAfterTriggered = true
+			};
+		}
+
+		private static ISimpleTask StartDormant(int turns, bool suppressSpellPower = false)
+		{
+			return new CustomTask((g, c, s, t, stack) =>
+			{
+				if (!(s is Minion minion))
+					return;
+
+				minion[GameTag.DORMANT] = turns;
+				minion[GameTag.UNTOUCHABLE] = 1;
+				minion.IsExhausted = true;
+				if (suppressSpellPower)
+					minion.SpellPower = 0;
+			});
+		}
+
+		private static Trigger DormantAwakenTrigger(ISimpleTask awakenTask)
+		{
+			return new Trigger(TriggerType.TURN_START)
+			{
+				SingleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion minion) || minion[GameTag.DORMANT] <= 0)
+						return;
+
+					int turnsLeft = minion[GameTag.DORMANT] - 1;
+					if (turnsLeft > 0)
+					{
+						minion[GameTag.DORMANT] = turnsLeft;
+						return;
+					}
+
+					minion[GameTag.DORMANT] = 0;
+					minion[GameTag.UNTOUCHABLE] = 0;
+					minion.IsExhausted = false;
+					awakenTask?.Process(g, minion.Controller, s, t, stack);
+				})
+			};
+		}
+
+		private static bool IsCorruptCardDefinition(Card card)
+		{
+			return card[GameTag.CORRUPT] == 1;
 		}
 	}
 }
