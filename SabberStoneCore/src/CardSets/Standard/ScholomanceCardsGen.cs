@@ -710,6 +710,16 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_181] Archwitch Willow - Battlecry: Summon a random Demon from your hand and deck.
+			cards.Add("SCH_181", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					SummonRandomDemonFromZone(g, c, s, c.HandZone.GetAll());
+					SummonRandomDemonFromZone(g, c, s, c.DeckZone.GetAll());
+				})
+			}));
+
 			// [SCH_703] Soulciologist Malicia - Battlecry: For each Soul Fragment in your deck, summon a 3/3 Soul with Rush.
 			cards.Add("SCH_703", new CardDef(new Power
 			{
@@ -896,6 +906,23 @@ namespace SabberStoneCore.CardSets.Standard
 
 			controller.SetasideZone.Add(controller.DeckZone.Remove(fragment));
 			return true;
+		}
+
+		private static void SummonRandomDemonFromZone(Game game, Controller controller, IEntity source, IEnumerable<IPlayable> zone)
+		{
+			if (controller.BoardZone.IsFull)
+				return;
+
+			List<IPlayable> demons = zone.Where(p => p is Minion && p.Card.IsRace(Race.DEMON)).ToList();
+			if (demons.Count == 0)
+				return;
+
+			IPlayable demon = demons.Choose(game.Random);
+			Generic.RemoveFromZone.Invoke(controller, demon);
+			Generic.SummonBlock.Invoke(game, (Minion)demon, -1, source);
+
+			if (demons.Count > 1)
+				game.OnRandomHappened(true);
 		}
 
 		private static void AddRandomMinionToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)

@@ -994,6 +994,25 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ArchwitchWillow_ShouldSummonDemonFromHandAndDeck()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
+			IPlayable handDemon = Generic.DrawCard(game.Player1, Cards.FromName("Flame Imp"));
+			IPlayable deckDemon = Entity.FromCard(game.Player1, Cards.FromName("Voidwalker"));
+			game.Player1.DeckZone.Add(deckDemon);
+			int wispsBefore = game.Player1.DeckZone.Count(p => p.Card.Name == "Wisp");
+
+			game.ProcessCard("Archwitch Willow", asZeroCost: true);
+
+			Assert.DoesNotContain(handDemon, game.Player1.HandZone);
+			Assert.DoesNotContain(deckDemon, game.Player1.DeckZone);
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Name == "Archwitch Willow");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Name == "Flame Imp");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Name == "Voidwalker");
+			Assert.Equal(wispsBefore, game.Player1.DeckZone.Count(p => p.Card.Name == "Wisp"));
+		}
+
+		[Fact]
 		public void SoulciologistMalicia_ShouldSummonOneSoulForEachSoulFragmentWithoutConsumingThem()
 		{
 			Game game = CreateGame();
