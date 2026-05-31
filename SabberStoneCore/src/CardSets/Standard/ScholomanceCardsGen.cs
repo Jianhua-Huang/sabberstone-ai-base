@@ -289,6 +289,33 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_607] Shan'do Wildclaw - Choose One - Give Beasts in your deck +1/+1; or Transform into a copy of a friendly Beast.
+			cards.Add("SCH_607", new CardDef());
+
+			// [SCH_607a] Transfiguration - Transform into a copy of a friendly Beast.
+			cards.Add("SCH_607a", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_FRIENDLY_TARGET, 0},
+				{PlayReq.REQ_MINION_TARGET, 0},
+				{PlayReq.REQ_TARGET_WITH_RACE, (int)Race.BEAST}
+			}, new Power
+			{
+				PowerTask = new TransformCopyTask()
+			}));
+
+			// [SCH_607b] Rile the Herd - Give Beasts in your deck +1/+1.
+			cards.Add("SCH_607b", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (IPlayable beast in c.DeckZone.GetAll()
+						.Where(p => p.Card.IsRace(Race.BEAST))
+						.ToArray())
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_607e"), s as IPlayable, beast, 0, 0, 0);
+				})
+			}));
+
 			// [SCH_612a] Call to Aid - Summon four 2/2 Treant Totems.
 			cards.Add("SCH_612a", new CardDef(new Power
 			{
@@ -1893,6 +1920,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_609e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(4))
+			}));
+
+			// [SCH_607e] Riled Up - +1/+1.
+			cards.Add("SCH_607e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(1))
 			}));
 
 			// [SCH_622e] Honed Edge - +1 Attack.

@@ -101,6 +101,41 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ShandoWildclaw_FirstChoiceShouldTransformIntoFriendlyBeastCopy()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			Minion beast = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+
+			Minion shando = game.ProcessCard<Minion>("Shan'do Wildclaw", beast, asZeroCost: true, chooseOne: 1);
+
+			Assert.Equal("River Crocolisk", shando.Card.Name);
+			Assert.Equal(beast.AttackDamage, shando.AttackDamage);
+			Assert.Equal(beast.Health, shando.Health);
+			Assert.Equal(2, game.Player1.BoardZone.Count(p => p.Card.Name == "River Crocolisk"));
+			Assert.DoesNotContain(game.Player1.BoardZone, p => p.Card.Id == "SCH_607");
+		}
+
+		[Fact]
+		public void ShandoWildclaw_SecondChoiceShouldBuffOnlyDeckBeasts()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			Minion beast = (Minion)Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk"));
+			Minion nonBeast = (Minion)Entity.FromCard(game.Player1, Cards.FromName("Chillwind Yeti"));
+			game.Player1.DeckZone.Add(beast);
+			game.Player1.DeckZone.Add(nonBeast);
+
+			game.ProcessCard("Shan'do Wildclaw", asZeroCost: true, chooseOne: 2);
+
+			Assert.Equal(3, beast.AttackDamage);
+			Assert.Equal(4, beast.Health);
+			Assert.Equal(4, nonBeast.AttackDamage);
+			Assert.Equal(5, nonBeast.Health);
+			Assert.Contains(beast, game.Player1.DeckZone);
+			Assert.Contains(nonBeast, game.Player1.DeckZone);
+		}
+
+		[Fact]
 		public void RunicCarvings_FirstChoiceShouldSummonTreantTotemsWithoutOverloadOrRush()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
