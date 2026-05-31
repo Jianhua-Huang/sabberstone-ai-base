@@ -1096,6 +1096,22 @@ namespace SabberStoneCore.CardSets.Standard
 					new DiscoverTask(DiscoverType.DEATHRATTLE_MINIONS))
 			}));
 
+			// [SCH_426] Infiltrator Lilian - Stealth. Deathrattle: Summon a 4/2 Forsaken Lilian that attacks a random enemy.
+			cards.Add("SCH_426", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					var lilian = (Minion)Entity.FromCard(c, Cards.FromId("SCH_426t"));
+					Generic.SummonBlock.Invoke(g, lilian, -1, s);
+					if (lilian.Zone != c.BoardZone)
+						return;
+
+					List<ICharacter> enemies = c.Opponent.BoardZone.GetAll().Cast<ICharacter>().ToList();
+					enemies.Add(c.Opponent.Hero);
+					Generic.AttackBlock.Invoke(c, lilian, enemies.Choose(g.Random), true, false);
+				})
+			}));
+
 			// [SCH_234] Shifty Sophomore - Stealth. Spellburst: Add a Combo card to your hand.
 			cards.Add("SCH_234", new CardDef(new Power
 			{

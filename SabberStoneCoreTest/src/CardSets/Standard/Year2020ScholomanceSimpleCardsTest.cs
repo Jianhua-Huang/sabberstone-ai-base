@@ -107,6 +107,23 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void InfiltratorLilian_ShouldSummonForsakenLilianThatAttacksRandomEnemyOnDeathrattle()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			Minion infiltrator = game.ProcessCard<Minion>("Infiltrator Lilian", asZeroCost: true);
+
+			Assert.True(infiltrator.HasStealth);
+
+			infiltrator.Kill();
+
+			Assert.DoesNotContain(infiltrator, game.Player1.BoardZone);
+			Minion forsaken = Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_426t"));
+			Assert.Equal(4, forsaken.AttackDamage);
+			Assert.Equal(2, forsaken.Health);
+			Assert.Equal(4, game.Player2.Hero.Damage);
+		}
+
+		[Fact]
 		public void Wolpertinger_ShouldSummonCopyOfItself()
 		{
 			Game game = CreateGame();
