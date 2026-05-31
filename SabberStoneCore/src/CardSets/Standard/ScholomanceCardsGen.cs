@@ -299,6 +299,15 @@ namespace SabberStoneCore.CardSets.Standard
 				}))
 			}));
 
+			// [SCH_160] Wandmaker - Battlecry: Add a 1-Cost spell from your class to your hand.
+			cards.Add("SCH_160", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					AddRandomSpellToHand(g, c, s, card => card.Cost == 1 && card.Class == c.HeroClass);
+				})
+			}));
+
 			// [SCH_283] Manafeeder Panthara - Battlecry: If you've used your Hero Power this turn, draw a card.
 			cards.Add("SCH_283", new CardDef(new Power
 			{
@@ -779,6 +788,20 @@ namespace SabberStoneCore.CardSets.Standard
 		{
 			List<Card> cards = Cards.FormatTypeCards(game.FormatType)
 				.Where(card => card.Collectible && card.Type == CardType.MINION && predicate(card))
+				.ToList();
+
+			if (cards.Count == 0)
+				return;
+
+			IPlayable entity = Entity.FromCard(controller, cards.Choose(game.Random));
+			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
+			Generic.AddHandPhase.Invoke(controller, entity);
+		}
+
+		private static void AddRandomSpellToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)
+		{
+			List<Card> cards = Cards.FormatTypeCards(game.FormatType)
+				.Where(card => card.Collectible && card.Type == CardType.SPELL && predicate(card))
 				.ToList();
 
 			if (cards.Count == 0)

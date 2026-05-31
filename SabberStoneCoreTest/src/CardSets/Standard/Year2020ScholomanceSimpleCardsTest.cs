@@ -522,6 +522,19 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Wandmaker_ShouldAddOneCostSpellFromYourClass()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard<Minion>("Wandmaker", asZeroCost: true);
+
+			IPlayable spell = game.Player1.HandZone.Single();
+			Assert.Equal(CardType.SPELL, spell.Card.Type);
+			Assert.Equal(1, spell.Card.Cost);
+			Assert.Equal(game.Player1.HeroClass, spell.Card.Class);
+		}
+
+		[Fact]
 		public void PenFlinger_ShouldDamageTargetAndReturnToHandOnSpellburst()
 		{
 			Game game = CreateGame();
