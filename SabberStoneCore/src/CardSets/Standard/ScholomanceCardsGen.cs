@@ -709,6 +709,14 @@ namespace SabberStoneCore.CardSets.Standard
 					copy.HasDivineShield = true;
 				})
 			}));
+
+			// [SCH_233] Draconic Studies - Discover a Dragon. Your next one costs (1) less.
+			cards.Add("SCH_233", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_233e", EntityType.CONTROLLER),
+					new DiscoverTask(DiscoverType.DRAGON))
+			}));
 		}
 
 		private static void Rogue(IDictionary<string, CardDef> cards)
@@ -934,6 +942,16 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsRace(Race.DEMON),
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsRace(Race.DEMON))
+				}
+			}));
+
+			// [SCH_233e] Draconic Studies - Your next Dragon costs (1) less.
+			cards.Add("SCH_233e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsRace(Race.DRAGON),
+					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsRace(Race.DRAGON))
 				}
 			}));
 

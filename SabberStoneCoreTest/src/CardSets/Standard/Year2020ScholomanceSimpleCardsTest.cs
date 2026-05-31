@@ -1267,6 +1267,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DraconicStudies_ShouldDiscoverDragonAndDiscountNextDragon()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			IPlayable firstDragon = Generic.DrawCard(game.Player1, Cards.FromName("Faerie Dragon"));
+			IPlayable secondDragon = Generic.DrawCard(game.Player1, Cards.FromName("Twilight Drake"));
+			IPlayable nonDragon = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard("Draconic Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.True(game.IdEntityDic[choice].Card.IsRace(Race.DRAGON)));
+			Assert.Equal(1, firstDragon.Cost);
+			Assert.Equal(3, secondDragon.Cost);
+			Assert.Equal(2, nonDragon.Cost);
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.True(game.Player1.HandZone.Last().Card.IsRace(Race.DRAGON));
+
+			game.ProcessCard(firstDragon, asZeroCost: false);
+
+			Assert.DoesNotContain(firstDragon, game.Player1.HandZone);
+			Assert.Equal(4, secondDragon.Cost);
+		}
+
+		[Fact]
 		public void MindrenderIllucia_ShouldSwapHandsAndDecksUntilNextTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PRIEST, player2HeroClass: CardClass.MAGE);
