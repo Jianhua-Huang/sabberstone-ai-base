@@ -115,6 +115,16 @@ namespace SabberStoneCore.CardSets.Standard
 					AddRandomMinionToHand(g, c, s, card => card.Cost == 3 && card.IsRace(Race.BEAST));
 				})
 			}));
+
+			// [SCH_616] Twilight Runner - Stealth. Whenever this attacks, draw 2 cards.
+			cards.Add("SCH_616", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.SELF,
+					SingleTask = new DrawTask(2)
+				}
+			}));
 		}
 
 		private static void Hunter(IDictionary<string, CardDef> cards)
@@ -144,6 +154,17 @@ namespace SabberStoneCore.CardSets.Standard
 					new AddEnchantmentTask("SCH_617e", EntityType.TARGET),
 					new SummonTask("SCH_617t", SummonSide.SPELL),
 					new AddCardTo("SCH_617t", EntityType.HAND))
+			}));
+
+			// [SCH_239] Krolusk Barkstripper - Spellburst: Destroy a random enemy minion.
+			cards.Add("SCH_239", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					Minion[] enemies = c.Opponent.BoardZone.GetAll();
+					if (enemies.Length > 0)
+						enemies.Choose(g.Random).Destroy();
+				}))
 			}));
 		}
 
@@ -469,6 +490,16 @@ namespace SabberStoneCore.CardSets.Standard
 				}),
 				ComboTask = new DestroyTask(EntityType.TARGET)
 			}));
+
+			// [SCH_622] Self-Sharpening Sword - After your hero attacks, gain +1 Attack.
+			cards.Add("SCH_622", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new AddEnchantmentTask("SCH_622e", EntityType.SOURCE)
+				}
+			}));
 		}
 
 		private static void Shaman(IDictionary<string, CardDef> cards)
@@ -691,6 +722,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_609e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(4))
+			}));
+
+			// [SCH_622e] Honed Edge - +1 Attack.
+			cards.Add("SCH_622e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(1))
 			}));
 		}
 

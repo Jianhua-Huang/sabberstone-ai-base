@@ -221,6 +221,47 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void KroluskBarkstripper_ShouldDestroyRandomEnemyMinionOnSpellburst()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			Minion barkstripper = game.ProcessCard<Minion>("Krolusk Barkstripper", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.True(enemy.ToBeDestroyed);
+			Assert.False(barkstripper.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void TwilightRunner_ShouldDrawTwoCardsWhenItAttacks()
+		{
+			Game game = CreateGame();
+			Minion runner = game.ProcessCard<Minion>("Twilight Runner", asZeroCost: true);
+			game.EndTurn();
+			game.EndTurn();
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, runner, game.Player2.Hero));
+
+			Assert.Equal(handCount + 2, game.Player1.HandZone.Count);
+		}
+
+		[Fact]
+		public void SelfSharpeningSword_ShouldGainOneAttackAfterHeroAttacks()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Self-Sharpening Sword", asZeroCost: true);
+			game.Process(HeroAttackTask.Any(game.CurrentPlayer, game.Player2.Hero));
+
+			Assert.NotNull(game.Player1.Hero.Weapon);
+			Assert.Equal(2, game.Player1.Hero.Weapon.AttackDamage);
+		}
+
+		[Fact]
 		public void ManafeederPanthara_ShouldDrawOnlyAfterHeroPowerWasUsedThisTurn()
 		{
 			Game inactiveGame = CreateGame();
