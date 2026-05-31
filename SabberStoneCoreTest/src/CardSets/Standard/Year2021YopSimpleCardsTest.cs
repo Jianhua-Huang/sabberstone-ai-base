@@ -349,7 +349,7 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
-		public void Crabrider_ShouldHaveRushAndWindfury()
+		public void Crabrider_ShouldHaveRushAndTemporaryWindfury()
 		{
 			Game game = CreateGame();
 
@@ -357,6 +357,10 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.True(crabrider.IsRush);
 			Assert.True(crabrider.HasWindfury);
+
+			game.EndTurn();
+
+			Assert.False(crabrider.HasWindfury);
 		}
 
 		[Fact]
@@ -388,6 +392,54 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(1, handCorrupt.Cost);
 			Assert.Equal(2, nonCorrupt.Cost);
 			Assert.Equal(1, deckCorrupt.Cost);
+		}
+
+		[Fact]
+		public void EnvoyRustwix_ShouldShuffleThreePrimeLegendaryMinionsOnDeathrattle()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
+			Minion rustwix = game.ProcessCard<Minion>("Envoy Rustwix", asZeroCost: true);
+			int deckCount = game.Player1.DeckZone.Count;
+			int primeCount = game.Player1.DeckZone.Count(p => p.Card.Name.EndsWith("Prime"));
+
+			rustwix.Kill();
+			game.DeathProcessingAndAuraUpdate();
+
+			IPlayable[] added = game.Player1.DeckZone.GetAll()
+				.Where(p => p.Card.Name.EndsWith("Prime"))
+				.Skip(primeCount)
+				.ToArray();
+			Assert.Equal(3, game.Player1.DeckZone.Count - deckCount);
+			Assert.All(added, card =>
+			{
+				Assert.Equal(CardType.MINION, card.Card.Type);
+				Assert.EndsWith("Prime", card.Card.Name);
+			});
+		}
+
+		[Fact]
+		public void ImprisonedCelestial_ShouldSpellburstDivineShieldOnlyAfterAwake()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PALADIN);
+			Minion celestial = game.ProcessCard<Minion>("Imprisoned Celestial", asZeroCost: true);
+			Minion friendly = game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+
+			game.ProcessCard("Blessing of Might", friendly, asZeroCost: true);
+
+			Assert.Equal(2, celestial[GameTag.DORMANT]);
+			Assert.False(celestial.HasDivineShield);
+			Assert.False(friendly.HasDivineShield);
+
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+			game.EndTurn();
+
+			game.ProcessCard("Blessing of Might", friendly, asZeroCost: true);
+
+			Assert.Equal(0, celestial[GameTag.DORMANT]);
+			Assert.True(celestial.HasDivineShield);
+			Assert.True(friendly.HasDivineShield);
 		}
 
 		[Fact]

@@ -22,6 +22,7 @@ namespace SabberStoneCore.CardSets.Standard
 			Hunter(cards);
 			Mage(cards);
 			Neutral(cards);
+			Paladin(cards);
 			Priest(cards);
 			Rogue(cards);
 			Shaman(cards);
@@ -142,6 +143,17 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Neutral(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_031] Crabrider - Rush. Battlecry: Gain Windfury this turn only.
+			cards.Add("YOP_031", new CardDef(new Power
+			{
+				PowerTask = new SetGameTagTask(GameTag.WINDFURY, 1, EntityType.SOURCE),
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new SetGameTagTask(GameTag.WINDFURY, 0, EntityType.SOURCE),
+					RemoveAfterTriggered = true
+				}
+			}));
+
 			// [YOP_005] Barricade - Summon a 2/4 Guard with Taunt. If it's your only minion, summon another.
 			cards.Add("YOP_005", new CardDef(new Power
 			{
@@ -188,6 +200,22 @@ namespace SabberStoneCore.CardSets.Standard
 							g.CurrentEventData.EventNumber = 1;
 					})
 				}
+			}));
+		}
+
+		private static void Paladin(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_010] Imprisoned Celestial - Dormant for 2 turns. Spellburst: Give your minions Divine Shield.
+			cards.Add("YOP_010", new CardDef(new Power
+			{
+				PowerTask = StartDormant(2),
+				Trigger = new MultiTrigger(
+					DormantAwakenTrigger(null),
+					SpellburstAfterAwake(new CustomTask((g, c, s, t, stack) =>
+					{
+						foreach (Minion minion in c.BoardZone.GetAll().ToArray())
+							minion.HasDivineShield = true;
+					})))
 			}));
 		}
 
@@ -288,6 +316,24 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Warlock(System.Collections.Generic.IDictionary<string, CardDef> cards)
 		{
+			// [YOP_004] Envoy Rustwix - Deathrattle: Shuffle 3 random Prime Legendary minions into your deck.
+			cards.Add("YOP_004", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						if (c.DeckZone.IsFull)
+							return;
+
+						Card prime = PrimeLegendaryMinionCards.Choose(g.Random);
+						IPlayable entity = Entity.FromCard(c, prime);
+						entity[GameTag.DISPLAYED_CREATOR] = s.Id;
+						Generic.ShuffleIntoDeck.Invoke(c, s, entity);
+					}
+				})
+			}));
+
 			// [YOP_003] Luckysoul Hoarder - Battlecry: Shuffle 2 Soul Fragments into your deck. Corrupt: Draw a card.
 			cards.Add("YOP_003", new CardDef(new Power
 			{
@@ -378,6 +424,7 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				Enchant = new Enchant(Effects.ReduceCost(2))
 			}));
+
 		}
 
 		private static Trigger Spellburst(ISimpleTask task)
@@ -429,10 +476,39 @@ namespace SabberStoneCore.CardSets.Standard
 			};
 		}
 
+		private static Trigger SpellburstAfterAwake(ISimpleTask task)
+		{
+			return new Trigger(TriggerType.AFTER_CAST)
+			{
+				TriggerSource = TriggerSource.FRIENDLY,
+				SingleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (s[GameTag.DORMANT] > 0)
+						return;
+
+					task.Process(g, c, s, t, stack);
+					(s as IPlayable)?.ActivatedTrigger?.Remove();
+				})
+			};
+		}
+
 		private static bool IsCorruptCardDefinition(Card card)
 		{
 			return card[GameTag.CORRUPT] == 1;
 		}
+
+		private static readonly Card[] PrimeLegendaryMinionCards =
+		{
+			Cards.FromId("BT_019t"),
+			Cards.FromId("BT_028t"),
+			Cards.FromId("BT_109t"),
+			Cards.FromId("BT_123t"),
+			Cards.FromId("BT_136t"),
+			Cards.FromId("BT_197t"),
+			Cards.FromId("BT_210t"),
+			Cards.FromId("BT_309t"),
+			Cards.FromId("BT_713t")
+		};
 
 		private static void AddRandomMinionToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)
 		{
