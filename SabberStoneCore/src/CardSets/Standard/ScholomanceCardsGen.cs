@@ -551,6 +551,12 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_245] Steward of Scrolls - Spell Damage +1. Battlecry: Discover a spell.
+			cards.Add("SCH_245", new CardDef(new Power
+			{
+				PowerTask = new DiscoverTask(CardType.SPELL)
+			}));
+
 			// [SCH_248] Pen Flinger - Battlecry: Deal 1 damage. Spellburst: Return this to your hand.
 			cards.Add("SCH_248", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -594,6 +600,16 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = ComplexTask.Create(
 					new AddEnchantmentTask("SCH_138e", EntityType.TARGET),
 					new AddEnchantmentTask("SCH_138e2", EntityType.TARGET))
+			}));
+
+			// [SCH_247] First Day of School - Add 2 random 1-Cost minions to your hand.
+			cards.Add("SCH_247", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					AddRandomMinionToHand(g, c, s, card => card.Cost == 1);
+					AddRandomMinionToHand(g, c, s, card => card.Cost == 1);
+				})
 			}));
 
 			// [SCH_250] Wave of Apathy - Set the Attack of all enemy minions to 1 until your next turn.

@@ -652,6 +652,21 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void FirstDayOfSchool_ShouldAddTwoRandomOneCostMinions()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PALADIN);
+
+			game.ProcessCard("First Day of School", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+			Assert.All(game.Player1.HandZone, minion =>
+			{
+				Assert.Equal(CardType.MINION, minion.Card.Type);
+				Assert.Equal(1, minion.Card.Cost);
+			});
+		}
+
+		[Fact]
 		public void PowerWordFeast_ShouldBuffAndHealTargetAtEndOfTurn()
 		{
 			Game game = CreateGame();
@@ -881,6 +896,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Minion beast = game.Player1.BoardZone.Single();
 			Assert.Equal(3, beast.Card.Cost);
 			Assert.True(beast.Card.IsRace(Race.BEAST));
+		}
+
+		[Fact]
+		public void StewardOfScrolls_ShouldDiscoverSpellAndProvideSpellDamage()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+
+			game.ProcessCard<Minion>("Steward of Scrolls", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.Equal(CardType.SPELL, game.IdEntityDic[choice].Card.Type));
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.Equal(CardType.SPELL, game.Player1.HandZone.Last().Card.Type);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(28, game.Player2.Hero.Health);
 		}
 
 		[Fact]
