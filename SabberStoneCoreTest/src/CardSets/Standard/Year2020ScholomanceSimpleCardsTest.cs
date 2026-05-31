@@ -160,6 +160,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DevoutPupil_ShouldCostLessForSpellsCastOnFriendlyCharacters()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			Minion friendly = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			IPlayable pupilInHand = Generic.DrawCard(game.Player1, Cards.FromId("SCH_139"));
+
+			Assert.Equal(6, pupilInHand.Cost);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(6, pupilInHand.Cost);
+
+			game.ProcessCard("Power Word: Feast", friendly, asZeroCost: true);
+
+			Assert.Equal(5, pupilInHand.Cost);
+
+			IPlayable laterPupil = Generic.DrawCard(game.Player1, Cards.FromId("SCH_139"));
+
+			Assert.Equal(5, laterPupil.Cost);
+		}
+
+		[Fact]
 		public void Vectus_ShouldGiveWhelpsFriendlyDeathrattlesThatDiedThisGame()
 		{
 			Game game = CreateGame();

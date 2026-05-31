@@ -535,6 +535,16 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Paladin(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_139] Devout Pupil - Divine Shield, Taunt. Costs (1) less for each spell you've cast on friendly characters this game.
+			cards.Add("SCH_139", new CardDef(new Power
+			{
+				Aura = new AdaptiveCostEffect(
+					initialisationFunction: p => -SpellsCastOnFriendlyCharacters(p.Controller),
+					triggerValueFunction: p => WasCastOnFriendlyCharacter(p) ? -1 : 0,
+					trigger: TriggerType.AFTER_CAST,
+					triggerSource: TriggerSource.FRIENDLY)
+			}));
+
 			// [SCH_141] High Abbess Alura - Spellburst: Cast a spell from your deck (targets this if possible).
 			cards.Add("SCH_141", new CardDef(new Power
 			{
@@ -1064,6 +1074,23 @@ namespace SabberStoneCore.CardSets.Standard
 
 			controller.SetasideZone.Add(controller.DeckZone.Remove(fragment));
 			return true;
+		}
+
+		private static int SpellsCastOnFriendlyCharacters(Controller controller)
+		{
+			return controller.PlayHistory.Count(h =>
+				h.SourceCard.Type == CardType.SPELL &&
+				h.TargetController == controller.PlayerId &&
+				h.TargetCard != null);
+		}
+
+		private static bool WasCastOnFriendlyCharacter(IPlayable spell)
+		{
+			return spell.Controller.PlayHistory.Any(h =>
+				h.SourceId == spell.Id &&
+				h.SourceCard.Type == CardType.SPELL &&
+				h.TargetController == spell.Controller.PlayerId &&
+				h.TargetCard != null);
 		}
 
 		private static void SwapHandsAndDecks(Controller controller)
