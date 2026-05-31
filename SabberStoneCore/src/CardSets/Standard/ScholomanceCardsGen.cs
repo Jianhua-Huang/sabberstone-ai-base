@@ -862,6 +862,21 @@ namespace SabberStoneCore.CardSets.Standard
 					new DiscoverTask(CardType.MINION, tagValueCriteria: (GameTag.SPELLPOWER, RelaSign.GEQ, 1)))
 			}));
 
+			// [SCH_301] Rune Dagger - After your hero attacks, gain Spell Damage +1 this turn.
+			cards.Add("SCH_301", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_ATTACK)
+				{
+					TriggerSource = TriggerSource.HERO,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						int spellPower = c.NativeTags.ContainsKey(GameTag.SPELLPOWER) ? c.NativeTags[GameTag.SPELLPOWER] : 0;
+						c.NativeTags[GameTag.SPELLPOWER] = spellPower + 1;
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_301e"), s as IPlayable, c, 0, 0, 0);
+					})
+				}
+			}));
+
 			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
 			cards.Add("SCH_615", new CardDef(new Power
 			{
@@ -1103,6 +1118,20 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsDeathrattleCard,
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsDeathrattleMinion)
+				}
+			}));
+
+			// [SCH_301e] Runic Power - You have Spell Damage +1 this turn.
+			cards.Add("SCH_301e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						int spellPower = c.NativeTags.ContainsKey(GameTag.SPELLPOWER) ? c.NativeTags[GameTag.SPELLPOWER] : 0;
+						c.NativeTags[GameTag.SPELLPOWER] = spellPower > 0 ? spellPower - 1 : 0;
+					}),
+					RemoveAfterTriggered = true
 				}
 			}));
 

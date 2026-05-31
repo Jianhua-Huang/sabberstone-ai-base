@@ -487,6 +487,30 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void RuneDagger_ShouldGrantSpellDamageAfterHeroAttacksForThisTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+
+			game.ProcessCard("Rune Dagger", asZeroCost: true);
+			game.Player1.Hero.Attack(game.Player2.Hero);
+
+			Assert.Equal(1, game.Player1.CurrentSpellPower);
+			Assert.Equal(29, game.Player2.Hero.Health);
+
+			IPlayable fireball = Generic.DrawCard(game.Player1, Cards.FromName("Fireball"));
+			fireball.Cost = 0;
+			Assert.True(game.Process(PlayCardTask.Any(game.Player1, fireball, game.Player2.Hero)));
+
+			Assert.Equal(22, game.Player2.Hero.Health);
+			Assert.Equal(1, game.Player1.CurrentSpellPower);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Equal(0, game.Player1.CurrentSpellPower);
+		}
+
+		[Fact]
 		public void ReapersScythe_ShouldDamageAdjacentMinionsAfterSpellburst()
 		{
 			Game game = CreateGame();
