@@ -806,6 +806,29 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				Trigger = Spellburst(ComplexTask.DivineShield(EntityType.SOURCE))
 			}));
+
+			// [SCH_533] Commencement - Summon a minion from your deck. Give it Taunt and Divine Shield.
+			cards.Add("SCH_533", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.BoardZone.IsFull)
+						return;
+
+					List<IPlayable> minions = c.DeckZone.Where(p => p is Minion).ToList();
+					if (minions.Count == 0)
+						return;
+
+					Minion minion = (Minion)minions.Choose(g.Random);
+					Generic.RemoveFromZone.Invoke(c, minion);
+					minion.HasTaunt = true;
+					minion.HasDivineShield = true;
+					Generic.SummonBlock.Invoke(g, minion, -1, s);
+
+					if (minions.Count > 1)
+						g.OnRandomHappened(true);
+				})
+			}));
 		}
 
 		private static void Priest(IDictionary<string, CardDef> cards)

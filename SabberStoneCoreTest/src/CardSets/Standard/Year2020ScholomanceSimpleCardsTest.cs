@@ -1046,6 +1046,27 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Commencement_ShouldSummonMinionFromDeckWithTauntAndDivineShield()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PALADIN);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			IPlayable deckSpell = Entity.FromCard(game.Player1, Cards.FromName("Moonfire"));
+			IPlayable deckMinion = Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk"));
+			game.Player1.DeckZone.Add(deckSpell);
+			game.Player1.DeckZone.Add(deckMinion);
+
+			game.ProcessCard("Commencement", asZeroCost: true);
+
+			Minion summoned = Assert.Single(game.Player1.BoardZone);
+			Assert.Equal(deckMinion, summoned);
+			Assert.Equal("River Crocolisk", summoned.Card.Name);
+			Assert.True(summoned.HasTaunt);
+			Assert.True(summoned.HasDivineShield);
+			Assert.DoesNotContain(deckMinion, game.Player1.DeckZone);
+			Assert.Contains(deckSpell, game.Player1.DeckZone);
+		}
+
+		[Fact]
 		public void WretchedTutor_ShouldDealTwoToAllOtherMinionsOnSpellburst()
 		{
 			Game game = CreateGame();
