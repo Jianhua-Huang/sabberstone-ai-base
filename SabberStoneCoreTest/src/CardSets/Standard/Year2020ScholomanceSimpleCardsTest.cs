@@ -1050,6 +1050,26 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void AncientVoidHound_ShouldStealAttackAndHealthFromAllEnemyMinionsAtEndOfTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			game.EndTurn();
+			Minion firstEnemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion secondEnemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+			Minion hound = game.ProcessCard<Minion>("Ancient Void Hound", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Equal(12, hound.AttackDamage);
+			Assert.Equal(12, hound.Health);
+			Assert.Equal(5, firstEnemy.AttackDamage);
+			Assert.Equal(6, firstEnemy.Health);
+			Assert.Equal(1, secondEnemy.AttackDamage);
+			Assert.Equal(2, secondEnemy.Health);
+		}
+
+		[Fact]
 		public void DoubleJump_ShouldDrawOutcastCardFromDeck()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);

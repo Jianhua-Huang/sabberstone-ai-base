@@ -155,6 +155,26 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_354] Ancient Void Hound - At the end of your turn, steal 1 Attack and Health from all enemy minions.
+			cards.Add("SCH_354", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						int stolen = 0;
+						foreach (Minion minion in c.Opponent.BoardZone.GetAll().ToArray())
+						{
+							Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_354e"), s as IPlayable, minion, 0, 0, 0);
+							stolen++;
+						}
+
+						for (int i = 0; i < stolen; i++)
+							Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_354e2"), s as IPlayable, s, 0, 0, 0);
+					})
+				}
+			}));
+
 			// [SCH_276] Magehunter - Rush. Whenever this attacks a minion, Silence it.
 			cards.Add("SCH_276", new CardDef(new Power
 			{
@@ -1405,6 +1425,18 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_138e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(8))
+			}));
+
+			// [SCH_354e] Siphoned - Reduced Attack and Health.
+			cards.Add("SCH_354e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(-1))
+			}));
+
+			// [SCH_354e2] Void Siphon - Increased Attack and Health.
+			cards.Add("SCH_354e2", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(1))
 			}));
 
 			// [SCH_158e] Demonic Studies - Your next Demon costs (1) less.
