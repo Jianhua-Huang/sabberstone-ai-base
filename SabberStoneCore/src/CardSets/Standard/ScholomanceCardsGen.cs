@@ -455,6 +455,13 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_530] Sorcerous Substitute - Battlecry: If you have Spell Damage, summon a copy of this.
+			cards.Add("SCH_530", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Conditional(SelfCondition.IsSpellDmgOnHero,
+					new SummonCopyTask(EntityType.SOURCE))
+			}));
+
 			// [SCH_157] Enchanted Cauldron - Spellburst: Cast a random spell of the same Cost.
 			cards.Add("SCH_157", new CardDef(new Power
 			{

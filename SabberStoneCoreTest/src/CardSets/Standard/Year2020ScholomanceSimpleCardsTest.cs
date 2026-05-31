@@ -583,6 +583,30 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void SorcerousSubstitute_ShouldSummonCopyOnlyWithSpellDamage()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+
+			Minion substituteWithoutSpellDamage = game.ProcessCard<Minion>("Sorcerous Substitute", asZeroCost: true);
+
+			Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_530"));
+			Assert.Contains(substituteWithoutSpellDamage, game.Player1.BoardZone);
+
+			EmptyZone(game.Player1.BoardZone.GetAll());
+			game.ProcessCard<Minion>("Lab Partner", asZeroCost: true);
+			Minion substituteWithSpellDamage = game.ProcessCard<Minion>("Sorcerous Substitute", asZeroCost: true);
+
+			Minion[] substitutes = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_530");
+			Assert.Equal(2, substitutes.Length);
+			Assert.Contains(substituteWithSpellDamage, substitutes);
+			Assert.All(substitutes, substitute =>
+			{
+				Assert.Equal(6, substitute.AttackDamage);
+				Assert.Equal(6, substitute.Health);
+			});
+		}
+
+		[Fact]
 		public void LabPartner_ShouldProvideSpellDamageWhileAlive()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
