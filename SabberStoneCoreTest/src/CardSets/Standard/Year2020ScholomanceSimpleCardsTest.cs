@@ -372,6 +372,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Magehunter_ShouldSilenceMinionItAttacks()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			game.EndTurn();
+			Minion defender = game.ProcessCard<Minion>("Sen'jin Shieldmasta", asZeroCost: true);
+			game.EndTurn();
+			Minion magehunter = game.ProcessCard<Minion>("Magehunter", asZeroCost: true);
+
+			Assert.True(defender.HasTaunt);
+
+			game.Process(MinionAttackTask.Any(game.CurrentPlayer, magehunter, defender));
+
+			Assert.False(defender.HasTaunt);
+			Assert.True(defender.IsSilenced);
+			Assert.Equal(2, defender.Damage);
+		}
+
+		[Fact]
 		public void LakeThresher_ShouldDamageAdjacentMinionsWhenAttacking()
 		{
 			Game game = CreateGame();

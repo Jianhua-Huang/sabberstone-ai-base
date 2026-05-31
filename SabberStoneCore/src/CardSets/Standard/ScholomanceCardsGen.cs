@@ -86,6 +86,17 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_704e"), s as IPlayable, c.Hero, 0, 0, 0);
 				})
 			}));
+
+			// [SCH_276] Magehunter - Rush. Whenever this attacks a minion, Silence it.
+			cards.Add("SCH_276", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.ATTACK)
+				{
+					TriggerSource = TriggerSource.SELF,
+					Condition = SelfCondition.IsEventTargetIs(CardType.MINION),
+					SingleTask = new SilenceTask(EntityType.EVENT_TARGET)
+				}
+			}));
 		}
 
 		private static void Druid(IDictionary<string, CardDef> cards)
