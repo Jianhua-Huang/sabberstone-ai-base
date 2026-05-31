@@ -311,6 +311,12 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_713] Cult Neophyte - Battlecry: Your opponent's spells cost (1) more next turn.
+			cards.Add("SCH_713", new CardDef(new Power
+			{
+				PowerTask = new AddEnchantmentTask("SCH_713e", EntityType.OP_CONTROLLER)
+			}));
+
 			// [SCH_313] Wretched Tutor - Spellburst: Deal 2 damage to all other minions.
 			cards.Add("SCH_313", new CardDef(new Power
 			{
@@ -755,6 +761,16 @@ namespace SabberStoneCore.CardSets.Standard
 				Aura = new Aura(AuraType.HEROPOWER, Effects.SetCost(0))
 				{
 					RemoveTrigger = (TriggerType.INSPIRE, null)
+				}
+			}));
+
+			// [SCH_713e] Spoiled! - Your spells cost (1) more this turn.
+			cards.Add("SCH_713e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.OP_HAND, Effects.AddCost(1))
+				{
+					Condition = SelfCondition.IsSpell,
+					RemoveTrigger = (TriggerType.TURN_END, SelfCondition.IsOpTurn)
 				}
 			}));
 

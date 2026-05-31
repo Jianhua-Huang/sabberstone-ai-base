@@ -586,6 +586,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CultNeophyte_ShouldIncreaseOpponentSpellCostsOnlyForNextTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE, player2HeroClass: CardClass.DRUID);
+			Spell opponentSpell = Assert.IsType<Spell>(Generic.DrawCard(game.Player2, Cards.FromName("Moonfire")));
+
+			game.ProcessCard("Cult Neophyte", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Equal(opponentSpell.Card.Cost + 1, opponentSpell.Cost);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.Equal(opponentSpell.Card.Cost, opponentSpell.Cost);
+		}
+
+		[Fact]
 		public void PenFlinger_ShouldDamageTargetAndReturnToHandOnSpellburst()
 		{
 			Game game = CreateGame();
