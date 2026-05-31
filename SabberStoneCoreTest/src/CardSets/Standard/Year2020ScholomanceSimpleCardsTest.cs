@@ -160,6 +160,67 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void BrainFreeze_ShouldFreezeMinionWithoutCombo()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Brain Freeze", target, asZeroCost: true);
+
+			Assert.Equal(1, target[GameTag.FROZEN]);
+			Assert.Equal(0, target.Damage);
+		}
+
+		[Fact]
+		public void BrainFreeze_ShouldFreezeAndDamageMinionWithCombo()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Brain Freeze", target, asZeroCost: true);
+
+			Assert.Equal(1, target[GameTag.FROZEN]);
+			Assert.Equal(3, target.Damage);
+		}
+
+		[Fact]
+		public void Firebrand_ShouldSplitFourDamageAmongEnemyMinionsOnSpellburst()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			Minion firebrand = game.ProcessCard<Minion>("Firebrand", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(4, enemy.Damage);
+			Assert.Equal(0, firebrand.Damage);
+		}
+
+		[Fact]
+		public void WyrmWeaver_ShouldSummonTwoManaWyrmsOnSpellburst()
+		{
+			Game game = CreateGame();
+			game.ProcessCard<Minion>("Wyrm Weaver", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Minion[] wyrms = game.Player1.BoardZone.GetAll(p => p.Card.Id == "NEW1_012");
+			Assert.Equal(2, wyrms.Length);
+			Assert.All(wyrms, wyrm =>
+			{
+				Assert.Equal(1, wyrm.AttackDamage);
+				Assert.Equal(3, wyrm.Health);
+			});
+		}
+
+		[Fact]
 		public void ManafeederPanthara_ShouldDrawOnlyAfterHeroPowerWasUsedThisTurn()
 		{
 			Game inactiveGame = CreateGame();

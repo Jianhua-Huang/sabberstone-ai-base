@@ -21,6 +21,7 @@ namespace SabberStoneCore.CardSets.Standard
 			DemonHunter(cards);
 			Druid(cards);
 			Hunter(cards);
+			Mage(cards);
 			Neutral(cards);
 			Paladin(cards);
 			Priest(cards);
@@ -143,6 +144,44 @@ namespace SabberStoneCore.CardSets.Standard
 					new AddEnchantmentTask("SCH_617e", EntityType.TARGET),
 					new SummonTask("SCH_617t", SummonSide.SPELL),
 					new AddCardTo("SCH_617t", EntityType.HAND))
+			}));
+		}
+
+		private static void Mage(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_241] Firebrand - Spellburst: Deal 4 damage randomly split among all enemy minions.
+			cards.Add("SCH_241", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					for (int i = 0; i < 4; i++)
+					{
+						Minion[] enemies = c.Opponent.BoardZone.GetAll();
+						if (enemies.Length == 0)
+							return;
+
+						Generic.DamageCharFunc.Invoke(s as IPlayable, enemies.Choose(g.Random), 1, false);
+					}
+				}))
+			}));
+
+			// [SCH_243] Wyrm Weaver - Spellburst: Summon two 1/3 Mana Wyrms.
+			cards.Add("SCH_243", new CardDef(new Power
+			{
+				Trigger = Spellburst(new SummonTask("NEW1_012", 2, SummonSide.SPELL))
+			}));
+
+			// [SCH_509] Brain Freeze - Freeze a minion. Combo: Also deal 3 damage to it.
+			cards.Add("SCH_509", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = ComplexTask.Freeze(EntityType.TARGET),
+				ComboTask = ComplexTask.Create(
+					ComplexTask.Freeze(EntityType.TARGET),
+					new DamageTask(3, EntityType.TARGET, true))
 			}));
 		}
 
