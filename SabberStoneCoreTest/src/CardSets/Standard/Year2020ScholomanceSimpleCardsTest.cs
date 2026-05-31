@@ -587,6 +587,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void SpeakerGidra_ShouldGainStatsEqualToFirstSpellCost()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			Minion gidra = game.ProcessCard<Minion>("Speaker Gidra", asZeroCost: true);
+
+			game.ProcessCard("Arcane Intellect");
+
+			Assert.Equal(4, gidra.AttackDamage);
+			Assert.Equal(7, gidra.Health);
+
+			game.ProcessCard("Silence", gidra);
+
+			Assert.Equal(1, gidra.AttackDamage);
+			Assert.Equal(4, gidra.Health);
+			Assert.True(gidra.IsSilenced);
+		}
+
+		[Fact]
 		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
 		{
 			Game game = CreateGame();

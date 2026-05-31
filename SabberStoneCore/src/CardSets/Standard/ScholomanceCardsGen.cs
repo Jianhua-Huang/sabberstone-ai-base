@@ -107,6 +107,16 @@ namespace SabberStoneCore.CardSets.Standard
 				Trigger = Spellburst(new SummonTask("SCH_242", SummonSide.SPELL))
 			}));
 
+			// [SCH_182] Speaker Gidra - Rush, Windfury. Spellburst: Gain Attack and Health equal to the spell's Cost.
+			cards.Add("SCH_182", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					if (s is IPlayable gidra && t is Spell spell)
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_182e"), gidra, gidra, spell.Card.Cost, spell.Card.Cost);
+				}))
+			}));
+
 			// [SCH_609] Survival of the Fittest - Give +4/+4 to all minions in your hand, deck, and battlefield.
 			cards.Add("SCH_609", new CardDef(new Power
 			{
@@ -885,6 +895,17 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_162e", new CardDef(new Power
 			{
 				DeathrattleTask = ActivateCapturedDeathrattleTask.Task
+			}));
+
+			// [SCH_182e] Outspoken - Increased stats.
+			cards.Add("SCH_182e", new CardDef(new Power
+			{
+				Enchant = new Enchant(
+					Effects.Attack_N(0),
+					Effects.Health_N(0))
+				{
+					UseScriptTag = true
+				}
 			}));
 		}
 
