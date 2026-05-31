@@ -464,6 +464,36 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void JandiceBarov_ShouldSummonTwoFiveCostMinionsAndChosenIllusionDiesWhenDamaged()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+
+			Minion jandice = game.ProcessCard<Minion>("Jandice Barov", asZeroCost: true);
+
+			Minion[] summoned = game.Player1.BoardZone.GetAll(p => p != jandice);
+			Assert.Equal(2, summoned.Length);
+			Assert.All(summoned, minion => Assert.Equal(5, minion.Card.Cost));
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(summoned, minion => Assert.Contains(minion.Id, game.Player1.Choice.Choices));
+
+			Minion illusion = summoned[0];
+			Minion real = summoned[1];
+
+			game.Process(ChooseTask.Pick(game.Player1, illusion.Id));
+
+			Assert.Null(game.Player1.Choice);
+			Assert.Contains(illusion, game.Player1.BoardZone);
+			Assert.Contains(real, game.Player1.BoardZone);
+
+			illusion.HasDivineShield = false;
+			Generic.DamageCharFunc.Invoke(jandice, illusion, 1, false);
+			game.DeathProcessingAndAuraUpdate();
+
+			Assert.DoesNotContain(illusion, game.Player1.BoardZone);
+			Assert.Contains(real, game.Player1.BoardZone);
+		}
+
+		[Fact]
 		public void DevolvingMissiles_ShouldTransformRandomEnemyMinionsIntoLowerCostMinions()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);

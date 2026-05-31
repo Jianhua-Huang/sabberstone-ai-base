@@ -590,6 +590,43 @@ namespace SabberStoneCore.CardSets.Standard
 				ComboTask = new DiscoverTask(CardType.SPELL, CardClass.MAGE)
 			}));
 
+			// [SCH_351] Jandice Barov - Battlecry: Summon two random 5-Cost minions. Secretly pick one that dies when it takes damage.
+			cards.Add("SCH_351", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!Cards.CostMinionCards(g.FormatType).TryGetValue(5, out List<Card> minions) || minions.Count == 0)
+						return;
+
+					var summoned = new List<Minion>();
+					for (int i = 0; i < 2 && !c.BoardZone.IsFull; i++)
+					{
+						var minion = (Minion)Entity.FromCard(c, minions.Choose(g.Random));
+						Generic.SummonBlock.Invoke(g, minion, -1, s);
+						if (minion.Zone == c.BoardZone)
+							summoned.Add(minion);
+					}
+
+					if (summoned.Count == 0)
+						return;
+
+					if (summoned.Count == 1)
+					{
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_351e"), s as IPlayable, summoned[0], 0, 0, 0);
+						return;
+					}
+
+					if (!Generic.CreateChoice(c, s, ChoiceType.GENERAL, ChoiceAction.STACK, summoned.Select(p => p.Id).ToList()))
+						return;
+
+					c.Choice.AfterChooseTask = new CustomTask((game, controller, source, target, choiceStack) =>
+					{
+						if (target is Minion illusion)
+							Generic.AddEnchantmentBlock(game, Cards.FromId("SCH_351e"), source as IPlayable, illusion, 0, 0, 0);
+					});
+				})
+			}));
+
 			// [SCH_707] Fishy Flyer - Rush. Deathrattle: Add a 4/3 Ghost with Rush to your hand.
 			cards.Add("SCH_707", new CardDef(new Power
 			{
@@ -1437,6 +1474,34 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_354e2", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(1))
+			}));
+
+			// [SCH_351e] Illusion - Dies when it takes damage.
+			cards.Add("SCH_351e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TAKE_DAMAGE)
+				{
+					TriggerSource = TriggerSource.ENCHANTMENT_TARGET,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (s is Enchantment enchantment && enchantment.Target is IPlayable illusion)
+							illusion.Destroy();
+					})
+				}
+			}));
+
+			// [SCH_351e2] Illusion - Dies when it takes damage.
+			cards.Add("SCH_351e2", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TAKE_DAMAGE)
+				{
+					TriggerSource = TriggerSource.ENCHANTMENT_TARGET,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (s is Enchantment enchantment && enchantment.Target is IPlayable illusion)
+							illusion.Destroy();
+					})
+				}
 			}));
 
 			// [SCH_158e] Demonic Studies - Your next Demon costs (1) less.
