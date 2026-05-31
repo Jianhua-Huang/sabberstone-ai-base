@@ -1457,6 +1457,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Rattlegore_ShouldResummonWithMinusOneMinusOneUntilOneOne()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
+			Minion rattlegore = game.ProcessCard<Minion>("Rattlegore", asZeroCost: true);
+
+			for (int expectedStats = 8; expectedStats >= 1; expectedStats--)
+			{
+				rattlegore.Kill();
+
+				rattlegore = Assert.Single(game.Player1.BoardZone);
+				Assert.Equal("SCH_621", rattlegore.Card.Id);
+				Assert.Equal(expectedStats, rattlegore.AttackDamage);
+				Assert.Equal(expectedStats, rattlegore.Health);
+				Assert.True(rattlegore.HasDeathrattle);
+			}
+
+			rattlegore.Kill();
+
+			Assert.Empty(game.Player1.BoardZone);
+		}
+
+		[Fact]
 		public void Initiation_ShouldDamageOnlyWhenTargetSurvives()
 		{
 			Game game = CreateGame();

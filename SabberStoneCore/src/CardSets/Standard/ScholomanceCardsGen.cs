@@ -1364,6 +1364,30 @@ namespace SabberStoneCore.CardSets.Standard
 					AddRandomMinionToHand(g, c, s, card => card[GameTag.TAUNT] == 1);
 				})
 			}));
+
+			// [SCH_621] Rattlegore - Deathrattle: Resummon this with -1/-1.
+			cards.Add("SCH_621", new CardDef(new Power
+			{
+				DeathrattleTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(s is Minion rattlegore) || c.BoardZone.IsFull)
+						return;
+
+					int attack = rattlegore.AttackDamage - 1;
+					int health = rattlegore.BaseHealth - 1;
+					if (attack < 1 || health < 1)
+						return;
+
+					var resummoned = (Minion)Entity.FromCard(c, rattlegore.Card);
+					resummoned.AttackDamage = attack;
+					resummoned.BaseHealth = health;
+
+					int position = rattlegore.LastBoardPosition > c.BoardZone.Count
+						? c.BoardZone.Count
+						: rattlegore.LastBoardPosition;
+					Generic.SummonBlock.Invoke(g, resummoned, position, s);
+				})
+			}));
 		}
 
 		private static void Warlock(IDictionary<string, CardDef> cards)
