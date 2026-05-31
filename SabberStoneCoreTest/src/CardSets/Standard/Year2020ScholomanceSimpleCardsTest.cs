@@ -981,6 +981,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DoubleJump_ShouldDrawOutcastCardFromDeck()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Spectral Sight")));
+
+			game.ProcessCard("Double Jump", asZeroCost: true);
+
+			IPlayable drawn = Assert.Single(game.Player1.HandZone);
+			Assert.Equal("BT_491", drawn.Card.Id);
+			Assert.Single(game.Player1.DeckZone);
+			Assert.Equal("Wisp", game.Player1.DeckZone.Single().Card.Name);
+		}
+
+		[Fact]
 		public void LakeThresher_ShouldDamageAdjacentMinionsWhenAttacking()
 		{
 			Game game = CreateGame();

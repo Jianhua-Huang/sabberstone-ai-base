@@ -134,6 +134,17 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_422] Double Jump - Draw an Outcast card from your deck.
+			cards.Add("SCH_422", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					IPlayable outcastCard = c.DeckZone.FirstOrDefault(p => p.Card[GameTag.OUTCAST] == 1);
+					if (outcastCard != null)
+						Generic.Draw(c, outcastCard);
+				})
+			}));
+
 			// [SCH_276] Magehunter - Rush. Whenever this attacks a minion, Silence it.
 			cards.Add("SCH_276", new CardDef(new Power
 			{
