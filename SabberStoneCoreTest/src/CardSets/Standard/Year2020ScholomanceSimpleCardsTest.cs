@@ -511,6 +511,31 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void Playmaker_ShouldSummonOneHealthCopyAfterRushMinionIsPlayed()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
+			game.ProcessCard<Minion>("Playmaker", asZeroCost: true);
+
+			Minion rush = game.ProcessCard<Minion>("Rabid Worgen", asZeroCost: true);
+
+			Minion[] worgens = game.Player1.BoardZone.GetAll(p => p.Card.Name == "Rabid Worgen");
+			Assert.Equal(2, worgens.Length);
+			Assert.Contains(rush, worgens);
+			Minion copy = Assert.Single(worgens.Where(p => p.Id != rush.Id));
+			Assert.True(copy.IsRush);
+			Assert.Equal(rush.AttackDamage, copy.AttackDamage);
+			Assert.Equal(1, copy.Health);
+			Assert.Equal(3, rush.Health);
+
+			int boardCount = game.Player1.BoardZone.Count;
+
+			game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+
+			Assert.Equal(boardCount + 1, game.Player1.BoardZone.Count);
+			Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Name == "River Crocolisk"));
+		}
+
+		[Fact]
 		public void ReapersScythe_ShouldDamageAdjacentMinionsAfterSpellburst()
 		{
 			Game game = CreateGame();

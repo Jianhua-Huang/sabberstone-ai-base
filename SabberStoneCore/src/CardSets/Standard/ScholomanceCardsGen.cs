@@ -942,6 +942,25 @@ namespace SabberStoneCore.CardSets.Standard
 				Trigger = Spellburst(new AddEnchantmentTask("SCH_238e", EntityType.CONTROLLER))
 			}));
 
+			// [SCH_317] Playmaker - After you play a Rush minion, summon a copy with 1 Health remaining.
+			cards.Add("SCH_317", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_PLAY_MINION)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(t is Minion minion) || !minion.IsRush || minion.Zone != c.BoardZone || c.BoardZone.IsFull)
+							return;
+
+						var tags = new EntityData((EntityData)minion.NativeTags);
+						var copy = (Minion)Entity.FromCard(c, minion.Card, tags, c.BoardZone, zonePos: minion.ZonePosition + 1, creator: s);
+						minion.CopyInternalAttributes(copy);
+						copy.Damage = copy.BaseHealth - 1;
+					})
+				}
+			}));
+
 			// [SCH_525] In Formation! - Add 2 random Taunt minions to your hand.
 			cards.Add("SCH_525", new CardDef(new Power
 			{
