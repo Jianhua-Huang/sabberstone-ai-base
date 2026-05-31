@@ -68,6 +68,45 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void FelGuardians_ShouldCostLessInHandWhenFriendlyMinionDies()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			IPlayable felGuardians = Generic.DrawCard(game.Player1, Cards.FromId("SCH_357"));
+			Minion first = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion second = game.ProcessCard<Minion>("Murloc Raider", asZeroCost: true);
+
+			Assert.Equal(7, felGuardians.Cost);
+
+			first.Kill();
+
+			Assert.Contains(felGuardians, game.Player1.HandZone);
+			Assert.Equal(6, felGuardians.Cost);
+
+			second.Kill();
+
+			Assert.Contains(felGuardians, game.Player1.HandZone);
+			Assert.Equal(5, felGuardians.Cost);
+		}
+
+		[Fact]
+		public void FelGuardians_ShouldSummonThreeTauntDemons()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+
+			game.ProcessCard("Fel Guardians", asZeroCost: true);
+
+			Minion[] felhounds = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_357t");
+			Assert.Equal(3, felhounds.Length);
+			Assert.All(felhounds, felhound =>
+			{
+				Assert.Equal(1, felhound.AttackDamage);
+				Assert.Equal(2, felhound.Health);
+				Assert.True(felhound.HasTaunt);
+				Assert.True(felhound.Card.IsRace(Race.DEMON));
+			});
+		}
+
+		[Fact]
 		public void Wolpertinger_ShouldSummonCopyOfItself()
 		{
 			Game game = CreateGame();

@@ -175,6 +175,19 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_357] Fel Guardians - Summon three 1/2 Demons with Taunt. Costs (1) less whenever a friendly minion dies.
+			cards.Add("SCH_357", new CardDef(new Power
+			{
+				PowerTask = new SummonTask("SCH_357t", 3),
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerActivation = TriggerActivation.HAND,
+					TriggerSource = TriggerSource.FRIENDLY,
+					Condition = SelfCondition.IsMinion,
+					SingleTask = new AddEnchantmentTask("SCH_357e", EntityType.SOURCE)
+				}
+			}));
+
 			// [SCH_276] Magehunter - Rush. Whenever this attacks a minion, Silence it.
 			cards.Add("SCH_276", new CardDef(new Power
 			{
@@ -1474,6 +1487,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_354e2", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(1))
+			}));
+
+			// [SCH_357e] Soul Infused - Costs (1) less.
+			cards.Add("SCH_357e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.ReduceCost(1))
 			}));
 
 			// [SCH_351e] Illusion - Dies when it takes damage.
