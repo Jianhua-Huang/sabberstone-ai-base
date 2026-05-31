@@ -92,6 +92,16 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_609e"), s as IPlayable, playable, 0, 0, 0);
 				})
 			}));
+
+			// [SCH_613] Groundskeeper - Taunt. Battlecry: If you're holding a spell that costs (5) or more, restore 5 Health.
+			cards.Add("SCH_613", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.HandZone.Any(p => p.Card.Type == CardType.SPELL && p.Card.Cost >= 5))
+						c.Hero.TakeHeal(s as IPlayable, 5);
+				})
+			}));
 		}
 
 		private static void Hunter(IDictionary<string, CardDef> cards)
@@ -233,6 +243,24 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_428] Lorekeeper Polkelt - Battlecry: Reorder your deck from the highest Cost card to the lowest Cost card.
+			cards.Add("SCH_428", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					List<IPlayable> cardsInDeck = c.DeckZone.GetAll()
+						.OrderBy(p => p.Card.Cost)
+						.ThenBy(p => p.Card.AssetId)
+						.ToList();
+
+					foreach (IPlayable playable in c.DeckZone.GetAll())
+						c.DeckZone.Remove(playable);
+
+					foreach (IPlayable playable in cardsInDeck)
+						c.DeckZone.Add(playable);
+				})
+			}));
+
 			// [SCH_244] Teacher's Pet - Taunt. Deathrattle: Summon a random 3-Cost Beast.
 			cards.Add("SCH_244", new CardDef(new Power
 			{
@@ -352,10 +380,40 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, target.Card), -1, s);
 				})
 			}));
+
+			// [SCH_302] Gift of Luminance - Give a minion Divine Shield, then summon a 1/1 copy of it.
+			cards.Add("SCH_302", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target))
+						return;
+
+					target.HasDivineShield = true;
+					var copy = (Minion)Entity.FromCard(c, target.Card);
+					Generic.SummonBlock.Invoke(g, copy, -1, s);
+					Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_302e"), s as IPlayable, copy, 0, 0, 0);
+					copy.HasDivineShield = true;
+				})
+			}));
 		}
 
 		private static void Shaman(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
+			cards.Add("SCH_615", new CardDef(new Power
+			{
+				DeathrattleTask = ComplexTask.Create(
+					new SummonTask("CS2_050", SummonSide.DEATHRATTLE),
+					new SummonTask("CS2_051", SummonSide.DEATHRATTLE),
+					new SummonTask("CS2_052", SummonSide.DEATHRATTLE),
+					new SummonTask("NEW1_009", SummonSide.DEATHRATTLE))
+			}));
+
 			// [SCH_271] Molten Blast - Deal 2 damage. Summon that many 1/1 Elementals.
 			cards.Add("SCH_271", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -539,6 +597,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_600t3e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(1))
+			}));
+
+			// [SCH_302e] Gift of Luminance - Set Attack and Health to 1.
+			cards.Add("SCH_302e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.SetAttackHealth(1))
 			}));
 
 			// [SCH_609e] Survival of the Fittest - +4/+4.

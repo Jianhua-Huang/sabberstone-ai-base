@@ -471,6 +471,66 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void GiftOfLuminance_ShouldGiveDivineShieldAndSummonOneOneCopy()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+
+			game.ProcessCard("Gift of Luminance", target, asZeroCost: true);
+
+			Minion copy = game.Player1.BoardZone.Single(p => p != target && p.Card.Id == target.Card.Id);
+			Assert.True(target.HasDivineShield);
+			Assert.True(copy.HasDivineShield);
+			Assert.Equal(1, copy.AttackDamage);
+			Assert.Equal(1, copy.Health);
+		}
+
+		[Fact]
+		public void LorekeeperPolkelt_ShouldReorderDeckFromHighestCostToLowestCost()
+		{
+			Game game = CreateGame();
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("River Crocolisk")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Boulderfist Ogre")));
+
+			game.ProcessCard("Lorekeeper Polkelt", asZeroCost: true);
+
+			Assert.Equal("Boulderfist Ogre", game.Player1.DeckZone.TopCard.Card.Name);
+			Generic.Draw(game.Player1);
+			Assert.Equal("River Crocolisk", game.Player1.DeckZone.TopCard.Card.Name);
+			Generic.Draw(game.Player1);
+			Assert.Equal("Wisp", game.Player1.DeckZone.TopCard.Card.Name);
+		}
+
+		[Fact]
+		public void Groundskeeper_ShouldRestoreHeroIfHoldingExpensiveSpell()
+		{
+			Game game = CreateGame();
+			game.Player1.Hero.Damage = 7;
+			Generic.DrawCard(game.Player1, Cards.FromId("SCH_609"));
+
+			game.ProcessCard("Groundskeeper", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.Hero.Damage);
+		}
+
+		[Fact]
+		public void TotemGoliath_ShouldSummonAllFourBasicTotemsOnDeathrattle()
+		{
+			Game game = CreateGame();
+			Minion goliath = game.ProcessCard<Minion>("Totem Goliath", asZeroCost: true);
+
+			goliath.Kill();
+
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Id == "CS2_050");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Id == "CS2_051");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Id == "CS2_052");
+			Assert.Contains(game.Player1.BoardZone, p => p.Card.Id == "NEW1_009");
+			Assert.Equal(4, game.Player1.BoardZone.Count);
+		}
+
+		[Fact]
 		public void SoulFragment_ShouldHealHeroAndNotRemainInHandWhenDrawn()
 		{
 			Game game = CreateGame();
