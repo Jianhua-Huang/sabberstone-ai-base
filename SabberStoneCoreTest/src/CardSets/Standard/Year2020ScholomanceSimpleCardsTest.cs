@@ -236,6 +236,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void RasFrostwhisper_ShouldDamageAllEnemiesAtEndOfTurnWithSpellPower()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			Minion friendly = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.ProcessCard<Minion>("Kobold Geomancer", asZeroCost: true);
+			game.ProcessCard<Minion>("Ras Frostwhisper", asZeroCost: true);
+
+			game.EndTurn();
+
+			Assert.Equal(28, game.Player2.Hero.Health);
+			Assert.Equal(2, enemy.Damage);
+			Assert.Equal(0, friendly.Damage);
+		}
+
+		[Fact]
 		public void BrainFreeze_ShouldFreezeMinionWithoutCombo()
 		{
 			Game game = CreateGame();

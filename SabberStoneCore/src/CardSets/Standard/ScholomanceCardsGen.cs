@@ -654,6 +654,21 @@ namespace SabberStoneCore.CardSets.Standard
 						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId("SCH_271t")), -1, s);
 				})
 			}));
+
+			// [SCH_273] Ras Frostwhisper - At the end of your turn, deal 1 damage to all enemies (improved by Spell Damage).
+			cards.Add("SCH_273", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						int amount = 1 + c.CurrentSpellPower;
+						Generic.DamageCharFunc.Invoke(s as IPlayable, c.Opponent.Hero, amount, false);
+						foreach (Minion minion in c.Opponent.BoardZone.GetAll().ToArray())
+							Generic.DamageCharFunc.Invoke(s as IPlayable, minion, amount, false);
+					})
+				}
+			}));
 		}
 
 		private static void Warrior(IDictionary<string, CardDef> cards)
