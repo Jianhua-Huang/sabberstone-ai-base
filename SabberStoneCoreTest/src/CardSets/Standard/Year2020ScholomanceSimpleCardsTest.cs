@@ -511,6 +511,28 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void LabPartner_ShouldProvideSpellDamageWhileAlive()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+
+			Minion labPartner = game.ProcessCard<Minion>("Lab Partner", asZeroCost: true);
+
+			Assert.Equal(1, game.Player1.CurrentSpellPower);
+
+			game.ProcessCard("Fireball", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(23, game.Player2.Hero.Health);
+
+			labPartner.Kill();
+
+			Assert.Equal(0, game.Player1.CurrentSpellPower);
+
+			game.ProcessCard("Fireball", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(17, game.Player2.Hero.Health);
+		}
+
+		[Fact]
 		public void Playmaker_ShouldSummonOneHealthCopyAfterRushMinionIsPlayed()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARRIOR);
