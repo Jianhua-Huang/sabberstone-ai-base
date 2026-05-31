@@ -101,6 +101,53 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void RunicCarvings_FirstChoiceShouldSummonTreantTotemsWithoutOverloadOrRush()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+
+			game.ProcessCard("Runic Carvings", asZeroCost: true, chooseOne: 1);
+
+			Minion[] treants = game.Player1.BoardZone.GetAll();
+			Assert.Equal(4, treants.Length);
+			Assert.All(treants, treant =>
+			{
+				Assert.Equal("SCH_612t", treant.Card.Id);
+				Assert.Equal(2, treant.AttackDamage);
+				Assert.Equal(2, treant.Health);
+				Assert.True(treant.Card.IsRace(Race.TOTEM));
+				Assert.False(treant.IsRush);
+				Assert.True(treant.IsExhausted);
+			});
+			Assert.Equal(0, game.Player1.OverloadOwed);
+		}
+
+		[Fact]
+		public void RunicCarvings_SecondChoiceShouldSummonRushTreantTotemsAndOverload()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Runic Carvings", asZeroCost: true, chooseOne: 2);
+
+			Minion[] treants = game.Player1.BoardZone.GetAll();
+			Assert.Equal(4, treants.Length);
+			Assert.All(treants, treant =>
+			{
+				Assert.Equal("SCH_612t", treant.Card.Id);
+				Assert.Equal(2, treant.AttackDamage);
+				Assert.Equal(2, treant.Health);
+				Assert.True(treant.IsRush);
+				Assert.True(treant.AttackableByRush);
+				Assert.False(treant.IsExhausted);
+				Assert.Contains(enemy, treant.ValidAttackTargets);
+				Assert.DoesNotContain(game.Player2.Hero, treant.ValidAttackTargets);
+			});
+			Assert.Equal(2, game.Player1.OverloadOwed);
+		}
+
+		[Fact]
 		public void FelGuardians_ShouldCostLessInHandWhenFriendlyMinionDies()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);

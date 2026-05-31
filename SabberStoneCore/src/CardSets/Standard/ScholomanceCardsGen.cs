@@ -289,6 +289,22 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_612a] Call to Aid - Summon four 2/2 Treant Totems.
+			cards.Add("SCH_612a", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					s[GameTag.TAG_SCRIPT_DATA_NUM_1] = 1;
+					SummonTreantTotems(g, c, s, false);
+				})
+			}));
+
+			// [SCH_612b] Alarm the Forest - Summon four 2/2 Treant Totems with Rush. Overload: (2)
+			cards.Add("SCH_612b", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) => SummonTreantTotems(g, c, s, true))
+			}));
+
 			// [SCH_613] Groundskeeper - Taunt. Battlecry: If you're holding a spell that costs (5) or more, restore 5 Health.
 			cards.Add("SCH_613", new CardDef(new Power
 			{
@@ -2040,6 +2056,23 @@ namespace SabberStoneCore.CardSets.Standard
 
 			controller.SetasideZone.Add(controller.DeckZone.Remove(fragment));
 			return true;
+		}
+
+		private static void SummonTreantTotems(Game game, Controller controller, IEntity source, bool rush)
+		{
+			for (int i = 0; i < 4 && !controller.BoardZone.IsFull; i++)
+			{
+				var treant = (Minion)Entity.FromCard(controller, Cards.FromId("SCH_612t"));
+				Generic.SummonBlock.Invoke(game, treant, -1, source);
+
+				if (!rush)
+					continue;
+
+				treant.IsRush = true;
+				treant.IsExhausted = false;
+				treant.AttackableByRush = true;
+				game.RushMinions.Add(treant.Id);
+			}
 		}
 
 		private static int SpellsCastOnFriendlyCharacters(Controller controller)
