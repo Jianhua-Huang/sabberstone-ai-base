@@ -698,6 +698,36 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void ProfessorSlate_ShouldMakeFriendlySpellsPoisonous()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.HUNTER);
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard<Minion>("Professor Slate", asZeroCost: true);
+
+			game.ProcessCard("Arcane Shot", target, asZeroCost: true);
+
+			Assert.Equal(2, target.Damage);
+			Assert.True(target.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void ProfessorSlate_ShouldNotMakeOpponentSpellsPoisonous()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.HUNTER);
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.ProcessCard<Minion>("Professor Slate", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Arcane Shot", target, asZeroCost: true);
+
+			Assert.Equal(2, target.Damage);
+			Assert.False(target.ToBeDestroyed);
+			Assert.Contains(target, game.Player1.BoardZone);
+		}
+
+		[Fact]
 		public void Combustion_ShouldDamageTargetAndBothNeighborsWithExcessIncludingSpellDamage()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.MAGE);

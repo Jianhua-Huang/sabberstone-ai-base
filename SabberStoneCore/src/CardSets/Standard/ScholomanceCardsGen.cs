@@ -373,6 +373,9 @@ namespace SabberStoneCore.CardSets.Standard
 					new AddCardTo("SCH_617t", EntityType.HAND))
 			}));
 
+			// [SCH_539] Professor Slate - Your spells are Poisonous.
+			cards.Add("SCH_539", new CardDef());
+
 			// [SCH_239] Krolusk Barkstripper - Spellburst: Destroy a random enemy minion.
 			cards.Add("SCH_239", new CardDef(new Power
 			{

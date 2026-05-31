@@ -57,7 +57,11 @@ namespace SabberStoneCore.Actions
 					if (source.Controller.ControllerAuraEffects[GameTag.HERO_POWER_DOUBLE] > 0)
 						amount *= (int)Math.Pow(2, source.Controller.ControllerAuraEffects[GameTag.HERO_POWER_DOUBLE]);
 				}
-				return target.TakeDamage(source, amount);
+				int realDamage = target.TakeDamage(source, amount);
+				if (realDamage > 0 && source is Spell && target is Minion minion &&
+					source.Controller.BoardZone.Any(p => p.Card.Id == "SCH_539" && !p.ToBeDestroyed))
+					minion.Destroy();
+				return realDamage;
 			};
 
 		public static Func<Controller, int, bool> AddTempMana
