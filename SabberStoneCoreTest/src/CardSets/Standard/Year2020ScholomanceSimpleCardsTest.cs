@@ -647,6 +647,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void HighAbbessAlura_ShouldCastDeckSpellTargetingHerselfOnSpellburst()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Power Word: Feast")));
+			Minion alura = game.ProcessCard<Minion>("High Abbess Alura", asZeroCost: true);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Equal(0, game.Player1.DeckZone.Count);
+			Assert.Equal(5, alura.AttackDamage);
+			Assert.Equal(8, alura.Health);
+			Assert.Contains(game.Player1.GraveyardZone, p => p.Card.Name == "Power Word: Feast");
+		}
+
+		[Fact]
 		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
 		{
 			Game game = CreateGame();

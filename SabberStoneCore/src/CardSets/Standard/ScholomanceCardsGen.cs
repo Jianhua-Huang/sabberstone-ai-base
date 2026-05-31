@@ -486,6 +486,12 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Paladin(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_141] High Abbess Alura - Spellburst: Cast a spell from your deck (targets this if possible).
+			cards.Add("SCH_141", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) => CastRandomSpellFromDeckTargetingSource(g, c, s)))
+			}));
+
 			// [SCH_138] Blessing of Authority - Give a minion +8/+8. It can't attack heroes this turn.
 			cards.Add("SCH_138", new CardDef(new Dictionary<PlayReq, int>
 			{
@@ -988,6 +994,44 @@ namespace SabberStoneCore.CardSets.Standard
 			Generic.SummonBlock.Invoke(game, (Minion)demon, -1, source);
 
 			if (demons.Count > 1)
+				game.OnRandomHappened(true);
+		}
+
+		private static void CastRandomSpellFromDeckTargetingSource(Game game, Controller controller, IEntity source)
+		{
+			List<IPlayable> spells = controller.DeckZone
+				.Where(p => p is Spell && p.Card.IsPlayableByCardReq(in controller))
+				.ToList();
+			if (spells.Count == 0)
+				return;
+
+			IPlayable spellPlayable = spells.Choose(game.Random);
+			Generic.RemoveFromZone.Invoke(controller, spellPlayable);
+
+			var spell = (Spell)spellPlayable;
+			List<ICharacter> validTargets = spell.Card.GetValidPlayTargets(in controller);
+			ICharacter target = null;
+
+			if (source is ICharacter sourceCharacter && validTargets.Contains(sourceCharacter))
+				target = sourceCharacter;
+			else if (spell.Card.MustHaveTargetToPlay)
+			{
+				if (validTargets.Count == 0)
+				{
+					controller.GraveyardZone.Add(spell);
+					return;
+				}
+
+				target = validTargets.Choose(game.Random);
+			}
+
+			int chooseOne = spell.Card.ChooseOne ? game.Random.Next(1, 3) : -1;
+			Generic.CastSpell.Invoke(controller, game, spell, target, chooseOne);
+
+			while (controller.Choice != null)
+				Generic.ChoicePick.Invoke(controller, game, controller.Choice.Choices.Choose(game.Random));
+
+			if (spells.Count > 1 || spell.Card.ChooseOne)
 				game.OnRandomHappened(true);
 		}
 
