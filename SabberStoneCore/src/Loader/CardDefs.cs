@@ -66,6 +66,7 @@ namespace SabberStoneCore.src.Loader
 			OutlandCardsGen.AddAll(_cardDefsDic);
 			ScholomanceCardsGen.AddAll(_cardDefsDic);
 			DarkmoonCardsGen.AddAll(_cardDefsDic);
+			YopCardsGen.AddAll(_cardDefsDic);
 
 			// Rest
 			NaxxCardsGen.AddAll(_cardDefsDic);

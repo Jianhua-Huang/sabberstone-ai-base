@@ -1224,13 +1224,16 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new CustomTask((g, c, s, t, stack) =>
 				{
-					if (!(t is Minion target))
-						return;
+						if (!(t is Minion target))
+							return;
 
-					target.HasDivineShield = true;
-					var copy = (Minion)Entity.FromCard(c, target.Card);
-					Generic.SummonBlock.Invoke(g, copy, -1, s);
-					Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_302e"), s as IPlayable, copy, 0, 0, 0);
+						target.HasDivineShield = true;
+						if (c.BoardZone.IsFull)
+							return;
+
+						var copy = (Minion)Entity.FromCard(c, target.Card);
+						Generic.SummonBlock.Invoke(g, copy, -1, s);
+						Generic.AddEnchantmentBlock(g, Cards.FromId("SCH_302e"), s as IPlayable, copy, 0, 0, 0);
 					copy.HasDivineShield = true;
 				})
 			}));

@@ -1,0 +1,209 @@
+using System.Linq;
+using SabberStoneCore.Actions;
+using SabberStoneCore.Auras;
+using SabberStoneCore.Enchants;
+using SabberStoneCore.Enums;
+using SabberStoneCore.Model;
+using SabberStoneCore.Model.Entities;
+using SabberStoneCore.Tasks;
+using SabberStoneCore.Tasks.SimpleTasks;
+using SabberStoneCore.Triggers;
+using SabberStoneCore.src.Loader;
+
+namespace SabberStoneCore.CardSets.Standard
+{
+	public class YopCardsGen
+	{
+		public static void AddAll(System.Collections.Generic.Dictionary<string, CardDef> cards)
+		{
+			DemonHunter(cards);
+			Druid(cards);
+			Hunter(cards);
+			Mage(cards);
+			Neutral(cards);
+			Shaman(cards);
+			Warlock(cards);
+			Warrior(cards);
+			NonCollect(cards);
+		}
+
+		private static void DemonHunter(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_030] Felfire Deadeye - Your Hero Power costs (1) less.
+			cards.Add("YOP_030", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HEROPOWER, Effects.ReduceCost(1))
+			}));
+		}
+
+		private static void Druid(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_026] Arbor Up - Summon two 2/2 Treants. Give your minions +2/+1.
+			cards.Add("YOP_026", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new SummonTask("EX1_158t", 2, SummonSide.SPELL),
+					new AddEnchantmentTask("YOP_026e", EntityType.MINIONS))
+			}));
+		}
+
+		private static void Hunter(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_027] Bola Shot - Deal 1 damage to a minion and 2 damage to its neighbors.
+			cards.Add("YOP_027", new CardDef(new System.Collections.Generic.Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!(t is Minion target))
+						return;
+
+					foreach (Minion adjacent in target.GetAdjacentMinions().ToArray())
+						Generic.DamageCharFunc.Invoke(s as IPlayable, adjacent, 2, true);
+
+					Generic.DamageCharFunc.Invoke(s as IPlayable, target, 1, true);
+				})
+			}));
+		}
+
+		private static void Mage(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_019] Conjure Mana Biscuit - Add a Biscuit to your hand that refreshes 2 Mana Crystals.
+			cards.Add("YOP_019", new CardDef(new Power
+			{
+				PowerTask = new AddCardTo("YOP_019t", EntityType.HAND)
+			}));
+		}
+
+		private static void Neutral(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_005] Barricade - Summon a 2/4 Guard with Taunt. If it's your only minion, summon another.
+			cards.Add("YOP_005", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					bool emptyBoard = c.BoardZone.IsEmpty;
+					new SummonTask("YOP_005t", SummonSide.SPELL).Process(g, c, s, t, stack);
+					if (emptyBoard)
+						new SummonTask("YOP_005t", SummonSide.SPELL).Process(g, c, s, t, stack);
+				})
+			}));
+
+			// [YOP_032] Armor Vendor - Battlecry: Give 4 Armor to each hero.
+			cards.Add("YOP_032", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new ArmorTask(4),
+					new ArmorTask(4, true))
+			}));
+
+			// [YOP_034] Runaway Blackwing - At the end of your turn, deal 9 damage to a random enemy minion.
+			cards.Add("YOP_034", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_END)
+				{
+					SingleTask = ComplexTask.DamageRandomTargets(1, EntityType.OP_MINIONS, 9)
+				}
+			}));
+		}
+
+		private static void Shaman(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_023] Landslide - Deal 1 damage to all enemy minions. If you're Overloaded, deal 1 damage again.
+			cards.Add("YOP_023", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					foreach (Minion minion in c.Opponent.BoardZone.GetAll().ToArray())
+						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 1, true);
+
+					if (c.OverloadLocked <= 0 && c.OverloadOwed <= 0)
+						return;
+
+					foreach (Minion minion in c.Opponent.BoardZone.GetAll().ToArray())
+						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 1, true);
+				})
+			}));
+
+			// [YOP_022] Mistrunner - Battlecry: Give a friendly minion +3/+3. Overload: (1)
+			cards.Add("YOP_022", new CardDef(new System.Collections.Generic.Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_FOR_COMBO, 0},
+				{PlayReq.REQ_MINION_TARGET, 0},
+				{PlayReq.REQ_FRIENDLY_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new AddEnchantmentTask("YOP_022e", EntityType.TARGET)
+			}));
+		}
+
+		private static void Warlock(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_003] Luckysoul Hoarder - Battlecry: Shuffle 2 Soul Fragments into your deck. Corrupt: Draw a card.
+			cards.Add("YOP_003", new CardDef(new Power
+			{
+				PowerTask = new AddCardTo("SCH_307t", EntityType.DECK, 2)
+			}));
+
+			// [YOP_003t] Luckysoul Hoarder - Corrupted. Battlecry: Draw a card.
+			cards.Add("YOP_003t", new CardDef(new Power
+			{
+				PowerTask = new DrawTask()
+			}));
+
+			// [YOP_033] Backfire - Draw 3 cards. Deal 3 damage to your hero.
+			cards.Add("YOP_033", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new DrawTask(3),
+					new DamageTask(3, EntityType.HERO))
+			}));
+		}
+
+		private static void Warrior(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_014] Ironclad - Battlecry: If your hero has Armor, gain +2/+2.
+			cards.Add("YOP_014", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.Hero.Armor > 0)
+						Generic.AddEnchantmentBlock(g, Cards.FromId("YOP_014e"), s as IPlayable, s, 0, 0, 0);
+				})
+			}));
+		}
+
+		private static void NonCollect(System.Collections.Generic.IDictionary<string, CardDef> cards)
+		{
+			// [YOP_019t] Mana Biscuit - Refresh 2 Mana Crystals.
+			cards.Add("YOP_019t", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					c.UsedMana = System.Math.Max(0, c.UsedMana - 2);
+				})
+			}));
+
+			// [YOP_022e] Windstrider - +3/+3.
+			cards.Add("YOP_022e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(3), Effects.Health_N(3))
+			}));
+
+			// [YOP_026e] Arbor Up - +2/+1.
+			cards.Add("YOP_026e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.Attack_N(2), Effects.Health_N(1))
+			}));
+
+			// [YOP_014e] Reinforced - +2/+2.
+			cards.Add("YOP_014e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(2))
+			}));
+		}
+	}
+}

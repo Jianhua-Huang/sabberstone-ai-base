@@ -2282,6 +2282,21 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void GiftOfLuminance_ShouldNotSummonCopyWhenBoardIsFull()
+		{
+			Game game = CreateGame();
+			Minion target = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			for (int i = 0; i < 6; i++)
+				game.ProcessCard("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Gift of Luminance", target, asZeroCost: true);
+
+			Assert.Equal(7, game.Player1.BoardZone.Count);
+			Assert.True(target.HasDivineShield);
+			Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id == target.Card.Id));
+		}
+
+		[Fact]
 		public void LorekeeperPolkelt_ShouldReorderDeckFromHighestCostToLowestCost()
 		{
 			Game game = CreateGame();
