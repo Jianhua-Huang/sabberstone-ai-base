@@ -24,7 +24,9 @@ namespace SabberStoneCore.CardSets.Standard
 			Neutral(cards);
 			Paladin(cards);
 			Priest(cards);
+			Rogue(cards);
 			Shaman(cards);
+			Warrior(cards);
 			Warlock(cards);
 			NonCollect(cards);
 		}
@@ -100,6 +102,16 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					if (c.HandZone.Any(p => p.Card.Type == CardType.SPELL && p.Card.Cost >= 5))
 						c.Hero.TakeHeal(s as IPlayable, 5);
+				})
+			}));
+
+			// [SCH_606] Partner Assignment - Add a random 2-Cost and 3-Cost Beast to your hand.
+			cards.Add("SCH_606", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					AddRandomMinionToHand(g, c, s, card => card.Cost == 2 && card.IsRace(Race.BEAST));
+					AddRandomMinionToHand(g, c, s, card => card.Cost == 3 && card.IsRace(Race.BEAST));
 				})
 			}));
 		}
@@ -402,6 +414,24 @@ namespace SabberStoneCore.CardSets.Standard
 			}));
 		}
 
+		private static void Rogue(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_521] Coerce - Destroy a damaged minion. Combo: Destroy any minion.
+			cards.Add("SCH_521", new CardDef(new Dictionary<PlayReq, int>
+			{
+				{PlayReq.REQ_TARGET_TO_PLAY, 0},
+				{PlayReq.REQ_MINION_TARGET, 0}
+			}, new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (t is Minion target && target.Damage > 0)
+						target.Destroy();
+				}),
+				ComboTask = new DestroyTask(EntityType.TARGET)
+			}));
+		}
+
 		private static void Shaman(IDictionary<string, CardDef> cards)
 		{
 			// [SCH_615] Totem Goliath - Deathrattle: Summon all four basic Totems. Overload: (1)
@@ -426,6 +456,19 @@ namespace SabberStoneCore.CardSets.Standard
 					Generic.DamageCharFunc.Invoke(s as IPlayable, t as ICharacter, amount, false);
 					for (int i = 0; i < amount && !c.BoardZone.IsFull; i++)
 						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId("SCH_271t")), -1, s);
+				})
+			}));
+		}
+
+		private static void Warrior(IDictionary<string, CardDef> cards)
+		{
+			// [SCH_525] In Formation! - Add 2 random Taunt minions to your hand.
+			cards.Add("SCH_525", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					AddRandomMinionToHand(g, c, s, card => card[GameTag.TAUNT] == 1);
+					AddRandomMinionToHand(g, c, s, card => card[GameTag.TAUNT] == 1);
 				})
 			}));
 		}
@@ -630,6 +673,20 @@ namespace SabberStoneCore.CardSets.Standard
 
 			controller.SetasideZone.Add(controller.DeckZone.Remove(fragment));
 			return true;
+		}
+
+		private static void AddRandomMinionToHand(Game game, Controller controller, IEntity source, System.Func<Card, bool> predicate)
+		{
+			List<Card> cards = Cards.FormatTypeCards(game.FormatType)
+				.Where(card => card.Collectible && card.Type == CardType.MINION && predicate(card))
+				.ToList();
+
+			if (cards.Count == 0)
+				return;
+
+			IPlayable entity = Entity.FromCard(controller, cards.Choose(game.Random));
+			entity[GameTag.DISPLAYED_CREATOR] = source.Id;
+			Generic.AddHandPhase.Invoke(controller, entity);
 		}
 	}
 }

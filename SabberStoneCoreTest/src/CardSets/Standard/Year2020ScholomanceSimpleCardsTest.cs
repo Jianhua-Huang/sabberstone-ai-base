@@ -531,6 +531,59 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void PartnerAssignment_ShouldAddRandomTwoAndThreeCostBeasts()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("Partner Assignment", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Cost == 2 && p.Card.IsRace(Race.BEAST));
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Cost == 3 && p.Card.IsRace(Race.BEAST));
+		}
+
+		[Fact]
+		public void InFormation_ShouldAddTwoRandomTauntMinions()
+		{
+			Game game = CreateGame();
+
+			game.ProcessCard("In Formation!", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+			Assert.All(game.Player1.HandZone, p => Assert.Equal(1, p.Card[GameTag.TAUNT]));
+		}
+
+		[Fact]
+		public void Coerce_ShouldDestroyOnlyDamagedMinionWithoutCombo()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion damaged = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			Minion undamaged = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+			damaged.Damage = 1;
+
+			game.ProcessCard("Coerce", damaged, asZeroCost: true);
+
+			Assert.True(damaged.ToBeDestroyed);
+			Assert.False(undamaged.ToBeDestroyed);
+		}
+
+		[Fact]
+		public void Coerce_ShouldDestroyAnyMinionWithCombo()
+		{
+			Game game = CreateGame();
+			game.EndTurn();
+			Minion target = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+			game.ProcessCard("Wisp", asZeroCost: true);
+
+			game.ProcessCard("Coerce", target, asZeroCost: true);
+
+			Assert.True(target.ToBeDestroyed);
+		}
+
+		[Fact]
 		public void SoulFragment_ShouldHealHeroAndNotRemainInHandWhenDrawn()
 		{
 			Game game = CreateGame();
