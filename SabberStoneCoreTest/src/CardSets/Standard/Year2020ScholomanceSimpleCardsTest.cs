@@ -623,6 +623,30 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void RaiseDead_ShouldDamageHeroAndReturnTwoFriendlyDeadMinions()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion raptor = game.ProcessCard<Minion>("Bloodfen Raptor", asZeroCost: true);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+
+			wisp.Kill();
+			raptor.Kill();
+			enemy.Kill();
+			EmptyZone(game.Player1.HandZone.GetAll());
+
+			game.ProcessCard("Raise Dead", asZeroCost: true);
+
+			Assert.Equal(27, game.Player1.Hero.Health);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Wisp");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Bloodfen Raptor");
+			Assert.DoesNotContain(game.Player1.HandZone, p => p.Card.Name == "River Crocolisk");
+			Assert.Equal(2, game.Player1.HandZone.Count);
+		}
+
+		[Fact]
 		public void TeachersPet_ShouldSummonRandomThreeCostBeastOnDeathrattle()
 		{
 			Game game = CreateGame();

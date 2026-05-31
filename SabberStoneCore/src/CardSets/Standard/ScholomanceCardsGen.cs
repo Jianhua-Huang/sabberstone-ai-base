@@ -555,6 +555,36 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new AddEnchantmentTask("SCH_136e", EntityType.TARGET)
 			}));
 
+			// [SCH_514] Raise Dead - Deal 3 damage to your hero. Return two friendly minions that died this game to your hand.
+			cards.Add("SCH_514", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					Generic.DamageCharFunc.Invoke(s as IPlayable, c.Hero, 3, false);
+
+					List<IPlayable> deadMinions = c.GraveyardZone
+						.Where(p => p is Minion)
+						.ToList();
+					if (deadMinions.Count == 0)
+						return;
+
+					int amount = System.Math.Min(2, deadMinions.Count);
+					IPlayable[] chosen = deadMinions.Count > amount
+						? deadMinions.ChooseNElements(amount, g.Random)
+						: deadMinions.ToArray();
+
+					foreach (IPlayable deadMinion in chosen)
+					{
+						IPlayable copy = Entity.FromCard(c, deadMinion.Card);
+						copy[GameTag.DISPLAYED_CREATOR] = s.Id;
+						Generic.AddHandPhase.Invoke(c, copy);
+					}
+
+					if (deadMinions.Count > amount)
+						g.OnRandomHappened(true);
+				})
+			}));
+
 			// [SCH_512] Initiation - Deal 4 damage to a minion. If that kills it, summon a new copy.
 			cards.Add("SCH_512", new CardDef(new Dictionary<PlayReq, int>
 			{
