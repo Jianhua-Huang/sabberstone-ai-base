@@ -444,6 +444,25 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CramSession_ShouldDrawOnePlusSpellDamageCards()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.MAGE);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Wisp")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Murloc Raider")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Bloodfen Raptor")));
+			game.ProcessCard<Minion>("Lab Partner", asZeroCost: true);
+
+			game.ProcessCard("Cram Session", asZeroCost: true);
+
+			Assert.Equal(2, game.Player1.HandZone.Count);
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Murloc Raider");
+			Assert.Contains(game.Player1.HandZone, p => p.Card.Name == "Bloodfen Raptor");
+			Assert.Single(game.Player1.DeckZone);
+			Assert.Contains(game.Player1.DeckZone, p => p.Card.Name == "Wisp");
+		}
+
+		[Fact]
 		public void KroluskBarkstripper_ShouldDestroyRandomEnemyMinionOnSpellburst()
 		{
 			Game game = CreateGame();

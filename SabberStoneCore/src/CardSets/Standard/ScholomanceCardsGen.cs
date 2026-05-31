@@ -324,6 +324,17 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_353] Cram Session - Draw 1 card. Improved by Spell Damage.
+			cards.Add("SCH_353", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					int amount = 1 + c.CurrentSpellPower;
+					for (int i = 0; i < amount; i++)
+						Generic.Draw(c);
+				})
+			}));
+
 			// [SCH_509] Brain Freeze - Freeze a minion. Combo: Also deal 3 damage to it.
 			cards.Add("SCH_509", new CardDef(new Dictionary<PlayReq, int>
 			{
