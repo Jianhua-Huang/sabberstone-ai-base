@@ -144,6 +144,22 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DisciplinarianGandling_ShouldDestroyPlayedMinionAndSummonFailedStudent()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST);
+
+			Minion gandling = game.ProcessCard<Minion>("Disciplinarian Gandling", asZeroCost: true);
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			Assert.Contains(gandling, game.Player1.BoardZone);
+			Assert.DoesNotContain(wisp, game.Player1.BoardZone);
+			Assert.Contains(game.Player1.GraveyardZone, p => p.Card.Name == "Wisp");
+			Minion failedStudent = game.Player1.BoardZone.Single(p => p.Card.Id == "SCH_126t");
+			Assert.Equal(4, failedStudent.AttackDamage);
+			Assert.Equal(4, failedStudent.Health);
+		}
+
+		[Fact]
 		public void Vectus_ShouldGiveWhelpsFriendlyDeathrattlesThatDiedThisGame()
 		{
 			Game game = CreateGame();

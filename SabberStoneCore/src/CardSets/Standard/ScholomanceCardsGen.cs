@@ -243,6 +243,25 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Neutral(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_126] Disciplinarian Gandling - After you play a minion, destroy it and summon a 4/4 Failed Student.
+			cards.Add("SCH_126", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.AFTER_PLAY_MINION)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Minion gandling) || !(t is Minion minion) || minion.Id == gandling.Id || minion.Zone != c.BoardZone)
+							return;
+
+						minion.Destroy();
+						g.DeathProcessingAndAuraUpdate();
+						if (!c.BoardZone.IsFull)
+							Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId("SCH_126t")), -1, s);
+					})
+				}
+			}));
+
 			// [SCH_120] Cabal Acolyte - Taunt. Spellburst: Gain control of a random enemy minion with 2 or less Attack.
 			cards.Add("SCH_120", new CardDef(new Power
 			{
