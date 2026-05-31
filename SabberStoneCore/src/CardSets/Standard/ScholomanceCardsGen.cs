@@ -783,6 +783,12 @@ namespace SabberStoneCore.CardSets.Standard
 			{
 				PowerTask = new AddEnchantmentTask("SCH_524e", EntityType.TARGET)
 			}));
+
+			// [SCH_532] Goody Two-Shields - Divine Shield. Spellburst: Gain Divine Shield.
+			cards.Add("SCH_532", new CardDef(new Power
+			{
+				Trigger = Spellburst(ComplexTask.DivineShield(EntityType.SOURCE))
+			}));
 		}
 
 		private static void Priest(IDictionary<string, CardDef> cards)

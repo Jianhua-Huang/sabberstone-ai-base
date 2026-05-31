@@ -961,6 +961,32 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void GoodyTwoShields_ShouldRegainDivineShieldOnSpellburstOnlyOnce()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PALADIN);
+			Minion goody = game.ProcessCard<Minion>("Goody Two-Shields", asZeroCost: true);
+
+			Assert.True(goody.HasDivineShield);
+
+			game.ProcessCard("Elven Archer", goody, asZeroCost: true);
+
+			Assert.False(goody.HasDivineShield);
+			Assert.Equal(0, goody.Damage);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.True(goody.HasDivineShield);
+
+			game.ProcessCard("Elven Archer", goody, asZeroCost: true);
+
+			Assert.False(goody.HasDivineShield);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.False(goody.HasDivineShield);
+		}
+
+		[Fact]
 		public void WretchedTutor_ShouldDealTwoToAllOtherMinionsOnSpellburst()
 		{
 			Game game = CreateGame();
