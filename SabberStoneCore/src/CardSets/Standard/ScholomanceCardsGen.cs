@@ -745,6 +745,14 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Warlock(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_158] Demonic Studies - Discover a Demon. Your next one costs (1) less.
+			cards.Add("SCH_158", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_158e", EntityType.CONTROLLER),
+					new DiscoverTask(DiscoverType.DEMON))
+			}));
+
 			// [SCH_307] School Spirits - Deal 2 damage to all minions. Shuffle 2 Soul Fragments into your deck.
 			cards.Add("SCH_307", new CardDef(new Power
 			{
@@ -851,6 +859,16 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_138e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.AttackHealth_N(8))
+			}));
+
+			// [SCH_158e] Demonic Studies - Your next Demon costs (1) less.
+			cards.Add("SCH_158e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsRace(Race.DEMON),
+					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsRace(Race.DEMON))
+				}
 			}));
 
 			// [SCH_138e2] Honorable Intentions - Can't attack heroes this turn.

@@ -1104,6 +1104,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void DemonicStudies_ShouldDiscoverDemonAndDiscountNextDemon()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
+			IPlayable firstDemon = Generic.DrawCard(game.Player1, Cards.FromName("Flame Imp"));
+			IPlayable secondDemon = Generic.DrawCard(game.Player1, Cards.FromName("Voidwalker"));
+			IPlayable nonDemon = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard("Demonic Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.True(game.IdEntityDic[choice].Card.IsRace(Race.DEMON)));
+			Assert.Equal(0, firstDemon.Cost);
+			Assert.Equal(0, secondDemon.Cost);
+			Assert.Equal(2, nonDemon.Cost);
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.True(game.Player1.HandZone.Last().Card.IsRace(Race.DEMON));
+
+			game.ProcessCard(firstDemon, asZeroCost: false);
+
+			Assert.DoesNotContain(firstDemon, game.Player1.HandZone);
+			Assert.Equal(1, secondDemon.Cost);
+		}
+
+		[Fact]
 		public void ArchwitchWillow_ShouldSummonDemonFromHandAndDeck()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
