@@ -810,6 +810,22 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new AddEnchantmentTask("SCH_524e", EntityType.TARGET)
 			}));
 
+			// [SCH_523] Ceremonial Maul - Spellburst: Summon a Student with Taunt and stats equal to the spell's Cost.
+			cards.Add("SCH_523", new CardDef(new Power
+			{
+				Trigger = Spellburst(new CustomTask((g, c, s, t, stack) =>
+				{
+					if (c.BoardZone.IsFull || !(t is Spell spell))
+						return;
+
+					Minion student = (Minion)Entity.FromCard(c, Cards.FromId("SCH_523t"));
+					student[GameTag.ATK] = spell.Cost;
+					student[GameTag.HEALTH] = spell.Cost;
+					student.HasTaunt = true;
+					Generic.SummonBlock.Invoke(g, student, -1, s);
+				}))
+			}));
+
 			// [SCH_532] Goody Two-Shields - Divine Shield. Spellburst: Gain Divine Shield.
 			cards.Add("SCH_532", new CardDef(new Power
 			{

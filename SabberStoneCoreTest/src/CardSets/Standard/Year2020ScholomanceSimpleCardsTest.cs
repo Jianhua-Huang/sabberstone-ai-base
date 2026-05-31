@@ -1171,6 +1171,24 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CeremonialMaul_ShouldSummonStudentWithStatsEqualToSpellCostOnSpellburst()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PALADIN);
+			game.ProcessCard("Ceremonial Maul", asZeroCost: true);
+
+			game.ProcessCard("Fireball", game.Player2.Hero);
+
+			Minion student = Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_523t"));
+			Assert.Equal(4, student.AttackDamage);
+			Assert.Equal(4, student.Health);
+			Assert.True(student.HasTaunt);
+
+			game.ProcessCard("Moonfire", game.Player2.Hero, asZeroCost: true);
+
+			Assert.Single(game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_523t"));
+		}
+
+		[Fact]
 		public void Commencement_ShouldSummonMinionFromDeckWithTauntAndDivineShield()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PALADIN);
