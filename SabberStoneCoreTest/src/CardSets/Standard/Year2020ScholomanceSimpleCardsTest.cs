@@ -1493,6 +1493,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CarrionStudies_ShouldDiscoverDeathrattleMinionAndDiscountNextDeathrattleMinion()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.ROGUE);
+			IPlayable firstDeathrattle = Generic.DrawCard(game.Player1, Cards.FromName("Loot Hoarder"));
+			IPlayable secondDeathrattle = Generic.DrawCard(game.Player1, Cards.FromName("Harvest Golem"));
+			IPlayable nonDeathrattle = Generic.DrawCard(game.Player1, Cards.FromName("River Crocolisk"));
+
+			game.ProcessCard("Carrion Studies", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+				Assert.True(game.IdEntityDic[choice].Card.Deathrattle));
+			Assert.Equal(1, firstDeathrattle.Cost);
+			Assert.Equal(2, secondDeathrattle.Cost);
+			Assert.Equal(2, nonDeathrattle.Cost);
+			int handCount = game.Player1.HandZone.Count;
+
+			game.Process(ChooseTask.Pick(game.Player1, game.Player1.Choice.Choices[0]));
+
+			Assert.Equal(handCount + 1, game.Player1.HandZone.Count);
+			Assert.True(game.Player1.HandZone.Last().Card.Deathrattle);
+
+			game.ProcessCard(firstDeathrattle, asZeroCost: false);
+
+			Assert.DoesNotContain(firstDeathrattle, game.Player1.HandZone);
+			Assert.Equal(3, secondDeathrattle.Cost);
+		}
+
+		[Fact]
 		public void MindrenderIllucia_ShouldSwapHandsAndDecksUntilNextTurn()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.PRIEST, player2HeroClass: CardClass.MAGE);

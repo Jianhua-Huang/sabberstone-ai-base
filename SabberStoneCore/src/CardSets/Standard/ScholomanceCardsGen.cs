@@ -805,6 +805,14 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void Rogue(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_300] Carrion Studies - Discover a Deathrattle minion. Your next one costs (1) less.
+			cards.Add("SCH_300", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new AddEnchantmentTask("SCH_300e", EntityType.CONTROLLER),
+					new DiscoverTask(DiscoverType.DEATHRATTLE_MINIONS))
+			}));
+
 			// [SCH_234] Shifty Sophomore - Stealth. Spellburst: Add a Combo card to your hand.
 			cards.Add("SCH_234", new CardDef(new Power
 			{
@@ -1085,6 +1093,16 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsTagValue(GameTag.SPELLPOWER, 1, RelaSign.GEQ),
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsTagValue(GameTag.SPELLPOWER, 1, RelaSign.GEQ))
+				}
+			}));
+
+			// [SCH_300e] Carrion Studies - Your next Deathrattle minion costs (1) less.
+			cards.Add("SCH_300e", new CardDef(new Power
+			{
+				Aura = new Aura(AuraType.HAND, Effects.ReduceCost(1))
+				{
+					Condition = SelfCondition.IsDeathrattleCard,
+					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsDeathrattleMinion)
 				}
 			}));
 
