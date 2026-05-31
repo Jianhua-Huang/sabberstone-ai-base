@@ -166,6 +166,37 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_603] Star Student Stelina - Outcast: Look at 3 cards in your opponent's hand. Shuffle one of them into their deck.
+			cards.Add("SCH_603", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (!WasPlayedFromOutcastPosition(s))
+						return;
+
+					List<IPlayable> choices = c.Opponent.HandZone.GetAll().ToList();
+					if (choices.Count == 0)
+						return;
+					if (choices.Count > 3)
+					{
+						choices = choices.Shuffle(g.Random).Take(3).ToList();
+						g.OnRandomHappened(true);
+					}
+
+					if (!Generic.CreateChoice(c, s, ChoiceType.GENERAL, ChoiceAction.STACK, choices.Select(p => p.Id).ToList()))
+						return;
+
+					c.Choice.AfterChooseTask = new CustomTask((game, controller, source, target, choiceStack) =>
+					{
+						if (!(target is IPlayable picked) || picked.Controller != controller.Opponent || picked.Zone != controller.Opponent.HandZone)
+							return;
+
+						controller.Opponent.HandZone.Remove(picked);
+						Generic.ShuffleIntoDeck.Invoke(controller.Opponent, source, picked);
+					});
+				})
+			}));
+
 			// [SCH_354] Ancient Void Hound - At the end of your turn, steal 1 Attack and Health from all enemy minions.
 			cards.Add("SCH_354", new CardDef(new Power
 			{

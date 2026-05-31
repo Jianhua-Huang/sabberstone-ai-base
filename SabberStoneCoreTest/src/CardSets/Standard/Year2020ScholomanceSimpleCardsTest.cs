@@ -1438,6 +1438,48 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void StarStudentStelina_ShouldShuffleChosenOpponentHandCardIntoDeckWhenOutcast()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			EmptyZone(game.Player2.DeckZone.GetAll());
+			IPlayable wisp = Generic.DrawCard(game.Player2, Cards.FromName("Wisp"));
+			IPlayable murloc = Generic.DrawCard(game.Player2, Cards.FromName("Murloc Raider"));
+			IPlayable raptor = Generic.DrawCard(game.Player2, Cards.FromName("Bloodfen Raptor"));
+
+			game.ProcessCard<Minion>("Star Student Stelina", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.Equal(3, game.Player1.Choice.Choices.Count);
+			Assert.Contains(wisp.Id, game.Player1.Choice.Choices);
+			Assert.Contains(murloc.Id, game.Player1.Choice.Choices);
+			Assert.Contains(raptor.Id, game.Player1.Choice.Choices);
+
+			game.Process(ChooseTask.Pick(game.Player1, murloc.Id));
+
+			Assert.Null(game.Player1.Choice);
+			Assert.Contains(wisp, game.Player2.HandZone);
+			Assert.DoesNotContain(murloc, game.Player2.HandZone);
+			Assert.Contains(raptor, game.Player2.HandZone);
+			Assert.Contains(murloc, game.Player2.DeckZone);
+		}
+
+		[Fact]
+		public void StarStudentStelina_ShouldNotTriggerWhenNotOutcast()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			IPlayable opponentCard = Generic.DrawCard(game.Player2, Cards.FromName("Wisp"));
+			AddHandCard(game, "Wisp");
+			IPlayable stelina = AddHandCard(game, "Star Student Stelina");
+			AddHandCard(game, "Murloc Raider");
+
+			game.ProcessCard<Minion>((Minion)stelina, asZeroCost: true);
+
+			Assert.Null(game.Player1.Choice);
+			Assert.Contains(opponentCard, game.Player2.HandZone);
+			Assert.DoesNotContain(opponentCard, game.Player2.DeckZone);
+		}
+
+		[Fact]
 		public void Felosophy_ShouldCopyLowestCostDemonAndBuffBothWhenOutcast()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);
