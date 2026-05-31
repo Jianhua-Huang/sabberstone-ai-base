@@ -1133,6 +1133,46 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void MindrenderIllucia_ShouldSwapHandsAndDecksUntilNextTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.PRIEST, player2HeroClass: CardClass.MAGE);
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			EmptyZone(game.Player2.DeckZone.GetAll());
+			IPlayable playerHand = Generic.DrawCard(game.Player1, Cards.FromName("Moonfire"));
+			IPlayable opponentHand = Generic.DrawCard(game.Player2, Cards.FromName("Fireball"));
+			IPlayable playerDeck = Entity.FromCard(game.Player1, Cards.FromName("Wisp"));
+			IPlayable opponentDeck = Entity.FromCard(game.Player2, Cards.FromName("River Crocolisk"));
+			game.Player1.DeckZone.Add(playerDeck);
+			game.Player2.DeckZone.Add(opponentDeck);
+
+			game.ProcessCard("Mindrender Illucia", asZeroCost: true);
+
+			Assert.Contains(opponentHand, game.Player1.HandZone);
+			Assert.Contains(playerHand, game.Player2.HandZone);
+			Assert.Contains(opponentDeck, game.Player1.DeckZone);
+			Assert.Contains(playerDeck, game.Player2.DeckZone);
+			Assert.Equal(game.Player1, opponentHand.Controller);
+			Assert.Equal(game.Player2, playerHand.Controller);
+			Assert.Equal(game.Player1, opponentDeck.Controller);
+			Assert.Equal(game.Player2, playerDeck.Controller);
+
+			game.EndTurn();
+			Assert.Contains(playerHand, game.Player2.HandZone);
+			Assert.Contains(playerDeck, game.Player2.HandZone);
+
+			game.EndTurn();
+
+			Assert.Contains(playerHand, game.Player1.HandZone);
+			Assert.Contains(playerDeck, game.Player1.HandZone);
+			Assert.Contains(opponentHand, game.Player2.HandZone);
+			Assert.Contains(opponentDeck, game.Player2.DeckZone);
+			Assert.Equal(game.Player1, playerHand.Controller);
+			Assert.Equal(game.Player1, playerDeck.Controller);
+			Assert.Equal(game.Player2, opponentHand.Controller);
+			Assert.Equal(game.Player2, opponentDeck.Controller);
+		}
+
+		[Fact]
 		public void ArchwitchWillow_ShouldSummonDemonFromHandAndDeck()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.WARLOCK);

@@ -753,6 +753,14 @@ namespace SabberStoneCore.CardSets.Standard
 					new DiscoverTask(DiscoverType.DEMON))
 			}));
 
+			// [SCH_159] Mindrender Illucia - Battlecry: Swap hands and decks with your opponent until your next turn.
+			cards.Add("SCH_159", new CardDef(new Power
+			{
+				PowerTask = ComplexTask.Create(
+					new CustomTask((g, c, s, t, stack) => SwapHandsAndDecks(c)),
+					new AddEnchantmentTask("SCH_159e", EntityType.CONTROLLER))
+			}));
+
 			// [SCH_307] School Spirits - Deal 2 damage to all minions. Shuffle 2 Soul Fragments into your deck.
 			cards.Add("SCH_307", new CardDef(new Power
 			{
@@ -868,6 +876,17 @@ namespace SabberStoneCore.CardSets.Standard
 				{
 					Condition = SelfCondition.IsRace(Race.DEMON),
 					RemoveTrigger = (TriggerType.PLAY_MINION, SelfCondition.IsRace(Race.DEMON))
+				}
+			}));
+
+			// [SCH_159e] Mind Swap - At the start of your turn, swap both players hands and decks.
+			cards.Add("SCH_159e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = ComplexTask.Create(
+						new CustomTask((g, c, s, t, stack) => SwapHandsAndDecks(c)),
+						RemoveEnchantmentTask.Task)
 				}
 			}));
 
@@ -1019,6 +1038,46 @@ namespace SabberStoneCore.CardSets.Standard
 
 			controller.SetasideZone.Add(controller.DeckZone.Remove(fragment));
 			return true;
+		}
+
+		private static void SwapHandsAndDecks(Controller controller)
+		{
+			Controller opponent = controller.Opponent;
+
+			IPlayable[] controllerHand = controller.HandZone.GetAll();
+			IPlayable[] opponentHand = opponent.HandZone.GetAll();
+
+			foreach (IPlayable playable in controllerHand)
+				controller.HandZone.Remove(playable);
+			foreach (IPlayable playable in opponentHand)
+				opponent.HandZone.Remove(playable);
+
+			foreach (IPlayable playable in controllerHand)
+			{
+				SetController(playable, opponent);
+				opponent.HandZone.Add(playable);
+			}
+
+			foreach (IPlayable playable in opponentHand)
+			{
+				SetController(playable, controller);
+				controller.HandZone.Add(playable);
+			}
+
+			controller.DeckZone.ForEach(playable => SetController(playable, opponent));
+			opponent.DeckZone.ForEach(playable => SetController(playable, controller));
+
+			var deck = controller.DeckZone;
+			controller.DeckZone = opponent.DeckZone;
+			controller.DeckZone.Controller = controller;
+			opponent.DeckZone = deck;
+			opponent.DeckZone.Controller = opponent;
+		}
+
+		private static void SetController(IPlayable playable, Controller controller)
+		{
+			playable.Controller = controller;
+			playable[GameTag.CONTROLLER] = controller.PlayerId;
 		}
 
 		private static void SummonRandomDemonFromZone(Game game, Controller controller, IEntity source, IEnumerable<IPlayable> zone)
