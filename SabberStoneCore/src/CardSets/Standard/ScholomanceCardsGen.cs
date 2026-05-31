@@ -34,6 +34,18 @@ namespace SabberStoneCore.CardSets.Standard
 
 		private static void DemonHunter(IDictionary<string, CardDef> cards)
 		{
+			// [SCH_618] Blood Herald - Whenever a friendly minion dies while this is in your hand, gain +1/+1.
+			cards.Add("SCH_618", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.DEATH)
+				{
+					TriggerActivation = TriggerActivation.HAND,
+					TriggerSource = TriggerSource.FRIENDLY,
+					Condition = SelfCondition.IsMinion,
+					SingleTask = new AddEnchantmentTask("SCH_618e", EntityType.SOURCE)
+				}
+			}));
+
 			// [SCH_600] Demon Companion - Summon a random Demon Companion.
 			cards.Add("SCH_600", new CardDef(new Power
 			{
@@ -698,6 +710,12 @@ namespace SabberStoneCore.CardSets.Standard
 			cards.Add("SCH_231e", new CardDef(new Power
 			{
 				Enchant = new Enchant(Effects.Attack_N(2))
+			}));
+
+			// [SCH_618e] Blood of Innocents - +1/+1.
+			cards.Add("SCH_618e", new CardDef(new Power
+			{
+				Enchant = new Enchant(Effects.AttackHealth_N(1))
 			}));
 
 			// [SCH_600t3] Kolek - Your other minions have +1 Attack.

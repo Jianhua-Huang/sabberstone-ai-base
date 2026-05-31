@@ -48,6 +48,20 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void BloodHerald_ShouldGainStatsInHandWhenFriendlyMinionDies()
+		{
+			Game game = CreateGame();
+			Minion herald = Assert.IsType<Minion>(Generic.DrawCard(game.Player1, Cards.FromId("SCH_618")));
+			Minion wisp = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+
+			wisp.Kill();
+
+			Assert.Contains(herald, game.Player1.HandZone);
+			Assert.Equal(2, herald.AttackDamage);
+			Assert.Equal(2, herald.Health);
+		}
+
+		[Fact]
 		public void Wolpertinger_ShouldSummonCopyOfItself()
 		{
 			Game game = CreateGame();
