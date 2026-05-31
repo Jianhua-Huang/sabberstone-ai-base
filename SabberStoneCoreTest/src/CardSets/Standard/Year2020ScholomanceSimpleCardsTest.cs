@@ -53,6 +53,15 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			return Generic.DrawCard(game.Player1, Cards.FromName(cardName));
 		}
 
+		private static int PickPlayableFireheartSpell(Game game)
+		{
+			return game.Player1.Choice.Choices.First(choice =>
+			{
+				var spell = (Spell)game.IdEntityDic[choice];
+				return !spell.Card.MustHaveTargetToPlay || spell.GetRandomValidTarget() != null;
+			});
+		}
+
 		[Fact]
 		public void BloodHerald_ShouldGainStatsInHandWhenFriendlyMinionDies()
 		{
@@ -2601,6 +2610,53 @@ namespace SabberStoneCoreTest.CardSets.Standard
 
 			Assert.DoesNotContain(firstSpellDamage, game.Player1.HandZone);
 			Assert.Equal(3, secondSpellDamage.Cost);
+		}
+
+		[Fact]
+		public void InstructorFireheart_ShouldDiscoverOnePlusCostSpellAndRepeatWhenChosenSpellIsPlayedThisTurn()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.SHAMAN);
+
+			game.ProcessCard("Instructor Fireheart", asZeroCost: true);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+			{
+				Card card = game.IdEntityDic[choice].Card;
+				Assert.Equal(CardType.SPELL, card.Type);
+				Assert.True(card.Cost >= 1);
+			});
+
+			int firstChoice = PickPlayableFireheartSpell(game);
+			game.Process(ChooseTask.Pick(game.Player1, firstChoice));
+			var firstSpell = Assert.IsType<Spell>(game.Player1.HandZone.Last());
+			Assert.Equal(game.Turn, firstSpell[GameTag.TAG_SCRIPT_DATA_NUM_1]);
+			Assert.Contains(game.Player1.AppliedEnchantments, enchantment =>
+				enchantment.Card.Id == "SCH_507e" && enchantment.ScriptTag1 == firstSpell.Id);
+
+			ICharacter target = firstSpell.Card.MustHaveTargetToPlay ? firstSpell.GetRandomValidTarget() : null;
+			game.ProcessCard(firstSpell, target, asZeroCost: true, chooseOne: firstSpell.Card.ChooseOne ? 1 : -1);
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.All(game.Player1.Choice.Choices, choice =>
+			{
+				Card card = game.IdEntityDic[choice].Card;
+				Assert.Equal(CardType.SPELL, card.Type);
+				Assert.True(card.Cost >= 1);
+			});
+
+			int secondChoice = PickPlayableFireheartSpell(game);
+			game.Process(ChooseTask.Pick(game.Player1, secondChoice));
+			var secondSpell = Assert.IsType<Spell>(game.Player1.HandZone.Last());
+			Assert.Equal(game.Turn, secondSpell[GameTag.TAG_SCRIPT_DATA_NUM_1]);
+			Assert.Contains(game.Player1.AppliedEnchantments, enchantment =>
+				enchantment.Card.Id == "SCH_507e" && enchantment.ScriptTag1 == secondSpell.Id);
+
+			game.EndTurn();
+
+			Assert.True(game.Player1.AppliedEnchantments == null ||
+				!game.Player1.AppliedEnchantments.Any(enchantment =>
+					enchantment.Card.Id == "SCH_507e" && enchantment.ScriptTag1 == secondSpell.Id));
 		}
 
 		[Fact]

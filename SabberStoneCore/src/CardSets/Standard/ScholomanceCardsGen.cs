@@ -1388,6 +1388,13 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new TempManaTask(2)
 			}));
 
+			// [SCH_507] Instructor Fireheart - Battlecry: Discover a spell that costs (1) or more. If you play it this turn, repeat this effect.
+			cards.Add("SCH_507", new CardDef(new Power
+			{
+				PowerTask = new DiscoverTask(CardType.SPELL, tagValueCriteria: (GameTag.COST, RelaSign.GEQ, 1),
+					afterDiscoverTask: FireheartMarkDiscoveredSpellTask())
+			}));
+
 			// [SCH_535] Tidal Wave - Lifesteal. Deal 3 damage to all minions.
 			cards.Add("SCH_535", new CardDef(new Power
 			{
@@ -1829,6 +1836,24 @@ namespace SabberStoneCore.CardSets.Standard
 				}
 			}));
 
+			// [SCH_507e] Hot Streak! - If played this turn, Discover another spell.
+			cards.Add("SCH_507e", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.CAST_SPELL)
+				{
+					TriggerSource = TriggerSource.FRIENDLY,
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (!(s is Enchantment hotStreak) || !(t is Spell) || hotStreak.ScriptTag1 != t.Id)
+							return;
+
+						new DiscoverTask(CardType.SPELL, tagValueCriteria: (GameTag.COST, RelaSign.GEQ, 1),
+							afterDiscoverTask: FireheartMarkDiscoveredSpellTask()).Process(g, c, s, t, stack);
+					}),
+					RemoveAfterTriggered = true
+				}
+			}));
+
 			// [SCH_238e] Reaper's Scythe - Damages minions next to whomever your hero attacks.
 			cards.Add("SCH_238e", new CardDef(new Power
 			{
@@ -2193,6 +2218,18 @@ namespace SabberStoneCore.CardSets.Standard
 				h.SourceCard.Type == CardType.SPELL &&
 				h.TargetController == spell.Controller.PlayerId &&
 				h.TargetCard != null);
+		}
+
+		private static ISimpleTask FireheartMarkDiscoveredSpellTask()
+		{
+			return new CustomTask((game, controller, source, target, stack) =>
+			{
+				if (!(target is Spell spell))
+					return;
+
+				spell[GameTag.TAG_SCRIPT_DATA_NUM_1] = game.Turn;
+				Generic.AddEnchantmentBlock(game, Cards.FromId("SCH_507e"), source as IPlayable, controller, spell.Id, 0, 0);
+			});
 		}
 
 		private static void SwapHandsAndDecks(Controller controller)
