@@ -259,6 +259,36 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_610] Guardian Animals - Summon two Beasts that cost (5) or less from your deck. Give them Rush.
+			cards.Add("SCH_610", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					List<IPlayable> beasts = c.DeckZone.GetAll()
+						.Where(p => p is Minion && p.Card.IsRace(Race.BEAST) && p.Card.Cost <= 5)
+						.ToList();
+
+					if (beasts.Count == 0)
+						return;
+
+					if (beasts.Count > 2)
+						g.OnRandomHappened(true);
+
+					foreach (IPlayable playable in beasts.Shuffle(g.Random).Take(2).ToArray())
+					{
+						if (c.BoardZone.IsFull)
+							break;
+
+						Minion beast = (Minion)c.DeckZone.Remove(playable);
+						Generic.SummonBlock.Invoke(g, beast, -1, s);
+						beast.IsRush = true;
+						beast.IsExhausted = false;
+						beast.AttackableByRush = true;
+						g.RushMinions.Add(beast.Id);
+					}
+				})
+			}));
+
 			// [SCH_613] Groundskeeper - Taunt. Battlecry: If you're holding a spell that costs (5) or more, restore 5 Health.
 			cards.Add("SCH_613", new CardDef(new Power
 			{

@@ -68,6 +68,39 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void GuardianAnimals_ShouldSummonTwoCheapBeastsFromDeckAndGiveRush()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DRUID);
+			game.EndTurn();
+			Minion enemy = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Bloodfen Raptor")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Oasis Snapjaw")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Savannah Highmane")));
+			game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromName("Chillwind Yeti")));
+
+			game.ProcessCard("Guardian Animals", asZeroCost: true);
+
+			Minion[] summoned = game.Player1.BoardZone.GetAll();
+			Assert.Equal(2, summoned.Length);
+			Assert.Contains(summoned, p => p.Card.Name == "Bloodfen Raptor");
+			Assert.Contains(summoned, p => p.Card.Name == "Oasis Snapjaw");
+			Assert.All(summoned, beast =>
+			{
+				Assert.True(beast.Card.IsRace(Race.BEAST));
+				Assert.True(beast.Card.Cost <= 5);
+				Assert.True(beast.IsRush);
+				Assert.True(beast.AttackableByRush);
+				Assert.False(beast.IsExhausted);
+				Assert.Contains(enemy, beast.ValidAttackTargets);
+				Assert.DoesNotContain(game.Player2.Hero, beast.ValidAttackTargets);
+			});
+			Assert.Contains(game.Player1.DeckZone.GetAll(), p => p.Card.Name == "Savannah Highmane");
+			Assert.Contains(game.Player1.DeckZone.GetAll(), p => p.Card.Name == "Chillwind Yeti");
+		}
+
+		[Fact]
 		public void FelGuardians_ShouldCostLessInHandWhenFriendlyMinionDies()
 		{
 			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
