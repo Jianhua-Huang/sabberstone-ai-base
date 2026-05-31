@@ -48,6 +48,11 @@ namespace SabberStoneCoreTest.CardSets.Standard
 				game.Player1.DeckZone.Add(Entity.FromCard(game.Player1, Cards.FromId("SCH_307t")));
 		}
 
+		private static IPlayable AddHandCard(Game game, string cardName)
+		{
+			return Generic.DrawCard(game.Player1, Cards.FromName(cardName));
+		}
+
 		[Fact]
 		public void BloodHerald_ShouldGainStatsInHandWhenFriendlyMinionDies()
 		{
@@ -1018,6 +1023,35 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal("BT_491", drawn.Card.Id);
 			Assert.Single(game.Player1.DeckZone);
 			Assert.Equal("Wisp", game.Player1.DeckZone.Single().Card.Name);
+		}
+
+		[Fact]
+		public void VilefiendTrainer_ShouldSummonTwoDemonsOnlyWhenOutcast()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			AddHandCard(game, "Wisp");
+			IPlayable trainer = AddHandCard(game, "Vilefiend Trainer");
+			AddHandCard(game, "Wisp");
+
+			game.ProcessCard<Minion>((Minion)trainer, asZeroCost: true);
+
+			Assert.Single(game.Player1.BoardZone);
+			Assert.DoesNotContain(game.Player1.BoardZone, p => p.Card.Id == "SCH_705t");
+
+			game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			trainer = AddHandCard(game, "Vilefiend Trainer");
+
+			game.ProcessCard<Minion>((Minion)trainer, asZeroCost: true);
+
+			Assert.Single(game.Player1.BoardZone, p => p.Card.Id == "SCH_705");
+			Minion[] vilefiends = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_705t");
+			Assert.Equal(2, vilefiends.Length);
+			Assert.All(vilefiends, vilefiend =>
+			{
+				Assert.Equal(1, vilefiend.AttackDamage);
+				Assert.Equal(1, vilefiend.Health);
+				Assert.True(vilefiend.Card.IsRace(Race.DEMON));
+			});
 		}
 
 		[Fact]

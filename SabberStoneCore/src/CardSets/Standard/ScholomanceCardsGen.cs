@@ -145,6 +145,16 @@ namespace SabberStoneCore.CardSets.Standard
 				})
 			}));
 
+			// [SCH_705] Vilefiend Trainer - Outcast: Summon two 1/1 Demons.
+			cards.Add("SCH_705", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					if (WasPlayedFromOutcastPosition(s))
+						new SummonTask("SCH_705t", 2, SummonSide.SPELL).Process(g, c, s, t, stack);
+				})
+			}));
+
 			// [SCH_276] Magehunter - Rush. Whenever this attacks a minion, Silence it.
 			cards.Add("SCH_276", new CardDef(new Power
 			{
@@ -1622,6 +1632,11 @@ namespace SabberStoneCore.CardSets.Standard
 				SingleTask = task,
 				RemoveAfterTriggered = true
 			};
+		}
+
+		private static bool WasPlayedFromOutcastPosition(IEntity source)
+		{
+			return source is Playable playable && playable.WasPlayedFromOutcastPosition;
 		}
 
 		private static Trigger HeadmasterKelThuzadSpellburst()
