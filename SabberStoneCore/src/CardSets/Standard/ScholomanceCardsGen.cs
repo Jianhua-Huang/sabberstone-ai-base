@@ -64,6 +64,26 @@ namespace SabberStoneCore.CardSets.Standard
 				PowerTask = new AddCardTo("SCH_307t", EntityType.DECK, 2)
 			}));
 
+			// [SCH_253] Cycle of Hatred - Deal 3 damage to all minions. Summon a 3/3 Spirit for every minion killed.
+			cards.Add("SCH_253", new CardDef(new Power
+			{
+				PowerTask = new CustomTask((g, c, s, t, stack) =>
+				{
+					Minion[] minions = c.BoardZone.GetAll().Concat(c.Opponent.BoardZone.GetAll()).ToArray();
+					foreach (Minion minion in minions)
+						Generic.DamageCharFunc.Invoke(s as IPlayable, minion, 3, false);
+
+					int killed = minions.Count(minion => minion.ToBeDestroyed);
+					if (killed == 0)
+						return;
+
+					g.DeathProcessingAndAuraUpdate();
+
+					for (int i = 0; i < killed && !c.BoardZone.IsFull; i++)
+						Generic.SummonBlock.Invoke(g, (Minion)Entity.FromCard(c, Cards.FromId("SCH_253t")), -1, s);
+				})
+			}));
+
 			// [SCH_355] Shardshatter Mystic - Battlecry: Destroy a Soul Fragment in your deck to deal 3 damage to all other minions.
 			cards.Add("SCH_355", new CardDef(new Power
 			{

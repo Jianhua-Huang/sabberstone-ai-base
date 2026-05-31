@@ -1292,6 +1292,32 @@ namespace SabberStoneCoreTest.CardSets.Standard
 		}
 
 		[Fact]
+		public void CycleOfHatred_ShouldDamageAllMinionsAndSummonSpiritForEachKilled()
+		{
+			Game game = CreateGame(player1HeroClass: CardClass.DEMONHUNTER);
+			Minion friendlyKilled = game.ProcessCard<Minion>("River Crocolisk", asZeroCost: true);
+			game.EndTurn();
+			Minion enemyKilled = game.ProcessCard<Minion>("Wisp", asZeroCost: true);
+			Minion enemySurvives = game.ProcessCard<Minion>("Boulderfist Ogre", asZeroCost: true);
+			game.EndTurn();
+
+			game.ProcessCard("Cycle of Hatred", asZeroCost: true);
+
+			Assert.DoesNotContain(friendlyKilled, game.Player1.BoardZone);
+			Assert.DoesNotContain(enemyKilled, game.Player2.BoardZone);
+			Assert.Contains(enemySurvives, game.Player2.BoardZone);
+			Assert.Equal(3, enemySurvives.Damage);
+
+			Minion[] spirits = game.Player1.BoardZone.GetAll(p => p.Card.Id == "SCH_253t");
+			Assert.Equal(2, spirits.Length);
+			Assert.All(spirits, spirit =>
+			{
+				Assert.Equal(3, spirit.AttackDamage);
+				Assert.Equal(3, spirit.Health);
+			});
+		}
+
+		[Fact]
 		public void SchoolSpirits_ShouldDamageAllMinionsWithSpellPowerAndShuffleSoulFragments()
 		{
 			Game game = CreateGame();
