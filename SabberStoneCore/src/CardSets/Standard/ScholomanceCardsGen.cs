@@ -590,6 +590,37 @@ namespace SabberStoneCore.CardSets.Standard
 				}),
 				Trigger = Spellburst(new ReturnHandTask(EntityType.SOURCE))
 			}));
+
+			// [SCH_259] Sphere of Sapience - At the start of your turn, look at your top card. You can put it on the bottom and lose 1 Durability.
+			cards.Add("SCH_259", new CardDef(new Power
+			{
+				Trigger = new Trigger(TriggerType.TURN_START)
+				{
+					SingleTask = new CustomTask((g, c, s, t, stack) =>
+					{
+						if (c.DeckZone.IsEmpty || c.Hero.Weapon == null || c.Hero.Weapon.Id != s.Id)
+							return;
+
+						IPlayable topCard = c.DeckZone.TopCard;
+						IPlayable newFate = Entity.FromCard(c, Cards.FromId("SCH_259t"), null, c.SetasideZone);
+						Generic.RevealCardBlock(s as IPlayable, topCard);
+						if (!Generic.CreateChoice(c, s, ChoiceType.GENERAL, ChoiceAction.STACK, new List<int> { topCard.Id, newFate.Id }))
+							return;
+
+						c.Choice.AfterChooseTask = new CustomTask((game, controller, source, target, choiceStack) =>
+						{
+							if (target?.Card.Id != "SCH_259t" || controller.DeckZone.IsEmpty)
+								return;
+
+							IPlayable movedCard = controller.DeckZone.TopCard;
+							controller.DeckZone.Remove(movedCard);
+							controller.DeckZone.Add(movedCard, 0);
+							controller.Hero.Weapon.Damage += 1;
+							game.DeathProcessingAndAuraUpdate();
+						});
+					})
+				}
+			}));
 		}
 
 		private static void Paladin(IDictionary<string, CardDef> cards)

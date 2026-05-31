@@ -500,6 +500,10 @@ namespace SabberStoneCore.Model
 			}
 			bool result = gameTask.Process();
 
+			if (result && State != State.COMPLETE && CurrentPlayer.Choice == null &&
+			    Step == Step.MAIN_START_TRIGGERS && (Step)this[GameTag.NEXT_STEP] == Step.MAIN_START_TRIGGERS)
+				NextStep = Step.MAIN_START;
+
 			// check dead heroes here again (TODO)
 			if (State != State.COMPLETE)
 			{
@@ -812,6 +816,9 @@ namespace SabberStoneCore.Model
 			//Game.TaskQueue.EndEvent();
 			if (History)
 				PowerHistory.Add(PowerHistoryBuilder.BlockEnd());
+
+			if (CurrentPlayer.Choice != null)
+				return;
 
 			// set next step
 			//NextStep = Step.MAIN_RESOURCE;

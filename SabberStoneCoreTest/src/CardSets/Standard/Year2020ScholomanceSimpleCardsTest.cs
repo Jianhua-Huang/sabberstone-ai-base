@@ -1547,5 +1547,53 @@ namespace SabberStoneCoreTest.CardSets.Standard
 			Assert.Equal(0, game.Player1.DeckZone.Count(p => p.Card.Id == "SCH_307t"));
 			Assert.Equal(5, game.Player1.Hero.AttackDamage);
 		}
+
+		[Fact]
+		public void SphereOfSapience_ShouldKeepTopCardWithoutLosingDurability()
+		{
+			Game game = CreateGame();
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			IPlayable bottom = Entity.FromCard(game.Player1, Cards.FromName("Wisp"));
+			IPlayable top = Entity.FromCard(game.Player1, Cards.FromName("Boulderfist Ogre"));
+			game.Player1.DeckZone.Add(bottom);
+			game.Player1.DeckZone.Add(top);
+			game.ProcessCard("Sphere of Sapience", asZeroCost: true);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.NotNull(game.Player1.Choice);
+			Assert.Contains(top.Id, game.Player1.Choice.Choices);
+
+			game.Process(ChooseTask.Pick(game.Player1, top.Id));
+
+			Assert.Equal(4, game.Player1.Hero.Weapon.Durability);
+			Assert.Contains(top, game.Player1.HandZone);
+			Assert.Equal(bottom, game.Player1.DeckZone.TopCard);
+		}
+
+		[Fact]
+		public void SphereOfSapience_ShouldPutTopCardOnBottomAndLoseDurability()
+		{
+			Game game = CreateGame();
+			EmptyZone(game.Player1.DeckZone.GetAll());
+			IPlayable bottom = Entity.FromCard(game.Player1, Cards.FromName("Wisp"));
+			IPlayable top = Entity.FromCard(game.Player1, Cards.FromName("Boulderfist Ogre"));
+			game.Player1.DeckZone.Add(bottom);
+			game.Player1.DeckZone.Add(top);
+			game.ProcessCard("Sphere of Sapience", asZeroCost: true);
+
+			game.EndTurn();
+			game.EndTurn();
+
+			Assert.NotNull(game.Player1.Choice);
+			int newFateChoice = game.Player1.Choice.Choices.Single(choice => game.IdEntityDic[choice].Card.Id == "SCH_259t");
+
+			game.Process(ChooseTask.Pick(game.Player1, newFateChoice));
+
+			Assert.Equal(3, game.Player1.Hero.Weapon.Durability);
+			Assert.Contains(bottom, game.Player1.HandZone);
+			Assert.Equal(top, game.Player1.DeckZone.TopCard);
+		}
 	}
 }
